@@ -1,0 +1,8 @@
+@startuml
+start
+if (Le joueur touche une pièce ?) then (Oui)
+    :Ajouter la pièce au niveau;
+else (Non)
+endif
+stop
+@enduml

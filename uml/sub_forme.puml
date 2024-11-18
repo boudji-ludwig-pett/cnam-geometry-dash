@@ -1,0 +1,15 @@
+@startuml
+start
+:Changement de forme via portail;
+switch (Forme)
+    case (Forme fusée)
+        :Mode fusée;
+    case (Forme roue)
+        :Mode roue;
+    case (Forme sens inversé)
+        :Mode sens inversé;
+    case (Forme gravité inversée)
+        :Mode gravité inversée;
+endswitch
+stop
+@enduml
