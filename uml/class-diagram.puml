@@ -1,0 +1,50 @@
+@startuml Geometry Dash - Diagramme de classe
+
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+hide enum methods
+
+class Position {
+  {field} + column: Integer
+  {field} + row: Integer
+
+  {method} + Position(column: Integer, row: Integer)
+  {method} + equals(position: Position)
+}
+
+class Level {
+    {field} + songPath: String
+    {field} + backgroundPath: String
+    {field} + speed: Double
+
+    {method} + Level()
+}
+Level *--> "*\n- grid" GameObject : <<Is made up of>>
+
+abstract class GameObject {
+    {method} + getImagePath(): String {abstract}
+    {method} + safeSides(): List<PositionSide> {abstract}
+}
+GameObject o--> "1\n- " Position : <<Has>>
+GameObject ..> PositionSide : <<Uses>>
+
+class Spike extends GameObject {}
+
+class Game {
+  {field} - score: Integer
+
+  {method} + start(): void
+  {method} + restart(): void
+  {method} + end(): void
+}
+Game o--> "1\n- currentLevel" Level : <<Has>>
+
+enum PositionSide <<enumeration>> {
+    TOP
+    RIGHT
+    BOTTOM
+    LEFT
+}
+
+@enduml
