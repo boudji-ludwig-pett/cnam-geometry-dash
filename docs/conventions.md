@@ -26,12 +26,15 @@ Lorsqu'une Pull Request (PR) est créée, il est obligatoire d'ajouter un **Revi
 
 ### Processus de revue de code
 
-1. **Code Review** :
-   - Examiner le code pour détecter les erreurs ou les violations des bonnes pratiques.
-   - Vérifier la clarté, la lisibilité et la maintenabilité du code.
+#### Code Review
 
-2. **Commentaires** :
-   - Les commentaires doivent suivre les [Conventional Comments](https://conventionalcomments.org/), qui permettent de structurer les retours de manière cohérente et compréhensible.
+- Examiner le code pour détecter les erreurs ou les violations des bonnes pratiques.
+- Vérifier la clarté, la lisibilité et la maintenabilité du code.
 
-3. **Validation** :
-   - Une fois tous les retours pris en compte et les corrections appliquées, le Reviewer peut approuver la PR, permettant ainsi sa fusion.
+#### Commentaires
+
+Les commentaires doivent suivre les [Conventional Comments](https://conventionalcomments.org/), qui permettent de structurer les retours de manière cohérente et compréhensible.
+
+#### Validation
+
+Une fois tous les retours pris en compte et les corrections appliquées, le Reviewer peut approuver la PR, permettant ainsi sa fusion.
