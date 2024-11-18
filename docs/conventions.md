@@ -10,6 +10,8 @@ Le projet suit la convention [GitFlow](https://nvie.com/posts/a-successful-git-b
 
 Idéalement, chaque nouvelle fonctionnalité ou correctif de bug est développé dans une branche dédiée à partir de `develop`, nommée `feat/<nom-de-la-fonctionnalité>` ou `fix/<nom-du-bug>`. Une fois le développement terminé, une pull request est créée pour demander une revue de code, et une fois validée, la branche est fusionnée dans `develop`, puis supprimée.
 
+Les revues de code doivent suivre la convention: [conventional: comments](https://conventionalcomments.org/).
+
 ## Convention des commits
 
 Les commits respectent la convention [Conventional Commits](https://www.conventionalcommits.org/) et [Semantic Versioning](https://semver.org/) pour la gestion des versions et des releases en fonction des commits.
