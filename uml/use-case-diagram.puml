@@ -1,0 +1,86 @@
+@startuml Geometry Dash - Diagramme de cas d'utilisation
+
+left to right direction
+
+actor Joueur as Joueur
+actor "Créateur de cartes" as Createur
+
+rectangle Jeu {
+    usecase "Démarrer le jeu" as DemarrerJeu
+    usecase "Afficher le menu principal" as AfficherMenu
+}
+
+rectangle "Menu principal" {
+    usecase "Configurer les paramètres" as ConfigurerParametres
+    usecase "Accéder à la sélection des niveaux" as SelectionNiveau
+    usecase "Accéder à l'éditeur de cartes" as EditeurCartes
+    usecase "Consulter les statistiques" as ConsulterStats
+    usecase "Voir les trophées et récompenses" as VoirTrophees
+}
+
+rectangle "Sélection des niveaux" {
+    usecase "Parcourir les niveaux disponibles" as ParcourirNiveaux
+    usecase "Afficher les détails d'un niveau" as AfficherDetailsNiveau
+    usecase "Commencer un niveau" as CommencerNiveau
+}
+
+rectangle "Pendant un niveau" {
+    usecase "Jouer et interagir avec le niveau" as JouerNiveau
+    usecase "Mettre le jeu en pause" as MettrePause
+}
+
+rectangle "Paramètres" {
+    usecase "Régler le volume du jeu" as ReglerVolume
+    usecase "Changer la musique de fond" as ChangerMusique
+    usecase "Lire les instructions d'aide" as LireAide
+}
+
+rectangle "Création de cartes" {
+    usecase "Créer une nouvelle carte" as CreerNouvelleCarte
+    usecase "Modifier une carte existante" as ModifierCarte
+    usecase "Tester une carte" as TesterCarte
+    usecase "Partager une carte" as PartagerCarte
+    usecase "Télécharger des cartes de la communauté" as TelechargerCartes
+}
+
+rectangle "Statistiques" {
+    usecase "Afficher les statistiques globales" as AfficherStatsGlobales
+    usecase "Afficher les statistiques de session" as AfficherStatsSession
+}
+
+rectangle "Trophées et récompenses" {
+    usecase "Voir les trophées débloqués" as VoirTropheesDebloques
+    usecase "Voir les pièces collectées" as VoirPieces
+}
+
+Joueur --> DemarrerJeu
+DemarrerJeu --> AfficherMenu
+AfficherMenu --> ConfigurerParametres
+AfficherMenu --> SelectionNiveau
+AfficherMenu --> EditeurCartes
+AfficherMenu --> ConsulterStats
+AfficherMenu --> VoirTrophees
+SelectionNiveau --> ParcourirNiveaux
+ParcourirNiveaux --> AfficherDetailsNiveau
+ParcourirNiveaux --> CommencerNiveau
+CommencerNiveau --> JouerNiveau
+JouerNiveau --> MettrePause
+ConfigurerParametres --> ReglerVolume
+ConfigurerParametres --> ChangerMusique
+ConfigurerParametres --> LireAide
+EditeurCartes --> CreerNouvelleCarte
+EditeurCartes --> ModifierCarte
+CreerNouvelleCarte --> TesterCarte
+ModifierCarte --> TesterCarte
+CreerNouvelleCarte --> PartagerCarte
+ModifierCarte --> PartagerCarte
+EditeurCartes --> TelechargerCartes
+ConsulterStats --> AfficherStatsGlobales
+ConsulterStats --> AfficherStatsSession
+VoirTrophees --> VoirTropheesDebloques
+VoirTrophees --> VoirPieces
+
+Createur --> CreerNouvelleCarte
+Createur --> ModifierCarte
+
+@enduml
