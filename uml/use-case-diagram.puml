@@ -26,6 +26,8 @@ rectangle "Sélection des niveaux" {
 
 rectangle "Pendant un niveau" {
   usecase "Jouer et interagir avec le niveau" as JouerNiveau
+  usecase "Sauter" as Sauter
+  usecase "Redémarrer un niveau" as RedemarrerNiveau
   usecase "Mettre le jeu en pause" as MettrePause
 }
 
@@ -60,14 +62,20 @@ AfficherMenu --> SelectionNiveau
 AfficherMenu --> EditeurCartes
 AfficherMenu --> ConsulterStats
 AfficherMenu --> VoirTrophees
+
 SelectionNiveau --> ParcourirNiveaux
 ParcourirNiveaux --> AfficherDetailsNiveau
 ParcourirNiveaux --> CommencerNiveau
 CommencerNiveau --> JouerNiveau
 JouerNiveau --> MettrePause
+
+JouerNiveau .> Sauter : <<include>>
+JouerNiveau .> RedemarrerNiveau : <<extends>>
+
 ConfigurerParametres --> ReglerVolume
 ConfigurerParametres --> ChangerMusique
 ConfigurerParametres --> LireAide
+
 EditeurCartes --> CreerNouvelleCarte
 EditeurCartes --> ModifierCarte
 CreerNouvelleCarte --> TesterCarte
@@ -75,8 +83,12 @@ ModifierCarte --> TesterCarte
 CreerNouvelleCarte --> PartagerCarte
 ModifierCarte --> PartagerCarte
 EditeurCartes --> TelechargerCartes
+
+TesterCarte .> JouerNiveau : <<include>>
+
 ConsulterStats --> AfficherStatsGlobales
 ConsulterStats --> AfficherStatsSession
+
 VoirTrophees --> VoirTropheesDebloques
 VoirTrophees --> VoirPieces
 
