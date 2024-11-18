@@ -1,0 +1,81 @@
+@startuml
+left to right direction
+
+actor Joueur as Player
+actor "Créateur de carte" as Creator
+
+rectangle Jeu {
+    usecase "Lancer le jeu" as UC1
+    usecase "Afficher le menu principal" as UC2
+}
+
+rectangle "Menu principal" {
+    usecase "Gérer les paramètres" as UC3
+    usecase "Jouer un niveau" as UC4
+    usecase "Créer ou modifier une carte" as UC5
+    usecase "Consulter les statistiques" as UC6
+    usecase "Voir les trophées" as UC7
+}
+
+rectangle "Sélection des niveaux" {
+    usecase "Choisir un niveau" as UC8
+    usecase "Voir les détails d'un niveau" as UC9
+}
+
+rectangle "Pendant un niveau" {
+    usecase "Jouer un niveau" as UC10
+    usecase "Mettre le jeu en pause" as UC11
+}
+
+rectangle "Paramètres" {
+    usecase "Régler le volume" as UC12
+    usecase "Changer la musique" as UC13
+    usecase "Afficher une page d'aide" as UC14
+}
+
+rectangle "Création de cartes" {
+    usecase "Créer une nouvelle carte" as UC15
+    usecase "Modifier une carte existante" as UC16
+    usecase "Tester une carte" as UC17
+    usecase "Partager une carte" as UC18
+    usecase "Télécharger des cartes" as UC19
+}
+
+rectangle "Statistiques" {
+    usecase "Voir les statistiques globales" as UC20
+    usecase "Voir les statistiques de performance" as UC21
+}
+
+rectangle "Trophées" {
+    usecase "Voir les trophées débloqués" as UC22
+    usecase "Consulter les pièces collectées" as UC23
+}
+
+Player --> UC1
+UC1 --> UC2
+UC2 --> UC3
+UC2 --> UC4
+UC2 --> UC5
+UC2 --> UC6
+UC2 --> UC7
+UC4 --> UC8
+UC8 --> UC9
+UC8 --> UC10
+UC10 --> UC11
+UC3 --> UC12
+UC3 --> UC13
+UC3 --> UC14
+UC5 --> UC15
+UC5 --> UC16
+UC5 --> UC17
+Creator --> UC15
+Creator --> UC16
+UC15 --> UC17
+UC15 --> UC18
+UC15 --> UC19
+UC6 --> UC20
+UC6 --> UC21
+UC7 --> UC22
+UC7 --> UC23
+
+@enduml
