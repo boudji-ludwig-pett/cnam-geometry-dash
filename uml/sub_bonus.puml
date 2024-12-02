@@ -1,0 +1,8 @@
+@startuml
+start
+if (Le joueur touche un bonus ?) then (Oui)
+    :Ajouter le bonus à l'inventaire;
+else (Non)
+endif
+stop
+@enduml
