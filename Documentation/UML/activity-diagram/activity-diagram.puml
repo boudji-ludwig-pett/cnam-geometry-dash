@@ -1,4 +1,4 @@
-@startuml Geometry Dash - Diagramme d'activités
+@startuml GeometryDash_Activite
 
 start
 
@@ -7,21 +7,18 @@ start
 repeat
     if (Le joueur percute un obstacle ?) then (Oui)
         :Le joueur meurt;
-        :Animation de mort;
         :Augmenter le nombre d'essais de 1;
         :Perdre toutes les pièces et bonus;
     else (Non)
-        partition "Saut" {
+        partition "Actions du joueur" {
             if (L'utilisateur clique sur l'écran ?) then (Oui)
                 :Le joueur effectue un saut;
                 note right
                 **Saut**
-                Le joueur saute pour éviter les obstacles.
+                - Le joueur saute pour éviter les obstacles.
                 end note
             endif
-        }
 
-        partition "Bumper" {
             if (Le joueur touche un bumper ?) then (Oui)
                 :Le joueur effectue un grand saut;
                 note right
@@ -31,65 +28,40 @@ repeat
                 - Activation automatique au contact.
                 end note
             endif
-        }
-
-        partition "Forme" {
-            if (Le joueur passe un portail ?) then (Oui)
-                :Changement de forme;
-                note right
-                **Portail de Forme**
-                - Change la mécanique de déplacement.
-                - Types : Gravité inversée, vitesse accrue.
-                end note
-            endif
-        }
-
-        partition "Bonus" {
-            if (Le joueur touche un bonus ?) then (Oui)
-                :Ajouter le bonus à l'inventaire;
-                note right
-                **Bonus Collecté**
-                - Ajouté à l'inventaire.
-                - Utilisable selon les besoins.
-                end note
-            endif
 
             if (Le joueur clique sur un bonus dans son inventaire ?) then (Oui)
                 :Activer un bonus;
                 note right
-                **Activation de Bonus**\\
+                **Activation de Bonus**
                 - Déclenche l'effet du bonus sélectionné.
                 - Exemple : Invincibilité, Double saut.
                 end note
             endif
         }
 
-        partition "Collecte des Pièces" {
-            if (Le joueur touche une pièce ?) then (Oui)
-                :Ajouter la pièce au niveau;
+        partition "Gestion de la pause" {
+            if (Le joueur clique sur le bouton de pause ?) then (Oui)
+                :Arriver sur le menu de pause;
                 note right
-                **Collecte de Pièces**
-                - Compte les pièces collectées.
-                - Utile pour débloquer des niveaux ou bonus.
+                **Menu de pause**
+                - Affiche les options : Reprendre, Quitter, Mode Checkpoint, Volume.
+                end note
+            endif
+        }
+
+        partition "Progression" {
+            if (Le joueur touche la zone de fin ?) then (Oui)
+                :Terminer le niveau;
+                :Afficher une animation de fin de niveau;
+                :Conserver les pièces obtenues;
+                note right
+                **Fin du Niveau**
+                - Succès enregistré.
+                - Les pièces collectées sont sauvegardées.
                 end note
             endif
         }
     endif
-
-    partition "Fin du Niveau" {
-        if (Le joueur touche la zone de fin ?) then (Oui)
-            :Terminer le niveau;
-            :Animation de fin de niveau;
-            :Conserver les pièces obtenues;
-            note right
-            **Fin du Niveau**
-            - Succès enregistré.
-            - Les pièces collectées sont sauvegardées.
-            end note
-            break
-        endif
-    }
-
 repeat while (Le joueur n'a pas fini le niveau)
 
 stop
