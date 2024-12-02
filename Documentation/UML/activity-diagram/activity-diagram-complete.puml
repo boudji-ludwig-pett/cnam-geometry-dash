@@ -1,4 +1,4 @@
-@startuml GeometryDash_Diagramme_Activites
+@startuml Geometry Dash - Diagramme d'activités complet
 
 start
 
@@ -21,10 +21,8 @@ repeat
                 group Bumper
                     :Le joueur effectue un grand saut;
                     if (Le bumper est actif ?) then (Oui)
-                        :Activer des particules;
-                        :Jouer un son de rebond;
+                        :Effectue un grand saut;
                     else (Non)
-                        :Aucune action;
                     endif
                 end group
             endif
