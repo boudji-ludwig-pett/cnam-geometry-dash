@@ -1,0 +1,24 @@
+@startuml MenuPause_Activite
+
+start
+
+:Arriver sur le menu de pause;
+
+if (Option sélectionnée ?) then (Reprendre)
+    :Reprendre la partie;
+    stop
+else (Quitter)
+    :Quitter le niveau;
+    :Retour au menu principal;
+    stop
+else (Mode Checkpoint)
+    :Activer/Désactiver le mode Checkpoint;
+    :Revenir au menu de pause;
+else (Volume)
+    :Modifier le volume sonore;
+    :Revenir au menu de pause;
+else (Menu de sleection de niveau)
+    :Revenir au menu de selection de niveau;
+endif
+
+@enduml

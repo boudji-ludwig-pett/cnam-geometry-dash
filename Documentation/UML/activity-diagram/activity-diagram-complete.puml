@@ -1,4 +1,4 @@
-@startuml Geometry Dash - Diagramme d'activités
+@startuml Geometry Dash - Diagramme d'activités complet
 
 start
 
@@ -7,53 +7,23 @@ start
 repeat
     if (Le joueur percute un obstacle ?) then (Oui)
         :Le joueur meurt;
-        :Animation de mort;
         :Augmenter le nombre d'essais de 1;
         :Perdre toutes les pièces et bonus;
     else (Non)
-        ' --- Première Ligne ---
-        partition "Saut" {
+        partition "Actions du joueur" {
+          group Saut
             if (L'utilisateur clique sur l'écran ?) then (Oui)
                 :Le joueur effectue un saut;
             endif
-        }
+          end group
 
-        partition "Bumper" {
             if (Le joueur touche un bumper ?) then (Oui)
-                group Bumper Logic
+                group Bumper
                     :Le joueur effectue un grand saut;
                     if (Le bumper est actif ?) then (Oui)
-                        :Activer des particules;
-                        :Jouer un son de rebond;
+                        :Effectue un grand saut;
                     else (Non)
-                        :Aucune action;
                     endif
-                end group
-            endif
-        }
-
-        partition "Forme" {
-            if (Le joueur passe un portail ?) then (Oui)
-                :Changement de forme;
-                group Forme Details
-                    switch (Forme)
-                        case (Forme fusée)
-                            :Mode fusée;
-                        case (Forme roue)
-                            :Mode roue;
-                        case (Forme sens inversé)
-                            :Mode sens inversé;
-                        case (Forme gravité inversée)
-                            :Mode gravité inversée;
-                    endswitch
-                end group
-            endif
-        }
-
-        partition "Bonus" {
-            if (Le joueur touche un bonus ?) then (Oui)
-                group Bonus Logic
-                    :Ajouter le bonus à l'inventaire;
                 end group
             endif
 
@@ -72,25 +42,41 @@ repeat
             endif
         }
 
-        partition "Collecte des Pièces" {
-            if (Le joueur touche une pièce ?) then (Oui)
-                group Collecte de Pièces
-                    :Ajouter la pièce au niveau;
-                end group
+        partition "Gestion de la pause" {
+            if (Le joueur clique sur le bouton de pause ?) then (Oui)
+                group Pause
+                    :Arriver sur le menu de pause;
+
+                    switch (Option sélectionnée ?)
+                        case (Reprendre)
+                            :Reprendre la partie;
+                        case (Quitter)
+                            :Quitter le niveau;
+                            :Retour au menu principal;
+                            stop
+                        case (Mode Checkpoint)
+                            :Activer/Désactiver le mode Checkpoint;
+                            :Reprendre la partie;
+                        case (Volume)
+                            :Modifier le volume sonore;
+                            :Revenir au menu de pause;
+                        case (Menu de sélection de niveau)
+                            :Revenir au menu de sélection de niveau;
+                            stop
+                    endswitch
+                endgroup
+            endif
+        }
+
+        partition "Fin du Niveau" {
+            if (Le joueur touche la zone de fin ?) then (Oui)
+                :Terminer le niveau;
+                :Animation de fin de niveau;
+                :Conserver les pièces obtenues;
+                break
             endif
         }
     endif
-
-    ' --- Fin du Niveau ---
-    partition "Fin du Niveau" {
-        if (Le joueur touche la zone de fin ?) then (Oui)
-            :Terminer le niveau;
-            :Animation de fin de niveau;
-            :Conserver les pièces obtenues;
-            break
-        endif
-    }
-
 repeat while (Le joueur n'a pas fini le niveau)
 
 stop
