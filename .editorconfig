@@ -15,6 +15,10 @@ indent_size = 2
 [*.cs]
 indent_size = 4
 
+[*.{asset,meta,unity,scenetemplate}]
+trim_trailing_whitespace = unset
+insert_final_newline = unset
+
 [*.sln]
 indent_style = tab
 
