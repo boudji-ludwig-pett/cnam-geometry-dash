@@ -1,4 +1,4 @@
-@startuml acitvity-diagram
+@startuml activity-diagram
 start
 
 :Lancer la partie;
@@ -14,6 +14,10 @@ repeat
         partition "Saut" {
             if (L'utilisateur clique sur l'écran ?) then (Oui)
                 :Le joueur effectue un saut;
+                note right
+                **Saut**
+                Le joueur saute pour éviter les obstacles.
+                end note
             endif
         }
 
@@ -21,7 +25,10 @@ repeat
             if (Le joueur touche un bumper ?) then (Oui)
                 :Le joueur effectue un grand saut;
                 note right
-                Voir [[./sub_bumper.puml Bumper Logic]].
+                **Bumper**
+                - Permet un saut plus haut.
+                - Utilisé pour atteindre des zones élevées.
+                - Activation automatique au contact.
                 end note
             endif
         }
@@ -30,7 +37,9 @@ repeat
             if (Le joueur passe un portail ?) then (Oui)
                 :Changement de forme;
                 note right
-                Voir [[./sub_forme.puml Forme Details]].
+                **Portail de Forme**
+                - Change la mécanique de déplacement.
+                - Types : Gravité inversée, vitesse accrue.
                 end note
             endif
         }
@@ -39,14 +48,18 @@ repeat
             if (Le joueur touche un bonus ?) then (Oui)
                 :Ajouter le bonus à l'inventaire;
                 note right
-                Voir [[./sub_bonus.puml Bonus Logic]].
+                **Bonus Collecté**
+                - Ajouté à l'inventaire.
+                - Utilisable selon les besoins.
                 end note
             endif
 
             if (Le joueur clique sur un bonus dans son inventaire ?) then (Oui)
                 :Activer un bonus;
                 note right
-                Voir [[./sub_activation_bonus.puml Bonus Activation]].
+                **Activation de Bonus**\\
+                - Déclenche l'effet du bonus sélectionné.
+                - Exemple : Invincibilité, Double saut.
                 end note
             endif
         }
@@ -55,7 +68,9 @@ repeat
             if (Le joueur touche une pièce ?) then (Oui)
                 :Ajouter la pièce au niveau;
                 note right
-                Voir [[./sub_pieces.puml Pièces Collection]].
+                **Collecte de Pièces**
+                - Compte les pièces collectées.
+                - Utile pour débloquer des niveaux ou bonus.
                 end note
             endif
         }
@@ -67,6 +82,11 @@ repeat
             :Terminer le niveau;
             :Animation de fin de niveau;
             :Conserver les pièces obtenues;
+            note right
+            **Fin du Niveau**
+            - Succès enregistré.
+            - Les pièces collectées sont sauvegardées.
+            end note
             break
         endif
     }
