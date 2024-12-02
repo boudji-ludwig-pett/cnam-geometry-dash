@@ -7,7 +7,7 @@ start
 repeat
     if (Le joueur percute un obstacle ?) then (Oui)
         :Le joueur meurt;
-         stop
+        stop
     else (Non)
         partition "en l'air" {
           if (Le joueur percute un obstacle ?) then (Oui)
@@ -29,6 +29,7 @@ repeat
             endswitch
             if (Le joueur percute un obstacle ?) then (Oui)
               :Le joueur meurt;
+              stop
             endif
         }
 
