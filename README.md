@@ -12,10 +12,10 @@ Développement d'une reproduction du jeu [Geometry Dash](https://fr.wikipedia.or
 
 ### Documentation et Liens
 
-- [Sujet](./docs/Sujet-Projet-Geometry-Dash.pdf)
-- [Conventions développement informatique](./docs/conventions.md)
+- [Sujet](./Documentation/Sujet-Projet-Geometry-Dash.pdf)
 - [Kanban Board (Trello)](https://trello.com/b/ugG5Siaw/cnam-geometry-dash)
-- [Diagrammes UML](./uml/README.md)
+- [Diagrammes UML](./UML)
+- [Conventions développement informatique](./Documentation/conventions.md)
 
 ## Prérequis
 

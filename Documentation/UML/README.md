@@ -7,4 +7,4 @@ Les modélisation UML du projet sont disponibles sous forme de [PlantUML](https:
 - [Diagramme de classes](./class-diagram.puml)
 - [Diagramme d'activités](./activity-diagram.puml)
 - [Diagramme de cas d'utilisation](./use-case-diagram.puml)
-- [Diagramme d'états du joueur](./player-state-diagram.puml)
+- [Diagramme d'états](./state-diagram.puml)

@@ -1,8 +1,10 @@
-@startuml
+@startuml sub-bumper
+
 start
 if (Le joueur touche un bumper ?) then (Oui)
-    :Effectuer un grand saut;
+  :Effectuer un grand saut;
 else (Non)
 endif
 stop
+
 @enduml
