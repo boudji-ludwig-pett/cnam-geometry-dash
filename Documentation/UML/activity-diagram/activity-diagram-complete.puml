@@ -1,4 +1,5 @@
-@startuml activity-diagram
+@startuml Geometry Dash - Diagramme d'activités
+
 start
 
 :Lancer la partie;
@@ -93,4 +94,5 @@ repeat
 repeat while (Le joueur n'a pas fini le niveau)
 
 stop
+
 @enduml

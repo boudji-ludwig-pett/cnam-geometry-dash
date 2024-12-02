@@ -1,4 +1,5 @@
-@startuml activity-diagram
+@startuml Geometry Dash - Diagramme d'activités
+
 start
 
 :Lancer la partie;
@@ -10,7 +11,6 @@ repeat
         :Augmenter le nombre d'essais de 1;
         :Perdre toutes les pièces et bonus;
     else (Non)
-        ' --- Première Ligne ---
         partition "Saut" {
             if (L'utilisateur clique sur l'écran ?) then (Oui)
                 :Le joueur effectue un saut;
@@ -76,7 +76,6 @@ repeat
         }
     endif
 
-    ' --- Fin du Niveau ---
     partition "Fin du Niveau" {
         if (Le joueur touche la zone de fin ?) then (Oui)
             :Terminer le niveau;
@@ -94,4 +93,5 @@ repeat
 repeat while (Le joueur n'a pas fini le niveau)
 
 stop
+
 @enduml
