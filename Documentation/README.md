@@ -11,4 +11,4 @@ Les modélisation UML du projet sont disponibles sous forme de [PlantUML](https:
 
 ## Diagramme de Gantt
 
-La modélisation du diagramme de Gatt est générée automatiquement à partir du fichier [gant-diagram.gantt](./gantt-diagram.gantt) en utilisant n'importe quel outil de visualisation de diagramme de Gantt. Vous pouvez par exemple installer [GanttProject](https://www.ganttproject.biz/) ou utiliser l'outil en ligne [Online Gantt](https://www.onlinegantt.com/#/gantt).
+La modélisation du diagramme de Gantt est générée automatiquement à partir du fichier [gant-diagram.gantt](./gantt-diagram.gantt) en utilisant n'importe quel outil de visualisation de diagramme de Gantt. Vous pouvez par exemple installer [GanttProject](https://www.ganttproject.biz/) ou utiliser l'outil en ligne [Online Gantt](https://www.onlinegantt.com/#/gantt).
