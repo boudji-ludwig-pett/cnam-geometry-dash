@@ -24,3 +24,6 @@ indent_style = tab
 
 [*.{pbxproj,plist,entitlements,xcsettings}]
 indent_style = tab
+
+[*.gantt]
+insert_final_newline = unset

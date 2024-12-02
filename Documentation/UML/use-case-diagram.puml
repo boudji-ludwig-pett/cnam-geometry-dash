@@ -3,12 +3,7 @@
 left to right direction
 
 actor Joueur as Joueur
-actor "Créateur de cartes" as Createur
 
-rectangle Jeu {
-  usecase "Démarrer le jeu" as DemarrerJeu
-  usecase "Afficher le menu principal" as AfficherMenu
-}
 
 rectangle "Menu principal" {
   usecase "Configurer les paramètres" as ConfigurerParametres
@@ -25,9 +20,7 @@ rectangle "Sélection des niveaux" {
 }
 
 rectangle "Pendant un niveau" {
-  usecase "Jouer et interagir avec le niveau" as JouerNiveau
   usecase "Sauter" as Sauter
-  usecase "Redémarrer un niveau" as RedemarrerNiveau
   usecase "Mettre le jeu en pause" as MettrePause
 }
 
@@ -55,44 +48,56 @@ rectangle "Trophées et récompenses" {
   usecase "Voir les pièces collectées" as VoirPieces
 }
 
-Joueur --> DemarrerJeu
-DemarrerJeu --> AfficherMenu
-AfficherMenu --> ConfigurerParametres
-AfficherMenu --> SelectionNiveau
-AfficherMenu --> EditeurCartes
-AfficherMenu --> ConsulterStats
-AfficherMenu --> VoirTrophees
+rectangle "Menu Pause" {
+  usecase "Continuer" as Continuer
+  usecase "Redémarrer la partie" as RedemarrerPartie
+  usecase "Retour à la sélection des maps" as RetourSelection
+}
 
-SelectionNiveau --> ParcourirNiveaux
-ParcourirNiveaux --> AfficherDetailsNiveau
-ParcourirNiveaux --> CommencerNiveau
-CommencerNiveau --> JouerNiveau
-JouerNiveau --> MettrePause
+Joueur --> ConfigurerParametres : <<extends>>
+Joueur --> SelectionNiveau : <<extends>>
+Joueur --> EditeurCartes : <<extends>>
+Joueur --> ConsulterStats : <<extends>>
+Joueur --> VoirTrophees : <<extends>>
 
-JouerNiveau .> Sauter : <<include>>
-JouerNiveau .> RedemarrerNiveau : <<extends>>
+SelectionNiveau --> ParcourirNiveaux : <<include>>
+ParcourirNiveaux --> AfficherDetailsNiveau : <<extends>>
+ParcourirNiveaux --> CommencerNiveau : <<extends>>
 
-ConfigurerParametres --> ReglerVolume
-ConfigurerParametres --> ChangerMusique
-ConfigurerParametres --> LireAide
+CommencerNiveau --> Sauter : <<extends>>
+CommencerNiveau --> MettrePause : <<extends>>
 
-EditeurCartes --> CreerNouvelleCarte
-EditeurCartes --> ModifierCarte
-CreerNouvelleCarte --> TesterCarte
-ModifierCarte --> TesterCarte
-CreerNouvelleCarte --> PartagerCarte
-ModifierCarte --> PartagerCarte
-EditeurCartes --> TelechargerCartes
+ConfigurerParametres --> ReglerVolume : <<extends>>
+ConfigurerParametres --> ChangerMusique : <<extends>>
+ConfigurerParametres --> LireAide : <<extends>>
 
-TesterCarte .> JouerNiveau : <<include>>
+EditeurCartes --> CreerNouvelleCarte : <<extends>>
+EditeurCartes --> ModifierCarte : <<extends>>
+EditeurCartes --> TelechargerCartes : <<extends>>
+CreerNouvelleCarte --> TesterCarte : <<extends>>
+ModifierCarte --> TesterCarte : <<extends>>
+CreerNouvelleCarte --> PartagerCarte : <<extends>>
+ModifierCarte --> PartagerCarte : <<extends>>
 
-ConsulterStats --> AfficherStatsGlobales
-ConsulterStats --> AfficherStatsSession
+TesterCarte--> Sauter : <<extends>>
+TesterCarte--> MettrePause : <<extends>>
 
-VoirTrophees --> VoirTropheesDebloques
-VoirTrophees --> VoirPieces
+ConsulterStats --> AfficherStatsGlobales : <<extends>>
+ConsulterStats --> AfficherStatsSession : <<extends>>
 
-Createur --> CreerNouvelleCarte
-Createur --> ModifierCarte
+VoirTrophees --> VoirTropheesDebloques : <<extends>>
+VoirTrophees --> VoirPieces : <<extends>>
+
+MettrePause --> Continuer : <<extends>>
+MettrePause --> RedemarrerPartie : <<extends>>
+MettrePause --> RetourSelection : <<extends>>
+
+RedemarrerPartie --> Sauter : <<extends>>
+RedemarrerPartie --> MettrePause : <<extends>>
+
+Continuer --> Sauter : <<extends>>
+Continuer --> MettrePause : <<extends>>
+
+RetourSelection --> ParcourirNiveaux : <<include>>
 
 @enduml
