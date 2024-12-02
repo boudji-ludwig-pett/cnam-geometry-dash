@@ -10,7 +10,7 @@ Développement d'une reproduction du jeu [Geometry Dash](https://fr.wikipedia.or
 - [Théo LUDWIG](https://github.com/theoludwig)
 - [Vincent PETT](https://github.com/Vextriz)
 
-### Documentation
+### Documentation et Liens
 
 - [Sujet](./docs/Sujet-Projet-Geometry-Dash.pdf)
 - [Conventions développement informatique](./docs/conventions.md)
@@ -19,7 +19,7 @@ Développement d'une reproduction du jeu [Geometry Dash](https://fr.wikipedia.or
 
 ## Prérequis
 
-[Unity](https://unity.com/)
+[Unity](https://unity.com/) v6000.0.25f1 (LTS)
 
 ## Installation
 
@@ -29,4 +29,6 @@ git clone git@github.com:boudji-ludwig-pett/cnam-geometry-dash.git
 
 # Se déplacer dans le dossier du projet
 cd cnam-geometry-dash
+
+# Ouvrir le projet avec Unity Hub
 ```
