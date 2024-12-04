@@ -14,7 +14,9 @@ Développement d'une reproduction du jeu [Geometry Dash](https://fr.wikipedia.or
 
 - [Sujet](./Documentation/Sujet-Projet-Geometry-Dash.pdf)
 - [Kanban Board (Trello)](https://trello.com/b/ugG5Siaw/cnam-geometry-dash)
-- [Diagrammes UML](./UML)
+- [Explication Diagrammes](./Documentation/diagrammes.md)
+  - [Diagramme de GANTT](./Documentation/gantt-diagram.gantt)
+  - [Diagrammes UML](./Documentation/UML)
 - [Conventions développement informatique](./Documentation/conventions.md)
 
 ## Prérequis
