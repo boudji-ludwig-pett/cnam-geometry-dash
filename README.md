@@ -18,6 +18,7 @@ Développement d'une reproduction du jeu [Geometry Dash](https://fr.wikipedia.or
   - [Diagramme de GANTT](./Documentation/gantt-diagram.gantt)
   - [Diagrammes UML](./Documentation/UML)
 - [Conventions développement informatique](./Documentation/conventions.md)
+- [Unity - Prise de notes (Anglais)](./Documentation/unity.md)
 
 ## Prérequis
 
