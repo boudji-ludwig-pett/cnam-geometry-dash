@@ -5473,7 +5473,8 @@ MonoBehaviour:
   rigidBody: {fileID: 1267397456}
   groundObject: {fileID: 1235900592}
   initialPosition: {x: 0, y: 0, z: 0}
-  particleSystem: {fileID: 725779776}
+  initialRotation: {x: 0, y: 0, z: 0, w: 0}
+  particle: {fileID: 725779776}
 --- !u!61 &1267397460
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -8,20 +8,19 @@ public class PlayerScript : MonoBehaviour
     public Vector3 initialPosition;
     public Quaternion initialRotation;
 
-    public ParticleSystem particleSystem;
+    public ParticleSystem particle;
 
     private bool wantsToJump = false;
-    private bool isGrounded = true;
 
     public void Start()
     {
         initialPosition = transform.position;
         initialRotation = transform.rotation;
 
-        var mainModule = particleSystem.main;
+        var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
 
-        particleSystem.transform.parent = null;
+        particle.transform.parent = null;
     }
 
     public void Update()
@@ -39,7 +38,6 @@ public class PlayerScript : MonoBehaviour
 
         if (!IsJumping())
         {
-            isGrounded = true;
             AlignRotation();
 
             if (wantsToJump)
@@ -48,12 +46,11 @@ public class PlayerScript : MonoBehaviour
                 wantsToJump = false;
             }
 
-            particleSystem.gameObject.SetActive(true);
+            particle.gameObject.SetActive(true);
         }
         else
         {
-            isGrounded = false;
-            particleSystem.gameObject.SetActive(false);
+            particle.gameObject.SetActive(false);
             transform.Rotate(Vector3.back * 360 * Time.deltaTime);
         }
 
@@ -81,13 +78,13 @@ public class PlayerScript : MonoBehaviour
 
     private void UpdateParticlePositionAndRotation()
     {
-        particleSystem.transform.position = transform.position + new Vector3(-0.19f, -0.64f, 0);
-        particleSystem.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
+        particle.transform.position = transform.position + new Vector3(-0.19f, -0.64f, 0);
+        particle.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
     }
 
     private void UpdateParticleSystemSpeed()
     {
-        var velocityOverLifetime = particleSystem.velocityOverLifetime;
+        var velocityOverLifetime = particle.velocityOverLifetime;
         velocityOverLifetime.x = rigidBody.linearVelocity.x;
     }
 }
