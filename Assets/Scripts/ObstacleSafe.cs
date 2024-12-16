@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class ObstacleSafe : MonoBehaviour
 {
     public PlayerScript playerScript;
     public GameObject playerObject;
@@ -15,9 +15,13 @@ public class Obstacle : MonoBehaviour
 
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void OnCollisionEnter()
     {
-        playerObject.transform.rotation = playerScript.initialRotation;
-        playerObject.transform.position = playerScript.initialPosition;
+        playerScript.isColliding = true;
+    }
+
+    public void OnCollisionExit()
+    {
+        playerScript.isColliding = false;
     }
 }
