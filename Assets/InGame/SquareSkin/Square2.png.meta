@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b1fa0b05cd8a50d4094b5151f8cf7051
+guid: a9d2c8e64c429be4ba98c731f625e8a8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5986989983176976689
-    second: BaseSquare_0
+      213: 7862696914207302912
+    second: Square2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BaseSquare_0
+      name: Square2_0
       rect:
         serializedVersion: 2
-        x: 35
-        y: 23
-        width: 79
-        height: 79
+        x: 0
+        y: 4
+        width: 514
+        height: 514
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc61aeaa450f9eca0800000000000000
-      internalID: -5986989983176976689
+      spriteID: 005e2e36f29ed1d60800000000000000
+      internalID: 7862696914207302912
       vertices: []
       indices: 
       edges: []
