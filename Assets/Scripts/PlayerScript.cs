@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public ParticleSystem particle;
 
     private bool wantsToJump = false;
+    public bool isColliding = true;
 
     public void Start()
     {
@@ -66,7 +67,8 @@ public class PlayerScript : MonoBehaviour
 
     private bool IsJumping()
     {
-        return Mathf.Abs(initialPosition.y - transform.position.y) > 0.05f;
+        // return Mathf.Abs(initialPosition.y - transform.position.y) > 0.05f;
+        return !isColliding;
     }
 
     private void AlignRotation()

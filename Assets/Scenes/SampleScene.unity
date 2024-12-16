@@ -5069,6 +5069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 874939978}
   - component: {fileID: 874939979}
+  - component: {fileID: 874939980}
   m_Layer: 0
   m_Name: ObstacleSafe
   m_TagString: Untagged
@@ -5121,7 +5122,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -5137,6 +5138,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5.068964, y: 5.1134825}
   m_EdgeRadius: 0
+--- !u!114 &874939980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874939977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982954923c829c546bed40ee7f6b946a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerScript: {fileID: 0}
+  playerObject: {fileID: 1267397455}
 --- !u!1 &1009490386
 GameObject:
   m_ObjectHideFlags: 0
@@ -5495,6 +5510,7 @@ MonoBehaviour:
   initialPosition: {x: 0, y: 0, z: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   particle: {fileID: 725779776}
+  isColliding: 1
 --- !u!61 &1267397460
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5862,7 +5878,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1914709940}
   - component: {fileID: 1914709942}
-  - component: {fileID: 1914709941}
+  - component: {fileID: 1914709943}
   m_Layer: 0
   m_Name: ObstacleKiller
   m_TagString: Untagged
@@ -5885,20 +5901,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1009490389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1914709941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1914709939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e105dbba5bf85a944a8270ed72ebd3d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerScript: {fileID: 0}
-  playerObject: {fileID: 1267397455}
 --- !u!61 &1914709942
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5945,6 +5947,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5.0600605, y: 3.5822077}
   m_EdgeRadius: 0
+--- !u!114 &1914709943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914709939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad4baca6c852a00b8bf21afdd5fba8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerScript: {fileID: 0}
+  playerObject: {fileID: 1267397455}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
