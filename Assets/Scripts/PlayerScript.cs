@@ -12,6 +12,11 @@ public class PlayerScript : MonoBehaviour
     public void Start()
     {
         initialPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+
+        var mainModule = particleSystem.main;
+        mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
+
+        particleSystem.transform.parent = null;
     }
 
     public void Update()
@@ -20,6 +25,10 @@ public class PlayerScript : MonoBehaviour
 
         if (!IsJumping())
         {
+            Vector3 Rotation = transform.rotation.eulerAngles;
+            Rotation.z = Mathf.Round(Rotation.z / 90) * 90;
+            transform.rotation = Quaternion.Euler(Rotation);
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
@@ -29,7 +38,12 @@ public class PlayerScript : MonoBehaviour
         else
         {
             particleSystem.gameObject.SetActive(false);
+            transform.Rotate(Vector3.back * 360 * Time.deltaTime);
         }
+
+        particleSystem.transform.position = transform.position + new Vector3(-0.19f, -0.64f, 0);
+        particleSystem.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
+
         ParticleSystemSpeed();
     }
 
