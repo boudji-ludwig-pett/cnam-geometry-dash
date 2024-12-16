@@ -2,20 +2,22 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    public PlayerScript playerScript;
+    public GameObject playerObject;
 
+    public void Start()
+    {
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
 
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Test");
+        playerObject.transform.rotation = playerScript.initialRotation;
+        playerObject.transform.position = playerScript.initialPosition;
     }
 }
