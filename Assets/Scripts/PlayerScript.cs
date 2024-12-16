@@ -6,6 +6,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject groundObject;
 
     public Vector3 initialPosition;
+    public Quaternion initialRotation;
 
     public ParticleSystem particleSystem;
 
@@ -15,6 +16,7 @@ public class PlayerScript : MonoBehaviour
     public void Start()
     {
         initialPosition = transform.position;
+        initialRotation = transform.rotation;
 
         var mainModule = particleSystem.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
