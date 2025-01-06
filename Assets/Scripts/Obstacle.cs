@@ -4,6 +4,7 @@ public class Obstacle : MonoBehaviour
 {
     public PlayerScript playerScript;
     public GameObject playerObject;
+    public AudioSource audioSource;
 
     public void Start()
     {
@@ -19,5 +20,6 @@ public class Obstacle : MonoBehaviour
     {
         playerObject.transform.rotation = playerScript.initialRotation;
         playerObject.transform.position = playerScript.initialPosition;
+        playerScript.audioSource.Play();
     }
 }

@@ -12,6 +12,8 @@ public class PlayerScript : MonoBehaviour
 
     private bool wantsToJump = false;
 
+    public AudioSource audioSource;
+
     public void Start()
     {
         initialPosition = transform.position;
@@ -78,7 +80,7 @@ public class PlayerScript : MonoBehaviour
 
     private void UpdateParticlePositionAndRotation()
     {
-        particle.transform.position = transform.position + new Vector3(-0.19f, -0.64f, 0);
+        particle.transform.position = transform.position + new Vector3(-0.19f, -0.64f, -10);
         particle.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
     }
 
