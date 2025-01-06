@@ -12,6 +12,8 @@ public class PlayerScript : MonoBehaviour
 
     private bool wantsToJump = false;
 
+    public AudioSource audioSource;
+
     public void Start()
     {
         initialPosition = transform.position;

@@ -19,5 +19,6 @@ public class SpikeScript : MonoBehaviour
     {
         playerObject.transform.rotation = playerScript.initialRotation;
         playerObject.transform.position = playerScript.initialPosition;
+        playerScript.audioSource.Play();
     }
 }
