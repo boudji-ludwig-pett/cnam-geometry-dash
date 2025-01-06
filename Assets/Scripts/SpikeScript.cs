@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class SpikeScript : MonoBehaviour
 {
     public PlayerScript playerScript;
     public GameObject playerObject;

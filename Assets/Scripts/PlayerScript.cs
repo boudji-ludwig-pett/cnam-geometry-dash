@@ -6,45 +6,62 @@ public class PlayerScript : MonoBehaviour
     public GameObject groundObject;
 
     public Vector3 initialPosition;
+    public Quaternion initialRotation;
 
-    public ParticleSystem particleSystem;
+    public ParticleSystem particle;
+
+    private bool wantsToJump = false;
 
     public void Start()
     {
-        initialPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
 
-        var mainModule = particleSystem.main;
+        var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
 
-        particleSystem.transform.parent = null;
+        particle.transform.parent = null;
     }
 
     public void Update()
     {
         transform.position += Time.deltaTime * 8.6f * Vector3.right;
 
-        if (!IsJumping())
+        if (Input.GetKey(KeyCode.Space))
         {
-            Vector3 Rotation = transform.rotation.eulerAngles;
-            Rotation.z = Mathf.Round(Rotation.z / 90) * 90;
-            transform.rotation = Quaternion.Euler(Rotation);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
-            }
-            particleSystem.gameObject.SetActive(true);
+            wantsToJump = true;
         }
         else
         {
-            particleSystem.gameObject.SetActive(false);
+            wantsToJump = false;
+        }
+
+        if (!IsJumping())
+        {
+            AlignRotation();
+
+            if (wantsToJump)
+            {
+                Jump();
+                wantsToJump = false;
+            }
+
+            particle.gameObject.SetActive(true);
+        }
+        else
+        {
+            particle.gameObject.SetActive(false);
             transform.Rotate(Vector3.back * 360 * Time.deltaTime);
         }
 
-        particleSystem.transform.position = transform.position + new Vector3(-0.19f, -0.64f, 0);
-        particleSystem.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
+        UpdateParticlePositionAndRotation();
+        UpdateParticleSystemSpeed();
+    }
 
-        ParticleSystemSpeed();
+    private void Jump()
+    {
+        rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
+        rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
     }
 
     private bool IsJumping()
@@ -52,9 +69,22 @@ public class PlayerScript : MonoBehaviour
         return Mathf.Abs(initialPosition.y - transform.position.y) > 0.05f;
     }
 
-    private void ParticleSystemSpeed()
+    private void AlignRotation()
     {
-        var velocityOverLifetime = particleSystem.velocityOverLifetime;
+        Vector3 rotation = transform.rotation.eulerAngles;
+        rotation.z = Mathf.Round(rotation.z / 90) * 90;
+        transform.rotation = Quaternion.Euler(rotation);
+    }
+
+    private void UpdateParticlePositionAndRotation()
+    {
+        particle.transform.position = transform.position + new Vector3(-0.19f, -0.64f, 0);
+        particle.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
+    }
+
+    private void UpdateParticleSystemSpeed()
+    {
+        var velocityOverLifetime = particle.velocityOverLifetime;
         velocityOverLifetime.x = rigidBody.linearVelocity.x;
     }
 }
