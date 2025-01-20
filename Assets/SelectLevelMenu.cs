@@ -5,12 +5,12 @@ public class SelectLevelMenu : MonoBehaviour
 {
     public void PlayLevel()
     {
-        SceneManager.LoadSceneAsync(2);
+        SceneManager.LoadScene("LevelScene");
     }
 
     public void BackBtn()
     {
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadScene("HomeScene");
     }
 
     public void LastLevel()
