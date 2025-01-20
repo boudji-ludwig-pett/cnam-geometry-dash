@@ -93,6 +93,11 @@ public class PlayerScript : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        if (collision.gameObject.tag == "Win")
+        {
+            SceneManager.LoadScene("HomeScene");
+        }
     }
 
     public void OnCollisionExit2D(Collision2D collision)
