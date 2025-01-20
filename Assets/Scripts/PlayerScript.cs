@@ -1,27 +1,22 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
-    public GameObject groundObject;
-
-    public Vector3 initialPosition;
-    public Quaternion initialRotation;
+    public GameObject playerObject;
 
     public ParticleSystem particle;
 
     private bool wantsToJump = false;
+    public bool isColliding = true;
 
     public AudioSource audioSource;
 
     public void Start()
     {
-        initialPosition = transform.position;
-        initialRotation = transform.rotation;
-
         var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
-
         particle.transform.parent = null;
     }
 
@@ -68,7 +63,7 @@ public class PlayerScript : MonoBehaviour
 
     private bool IsJumping()
     {
-        return Mathf.Abs(initialPosition.y - transform.position.y) > 0.05f;
+        return !isColliding;
     }
 
     private void AlignRotation()
@@ -88,5 +83,20 @@ public class PlayerScript : MonoBehaviour
     {
         var velocityOverLifetime = particle.velocityOverLifetime;
         velocityOverLifetime.x = rigidBody.linearVelocity.x;
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        isColliding = true;
+
+        if (collision.gameObject.tag == "Kill")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        isColliding = false;
     }
 }
