@@ -5,14 +5,13 @@ public class PlayerScript : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
     public GameObject playerObject;
-
     public ParticleSystem particle;
 
-    private bool wantsToJump = false;
     public bool isColliding = true;
-
     public AudioSource audioSource;
     private bool hasStarted = false;
+
+    private bool canJump = true; // Nouvelle variable pour empêcher le double saut
 
     public void Start()
     {
@@ -22,6 +21,7 @@ public class PlayerScript : MonoBehaviour
 
         Invoke(nameof(EnableInput), 0.1f);
     }
+
     private void EnableInput()
     {
         hasStarted = true;
@@ -29,23 +29,19 @@ public class PlayerScript : MonoBehaviour
 
     public void Update()
     {
-        transform.position += Time.deltaTime * 8.6f * Vector3.right;
+        // Assurer un déplacement horizontal constant
+        rigidBody.linearVelocity = new Vector2(8.6f, rigidBody.linearVelocity.y);
 
-        if (hasStarted && Input.GetKey(KeyCode.Space))
+        // Vérifie si on est sur le sol et que le joueur appuie sur "Space"
+        if (hasStarted && isColliding && Input.GetKey(KeyCode.Space) && canJump)
         {
-            wantsToJump = true;
+            Jump();
+            canJump = false; // Empêche un autre saut jusqu'à la prochaine retombée
         }
 
         if (!IsJumping())
         {
             AlignRotation();
-
-            if (wantsToJump)
-            {
-                Jump();
-                wantsToJump = false;
-            }
-
             particle.gameObject.SetActive(true);
         }
         else
@@ -60,7 +56,7 @@ public class PlayerScript : MonoBehaviour
 
     private void Jump()
     {
-        rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
+        rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0); // Réinitialise la vitesse Y
         rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
     }
 
@@ -91,6 +87,7 @@ public class PlayerScript : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
         isColliding = true;
+        canJump = true; // Permet de sauter à nouveau après avoir touché le sol
 
         if (collision.gameObject.CompareTag("Kill"))
         {
