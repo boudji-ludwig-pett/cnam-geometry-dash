@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class SelectLevelMenu : MonoBehaviour
 {
+    public Text levelNameText;
+
     public void PlayLevel()
     {
         SceneManager.LoadScene("LevelScene");
