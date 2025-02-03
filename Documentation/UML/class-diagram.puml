@@ -5,133 +5,90 @@ skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 hide enum methods
 
-class GameManager {
-  - levels: List<Level>
-  - currentLevel: Level
-  - score: int
-  - isPaused: Boolean
-  + StartGame()
-  + LoadLevel(level: Level)
-  + RestartLevel()
-  + PauseGame()
-  + ResumeGame()
-  + UpdateScore(points: int)
-}
+class Player {
+  {field} + JUMP_FORCE: Double {readOnly}
+  {field} + SPEED: Double {readOnly}
+  {field} + SPEED: Double {readOnly}
 
-class Level {
-  - name: String
-  - musicPath: String
-  - elements: List<LevelElement>
-  - difficulty: int
-  - timeLimit: float
-  + Initialize()
-  + StartLevel()
-  + EndLevel()
-  + CheckCompletion(): Boolean
+  {method} + jump()
+  {method} + isJumping(): boolean
+  {method} + OnCollisionEnter2D(collision : Collision2D)
+  {method} + OnCollisionExit2D(collision : Collision2D)
 }
 
 abstract class LevelElement {
-  - x: Float
-  - y: Float
-  - type: ElementType
-  + Initialize()
-  + Update()
+  {field} + x: Integer
+  {field} + y: Integer
+  {method} + getImagePath(): String {abstract}
 }
 
-enum ElementType {
-  Platform, Spike, Portal, Bumper, LevelEnd, MovingPlatform, Collectible
+class Obstacle extends LevelElement {
+
 }
 
-abstract class Obstacle extends LevelElement {
-  - isDeadly: Boolean
-  + TriggerEffect(player: Player)
-}
+class Platform extends Obstacle {
 
-class Platform extends LevelElement {
-  - isMoving: Boolean
-  - speed: Float
-  + Move()
-}
-
-class MovingPlatform extends Platform {
-  - path: List<Vector2>
-  + FollowPath()
 }
 
 class Spike extends Obstacle {
-  - isDeadly = true
-  + TriggerEffect(player: Player)
+
 }
 
 class Portal extends LevelElement {
-  - destination: Vector2
-  - type: PortalType
-  + Teleport(player: Player)
-}
 
-enum PortalType {
-  Normal, Gravity, Speed
 }
 
 class Bumper extends LevelElement {
-  - bounceForce: Float
-  + Bounce(player: Player)
+
 }
 
 class LevelEnd extends LevelElement {
-  + TriggerEndGame()
+
 }
 
-class Collectible extends LevelElement {
-  - points: int
-  + Collect(player: Player)
+abstract class Level {
+  {field} + jsonPath: String
+  {field} + name: String
+  {field} + musicPath: String
+  {field} + progression: Integer
+
+  {field} + totalJumps: Integer
+  {field} + totalAttempts: Integer
+  {field} + killedCount: Integer
+
+  {method} + placeElements()
+  {method} + placeElement(levelElement: LevelElement) {static}
 }
 
-class Player {
-  - JUMP_FORCE: static const Float = 26.6581
-  - SPEED: static const Float = 8.6
-  - rigidBody: Rigidbody2D
-  - isColliding: Boolean
-  - isGrounded: Boolean
-  - gravityScale: Float
-  - lives: int
-  + Jump()
-  + IsJumping(): Boolean
-  + OnCollisionEnter2D(collision: Collision2D)
-  + OnCollisionExit2D(collision: Collision2D)
-  + ChangeGravity()
-  + Die()
-  + Respawn()
-  + CollectItem(item: Collectible)
+class LevelStats extends Stats {
+
 }
 
-class LevelLoader {
-  + LoadLevel(jsonPath: String): Level
-  + UnloadLevel(level: Level)
+class LevelFactory {
+  {method} + createLevel(jsonPath): Level
 }
 
-class LevelParser {
-  + ParseJSON(jsonData: String): Level
+class Game {
 }
 
-class MusicManager {
-  - currentTrack: String
-  - volume: Float
-  + PlayMusic(musicPath: String)
-  + StopMusic()
-  + SetVolume(level: Float)
-}
+Level *--> "- *\nLevelElements" LevelElement : <<Owns>>
+Game *--> "- *\nlevels" Level : <<Owns>>
+Game *--> "- 1\nlevels" LevelFactory : <<Owns>>
 
-GameManager *--> Level : <<Owns>>
-Level *--> LevelElement : <<Owns>>
-GameManager *--> Player : <<Owns>>
-LevelLoader --> Level : <<Creates>>
-LevelLoader --> LevelParser : <<Uses>>
-GameManager --> MusicManager : <<Controls>>
-Player --> LevelEnd : <<Triggers>>
-Player --> Portal : <<Interacts>>
-Player --> Collectible : <<Collects>>
-Obstacle --> Player : <<Affects>>
-MovingPlatform --> Platform : <<Extends>>
+' {
+    ' "name": "Back on Track",
+    ' "music"
+    ' "elements": [
+    '   {
+    '     "type": "Spike",
+    '     "position": {
+    '       "x": 0,
+    '       "y": 0
+    '     },
+    '   }
+    ' ]
+' }
+
+>>>>>>> develop
 
 @enduml
