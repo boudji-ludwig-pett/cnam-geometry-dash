@@ -1,4 +1,4 @@
-@startuml GeometryDash - Diagramme de classe
+@startuml Geometry Dash - Diagramme de classe
 
 skinparam style strictuml
 skinparam classAttributeIconSize 0
@@ -10,7 +10,6 @@ class GameManager {
   - score: int
   - isPaused: Boolean
   + StartGame()
-  + LoadLevel(level: Level)
   + RestartLevel()
   + PauseGame()
   + ResumeGame()
@@ -20,8 +19,6 @@ class GameManager {
 class Level {
   - name: String
   - musicPath: String
-  - elements: List<LevelElement>
-  - difficulty: int
   + StartLevel()
   + EndLevel()
   + CheckCompletion(): Boolean
@@ -33,7 +30,6 @@ abstract class LevelElement {
 }
 
 abstract class Obstacle extends LevelElement {
-  - isDeadly: Boolean
   + TriggerEffect(player: Player)
 }
 
@@ -41,7 +37,6 @@ class Platform extends LevelElement {
 }
 
 class Spike extends Obstacle {
-  - isDeadly = true
   + TriggerEffect(player: Player)
 }
 
@@ -104,16 +99,14 @@ class MusicManager {
 }
 
 GameManager *--> Level : <<Manages>>
-GameManager --> Level : <<Has>>
-Level *--> LevelElement : <<Owns>>
-GameManager *--> Player : <<Owns>>
-LevelLoader --> Level : <<Creates>>
+GameManager --> LevelLoader : <<Uses>>
 LevelLoader --> LevelParser : <<Uses>>
+Level *--> LevelElement : <<Contains>>
+GameManager *--> Player : <<Owns>>
 GameManager --> MusicManager : <<Controls>>
 Player --> LevelEnd : <<Triggers>>
 Player --> Portal : <<Interacts>>
 Player --> Collectible : <<Collects>>
 Obstacle --> Player : <<Affects>>
-GameManager --> Level : <<Contains>>
 
 @enduml
