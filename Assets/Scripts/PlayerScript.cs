@@ -11,7 +11,7 @@ public class PlayerScript : MonoBehaviour
     public AudioSource audioSource;
     private bool hasStarted = false;
 
-    private bool canJump = true; // Nouvelle variable pour empêcher le double saut
+    private bool canJump = true;
 
     public void Start()
     {
@@ -29,14 +29,11 @@ public class PlayerScript : MonoBehaviour
 
     public void Update()
     {
-        // Assurer un déplacement horizontal constant
         rigidBody.linearVelocity = new Vector2(8.6f, rigidBody.linearVelocity.y);
 
-        // Vérifie si on est sur le sol et que le joueur appuie sur "Space"
         if (hasStarted && isColliding && Input.GetKey(KeyCode.Space) && canJump)
         {
             Jump();
-            canJump = false; // Empêche un autre saut jusqu'à la prochaine retombée
         }
 
         if (!IsJumping())
@@ -56,7 +53,7 @@ public class PlayerScript : MonoBehaviour
 
     private void Jump()
     {
-        rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0); // Réinitialise la vitesse Y
+        rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
         rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
     }
 
@@ -87,7 +84,7 @@ public class PlayerScript : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
         isColliding = true;
-        canJump = true; // Permet de sauter à nouveau après avoir touché le sol
+        canJump = true;
 
         if (collision.gameObject.CompareTag("Kill"))
         {
