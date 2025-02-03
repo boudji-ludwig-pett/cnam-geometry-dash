@@ -12,25 +12,28 @@ public class PlayerScript : MonoBehaviour
     public bool isColliding = true;
 
     public AudioSource audioSource;
+    private bool hasStarted = false;
 
     public void Start()
     {
         var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         particle.transform.parent = null;
+
+        Invoke(nameof(EnableInput), 0.1f);
+    }
+    private void EnableInput()
+    {
+        hasStarted = true;
     }
 
     public void Update()
     {
         transform.position += Time.deltaTime * 8.6f * Vector3.right;
 
-        if (Input.GetKey(KeyCode.Space))
+        if (hasStarted && Input.GetKey(KeyCode.Space))
         {
             wantsToJump = true;
-        }
-        else
-        {
-            wantsToJump = false;
         }
 
         if (!IsJumping())
@@ -89,12 +92,12 @@ public class PlayerScript : MonoBehaviour
     {
         isColliding = true;
 
-        if (collision.gameObject.tag == "Kill")
+        if (collision.gameObject.CompareTag("Kill"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        if (collision.gameObject.tag == "Win")
+        if (collision.gameObject.CompareTag("Win"))
         {
             SceneManager.LoadScene("HomeScene");
         }
