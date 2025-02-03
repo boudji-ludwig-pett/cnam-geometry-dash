@@ -1,50 +1,137 @@
-@startuml Geometry Dash - Diagramme de classe
+@startuml GeometryDash
 
 skinparam style strictuml
 skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 hide enum methods
 
-class Position {
-  {field} + column: Integer
-  {field} + row: Integer
-
-  {method} + Position(column: Integer, row: Integer)
-  {method} + equals(position: Position)
+class GameManager {
+  - levels: List<Level>
+  - currentLevel: Level
+  - score: int
+  - isPaused: Boolean
+  + StartGame()
+  + LoadLevel(level: Level)
+  + RestartLevel()
+  + PauseGame()
+  + ResumeGame()
+  + UpdateScore(points: int)
 }
 
 class Level {
-  {field} + songPath: String
-  {field} + backgroundPath: String
-  {field} + speed: Double
-
-  {method} + Level()
+  - name: String
+  - musicPath: String
+  - elements: List<LevelElement>
+  - difficulty: int
+  - timeLimit: float
+  + Initialize()
+  + StartLevel()
+  + EndLevel()
+  + CheckCompletion(): Boolean
 }
-Level *--> "*\n- grid" GameObject : <<Is made up of>>
 
-abstract class GameObject {
-  {method} + getImagePath(): String {abstract}
-  {method} + safeSides(): List<PositionSide> {abstract}
+abstract class LevelElement {
+  - x: Float
+  - y: Float
+  - type: ElementType
+  + Initialize()
+  + Update()
 }
-GameObject o--> "1\n- " Position : <<Has>>
-GameObject ..> PositionSide : <<Uses>>
 
-class Spike extends GameObject {}
-
-class Game {
-  {field} - score: Integer
-
-  {method} + start(): void
-  {method} + restart(): void
-  {method} + end(): void
+enum ElementType {
+  Platform, Spike, Portal, Bumper, LevelEnd, MovingPlatform, Collectible
 }
-Game o--> "1\n- currentLevel" Level : <<Has>>
 
-enum PositionSide <<enumeration>> {
-  TOP
-  RIGHT
-  BOTTOM
-  LEFT
+abstract class Obstacle extends LevelElement {
+  - isDeadly: Boolean
+  + TriggerEffect(player: Player)
 }
+
+class Platform extends LevelElement {
+  - isMoving: Boolean
+  - speed: Float
+  + Move()
+}
+
+class MovingPlatform extends Platform {
+  - path: List<Vector2>
+  + FollowPath()
+}
+
+class Spike extends Obstacle {
+  - isDeadly = true
+  + TriggerEffect(player: Player)
+}
+
+class Portal extends LevelElement {
+  - destination: Vector2
+  - type: PortalType
+  + Teleport(player: Player)
+}
+
+enum PortalType {
+  Normal, Gravity, Speed
+}
+
+class Bumper extends LevelElement {
+  - bounceForce: Float
+  + Bounce(player: Player)
+}
+
+class LevelEnd extends LevelElement {
+  + TriggerEndGame()
+}
+
+class Collectible extends LevelElement {
+  - points: int
+  + Collect(player: Player)
+}
+
+class Player {
+  - JUMP_FORCE: static const Float = 26.6581
+  - SPEED: static const Float = 8.6
+  - rigidBody: Rigidbody2D
+  - isColliding: Boolean
+  - isGrounded: Boolean
+  - gravityScale: Float
+  - lives: int
+  + Jump()
+  + IsJumping(): Boolean
+  + OnCollisionEnter2D(collision: Collision2D)
+  + OnCollisionExit2D(collision: Collision2D)
+  + ChangeGravity()
+  + Die()
+  + Respawn()
+  + CollectItem(item: Collectible)
+}
+
+class LevelLoader {
+  + LoadLevel(jsonPath: String): Level
+  + UnloadLevel(level: Level)
+}
+
+class LevelParser {
+  + ParseJSON(jsonData: String): Level
+}
+
+class MusicManager {
+  - currentTrack: String
+  - volume: Float
+  + PlayMusic(musicPath: String)
+  + StopMusic()
+  + SetVolume(level: Float)
+}
+
+GameManager *--> Level : <<Owns>>
+Level *--> LevelElement : <<Owns>>
+GameManager *--> Player : <<Owns>>
+LevelLoader --> Level : <<Creates>>
+LevelLoader --> LevelParser : <<Uses>>
+GameManager --> MusicManager : <<Controls>>
+Player --> LevelEnd : <<Triggers>>
+Player --> Portal : <<Interacts>>
+Player --> Collectible : <<Collects>>
+Obstacle --> Player : <<Affects>>
+MovingPlatform --> Platform : <<Extends>>
 
 @enduml
