@@ -5,44 +5,40 @@ public class PlayerScript : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
     public GameObject playerObject;
-
     public ParticleSystem particle;
 
-    private bool wantsToJump = false;
     public bool isColliding = true;
-
     public AudioSource audioSource;
+    private bool hasStarted = false;
+
+    private bool canJump = true;
 
     public void Start()
     {
         var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         particle.transform.parent = null;
+
+        Invoke(nameof(EnableInput), 0.1f);
+    }
+
+    private void EnableInput()
+    {
+        hasStarted = true;
     }
 
     public void Update()
     {
-        transform.position += Time.deltaTime * 8.6f * Vector3.right;
+        rigidBody.linearVelocity = new Vector2(8.6f, rigidBody.linearVelocity.y);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (hasStarted && isColliding && Input.GetKey(KeyCode.Space) && canJump)
         {
-            wantsToJump = true;
-        }
-        else
-        {
-            wantsToJump = false;
+            Jump();
         }
 
         if (!IsJumping())
         {
             AlignRotation();
-
-            if (wantsToJump)
-            {
-                Jump();
-                wantsToJump = false;
-            }
-
             particle.gameObject.SetActive(true);
         }
         else
@@ -88,13 +84,14 @@ public class PlayerScript : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
         isColliding = true;
+        canJump = true;
 
-        if (collision.gameObject.tag == "Kill")
+        if (collision.gameObject.CompareTag("Kill"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        if (collision.gameObject.tag == "Win")
+        if (collision.gameObject.CompareTag("Win"))
         {
             SceneManager.LoadScene("HomeScene");
         }
