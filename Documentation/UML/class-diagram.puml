@@ -22,7 +22,6 @@ class Level {
   - musicPath: String
   - elements: List<LevelElement>
   - difficulty: int
-  - timeLimit: float
   + StartLevel()
   + EndLevel()
   + CheckCompletion(): Boolean
@@ -31,11 +30,6 @@ class Level {
 abstract class LevelElement {
   - x: Float
   - y: Float
-  - type: ElementType
-}
-
-enum ElementType {
-  Platform, Spike, Portal, Bumper, LevelEnd, MovingPlatform, Collectible
 }
 
 abstract class Obstacle extends LevelElement {
@@ -44,14 +38,6 @@ abstract class Obstacle extends LevelElement {
 }
 
 class Platform extends LevelElement {
-  - isMoving: Boolean
-  - speed: Float
-  + Move()
-}
-
-class MovingPlatform extends Platform {
-  - path: List<Vector2>
-  + FollowPath()
 }
 
 class Spike extends Obstacle {
@@ -128,7 +114,6 @@ Player --> LevelEnd : <<Triggers>>
 Player --> Portal : <<Interacts>>
 Player --> Collectible : <<Collects>>
 Obstacle --> Player : <<Affects>>
-MovingPlatform --> Platform : <<Extends>>
 GameManager --> Level : <<Contains>>
 
 @enduml
