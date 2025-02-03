@@ -6,7 +6,6 @@ skinparam classFontStyle Bold
 hide enum methods
 
 class GameManager {
-  - currentLevel: Level
   - score: int
   - isPaused: Boolean
   + StartGame()
