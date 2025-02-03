@@ -5,89 +5,107 @@ skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 hide enum methods
 
-class Player {
-  {field} + JUMP_FORCE: Double {readOnly}
-  {field} + SPEED: Double {readOnly}
-  {field} + SPEED: Double {readOnly}
+class GameManager {
+  - score: int
+  - isPaused: Boolean
+  + StartGame()
+  + RestartLevel()
+  + PauseGame()
+  + ResumeGame()
+  + UpdateScore(points: int)
+}
 
-  {method} + jump()
-  {method} + isJumping(): boolean
-  {method} + OnCollisionEnter2D(collision : Collision2D)
-  {method} + OnCollisionExit2D(collision : Collision2D)
+class Level {
+  - name: String
+  - musicPath: String
+  + StartLevel()
+  + EndLevel()
+  + CheckCompletion(): Boolean
 }
 
 abstract class LevelElement {
-  {field} + x: Integer
-  {field} + y: Integer
-  {method} + getImagePath(): String {abstract}
+  - x: Float
+  - y: Float
 }
 
-class Obstacle extends LevelElement {
-
+abstract class Obstacle extends LevelElement {
+  + TriggerEffect(player: Player)
 }
 
-class Platform extends Obstacle {
-
+class Platform extends LevelElement {
 }
 
 class Spike extends Obstacle {
-
+  + TriggerEffect(player: Player)
 }
 
 class Portal extends LevelElement {
+  - destination: Vector2
+  - type: PortalType
+  + Teleport(player: Player)
+}
 
+enum PortalType {
+  Normal, Gravity, Speed
 }
 
 class Bumper extends LevelElement {
-
+  - bounceForce: Float
+  + Bounce(player: Player)
 }
 
 class LevelEnd extends LevelElement {
-
+  + TriggerEndGame()
 }
 
-abstract class Level {
-  {field} + jsonPath: String
-  {field} + name: String
-  {field} + musicPath: String
-  {field} + progression: Integer
-
-  {field} + totalJumps: Integer
-  {field} + totalAttempts: Integer
-  {field} + killedCount: Integer
-
-  {method} + placeElements()
-  {method} + placeElement(levelElement: LevelElement) {static}
+class Collectible extends LevelElement {
+  - points: int
+  + Collect(player: Player)
 }
 
-class LevelStats extends Stats {
-
+class Player {
+  - JUMP_FORCE: static const Float = 26.6581
+  - SPEED: static const Float = 8.6
+  - rigidBody: Rigidbody2D
+  - isColliding: Boolean
+  - isGrounded: Boolean
+  - gravityScale: Float
+  + Jump()
+  + IsJumping(): Boolean
+  + OnCollisionEnter2D(collision: Collision2D)
+  + OnCollisionExit2D(collision: Collision2D)
+  + ChangeGravity()
+  + Die()
+  + Respawn()
+  + CollectItem(item: Collectible)
 }
 
-class LevelFactory {
-  {method} + createLevel(jsonPath): Level
+class LevelLoader {
+  + LoadLevel(jsonPath: String): Level
+  + UnloadLevel(level: Level)
 }
 
-class Game {
+class LevelParser {
+  + ParseJSON(jsonData: String): Level
 }
 
-Level *--> "- *\nLevelElements" LevelElement : <<Owns>>
-Game *--> "- *\nlevels" Level : <<Owns>>
-Game *--> "- 1\nlevels" LevelFactory : <<Owns>>
+class MusicManager {
+  - currentTrack: String
+  - volume: Float
+  + PlayMusic(musicPath: String)
+  + StopMusic()
+  + SetVolume(level: Float)
+}
 
-' {
-    ' "name": "Back on Track",
-    ' "music"
-    ' "elements": [
-    '   {
-    '     "type": "Spike",
-    '     "position": {
-    '       "x": 0,
-    '       "y": 0
-    '     },
-    '   }
-    ' ]
-' }
-
+GameManager *--> Level : <<Manages>>
+GameManager --> LevelLoader : <<Uses>>
+LevelLoader --> LevelParser : <<Uses>>
+Level *--> LevelElement : <<Contains>>
+GameManager *--> Player : <<Owns>>
+GameManager --> MusicManager : <<Controls>>
+Player --> LevelEnd : <<Triggers>>
+Player --> Portal : <<Interacts>>
+Player --> Collectible : <<Collects>>
+Obstacle --> Player : <<Affects>>
 
 @enduml
