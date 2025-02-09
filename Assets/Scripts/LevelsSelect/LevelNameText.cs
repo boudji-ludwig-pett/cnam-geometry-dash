@@ -1,15 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class LevelNameText : MonoBehaviour
 {
-    public LevelsLoader levelsLoader;
     public Text levelNameText;
+    public LevelsLoader levelsLoader;
 
     public void Start()
     {
         levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
-        levelNameText.text = levelsLoader.level.name;
+        levelNameText.text = levelsLoader.levelCurrent.name;
+    }
+
+    public void Update()
+    {
+        levelNameText.text = levelsLoader.levelCurrent.name;
     }
 }

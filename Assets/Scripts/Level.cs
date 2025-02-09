@@ -8,6 +8,7 @@ public class Level
     public int totalJumps;
     public int totalAttempts;
     public int killedCount;
+    public int order;
 
     public static Level CreateFromJSON(string jsonString)
     {

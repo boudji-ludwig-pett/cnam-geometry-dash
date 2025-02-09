@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     {
         levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
 
-        audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.level.musicName));
+        audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
         audioSource.Play();
 
         var mainModule = particle.main;

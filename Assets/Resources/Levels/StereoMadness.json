@@ -1,10 +1,10 @@
 {
-  "name": "Back on Track",
-  "musicName": "BackOnTrack",
+  "name": "Stereo Madness",
+  "musicName": "StereoMadness",
   "totalJumps": 0,
   "totalAttempts": 0,
   "killedCount": 0,
-  "order": 2,
+  "order": 1,
   "elements": [
     {
       "type": "Spike",
