@@ -1,38 +1,41 @@
+using System.IO;
+using System.Runtime.Serialization.Json;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-using System.Text.Json;
 
 public class LevelLoader : MonoBehaviour
 {
-    [SerializeField]
     public Text levelNameText;
+    private Level level;
 
     void Start()
     {
-        levelNameText.text = "Coucou";
-        string filePath = "level.json";
-
-        if (File.Exists(filePath))
+        LoadLevel();
+        if (level != null)
         {
-            string json = File.ReadAllText(filePath);
-            Level level = JsonSerializer.Deserialize<Level>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            Console.WriteLine($"Name: {level.Name}");
-            Console.WriteLine($"MusicPath: {level.MusicPath}");
-            Console.WriteLine($"TotalJumps: {level.TotalJumps}");
-            Console.WriteLine($"TotalAttempts: {level.TotalAttempts}");
-            Console.WriteLine($"KilledCount: {level.KilledCount}");
+            levelNameText.text = level.Name;
         }
         else
         {
-            Console.WriteLine("JSON file not found.");
+            levelNameText.text = "Failed to Load Level";
         }
-
     }
 
-    void Update()
+    void LoadLevel()
     {
-
+        string path = Path.Combine(Application.dataPath, "Levels", "back-on-track.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            using (MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json)))
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Level));
+                level = (Level)serializer.ReadObject(stream);
+            }
+        }
+        else
+        {
+            Debug.LogError("Level file not found: " + path);
+        }
     }
 }

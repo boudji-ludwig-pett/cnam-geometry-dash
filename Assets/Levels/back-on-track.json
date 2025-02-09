@@ -1,6 +1,9 @@
 {
-  "name": "Back on Track",
-  "music": "",
+  "Name": "Back on Track",
+  "MusicPath": "back-on-track.mp3",
+  "TotalJumps": 0,
+  "TotalAttempts": 0,
+  "KilledCount": 0,
   "elements": [
     {
       "type": "Spike",
