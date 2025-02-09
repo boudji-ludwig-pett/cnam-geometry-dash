@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Kill
   - Win
+  - LevelLoader
   layers:
   - Default
   - TransparentFX

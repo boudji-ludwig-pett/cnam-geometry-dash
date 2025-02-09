@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class LevelLoader : MonoBehaviour
 {
     public Text levelNameText;
-    private Level level;
+    public Level level;
 
     void Start()
     {

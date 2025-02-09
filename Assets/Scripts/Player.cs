@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class Player : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
     public GameObject playerObject;
     public ParticleSystem particle;
+    public LevelLoader levelLoader;
 
     public bool isColliding = true;
     public AudioSource audioSource;
@@ -15,9 +17,25 @@ public class Player : MonoBehaviour
 
     public void Start()
     {
+        // levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
         var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         particle.transform.parent = null;
+
+        // if (levelLoader.level != null)
+        // {
+        //     string musicPath = Path.Combine("Musics", Path.GetFileNameWithoutExtension(levelLoader.level.MusicPath));
+        //     AudioClip clip = Resources.Load<AudioClip>(musicPath);
+        //     if (clip != null)
+        //     {
+        //         audioSource.clip = clip;
+        //         audioSource.Play();
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("Failed to load music: " + musicPath);
+        //     }
+        // }
 
         Invoke(nameof(EnableInput), 0.1f);
     }
