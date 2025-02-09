@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 1255459}
   - component: {fileID: 1255458}
   - component: {fileID: 1255457}
+  - component: {fileID: 1255460}
   m_Layer: 5
   m_Name: Level
   m_TagString: Untagged
@@ -202,8 +203,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1170341696}
-        m_TargetAssemblyTypeName: SelectLevelMenu, Assembly-CSharp
+      - m_Target: {fileID: 1255460}
+        m_TargetAssemblyTypeName: LevelNameButton, Assembly-CSharp
         m_MethodName: PlayLevel
         m_Mode: 1
         m_Arguments:
@@ -252,6 +253,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1255455}
   m_CullTransparentMesh: 1
+--- !u!114 &1255460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3617637b5b720115a8f1a856cb43f8a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &91128433
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,8 +435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -7.8890953, y: 0}
+  m_SizeDelta: {x: -15.778, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &253164522
 MonoBehaviour:
@@ -445,7 +458,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Last
+  m_text: Previous
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -510,7 +523,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -13.6918335, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -613,8 +626,8 @@ GameObject:
   m_Component:
   - component: {fileID: 954359121}
   - component: {fileID: 954359123}
-  - component: {fileID: 954359125}
   - component: {fileID: 954359124}
+  - component: {fileID: 954359125}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -692,9 +705,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 954359120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c3543e79f987af40bbd4a51c0a334c3, type: 3}
+  m_Script: {fileID: 11500000, guid: b9d2aa88c034d40f187d6ff84705da65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelsLoader: {fileID: 0}
   levelNameText: {fileID: 954359124}
 --- !u!1 &976210033
 GameObject:
@@ -708,8 +722,9 @@ GameObject:
   - component: {fileID: 976210037}
   - component: {fileID: 976210036}
   - component: {fileID: 976210035}
+  - component: {fileID: 976210038}
   m_Layer: 5
-  m_Name: LastLevel
+  m_Name: PreviousButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -732,8 +747,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -389, y: 0}
-  m_SizeDelta: {x: 76.7583, y: 51.8448}
+  m_AnchoredPosition: {x: -369.9035, y: 0}
+  m_SizeDelta: {x: 114.9513, y: 51.8448}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &976210035
 MonoBehaviour:
@@ -779,9 +794,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1170341696}
-        m_TargetAssemblyTypeName: SelectLevelMenu, Assembly-CSharp
-        m_MethodName: LastLevel
+      - m_Target: {fileID: 976210038}
+        m_TargetAssemblyTypeName: LevelPreviousButton, Assembly-CSharp
+        m_MethodName: PreviousLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -829,6 +844,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 976210033}
   m_CullTransparentMesh: 1
+--- !u!114 &976210038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976210033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c53cba3260b30d02b79e69a3198546c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1094616661
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,7 +938,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1170341696}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SelectLevelMenu, Assembly-CSharp
         m_MethodName: LevelStatsBtn
         m_Mode: 1
@@ -973,8 +1000,9 @@ GameObject:
   - component: {fileID: 1099679060}
   - component: {fileID: 1099679059}
   - component: {fileID: 1099679058}
+  - component: {fileID: 1099679061}
   m_Layer: 5
-  m_Name: Back
+  m_Name: HomeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1043,9 +1071,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1170341696}
-        m_TargetAssemblyTypeName: SelectLevelMenu, Assembly-CSharp
-        m_MethodName: BackBtn
+      - m_Target: {fileID: 1099679061}
+        m_TargetAssemblyTypeName: LevelHomeButton, Assembly-CSharp
+        m_MethodName: GoToHome
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1093,6 +1121,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1099679056}
   m_CullTransparentMesh: 1
+--- !u!114 &1099679061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099679056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2acea012085a3bb9a981fc334afaec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1153106988
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,7 +1145,6 @@ GameObject:
   - component: {fileID: 1153106992}
   - component: {fileID: 1153106991}
   - component: {fileID: 1153106990}
-  - component: {fileID: 1153106993}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1202,19 +1241,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1153106993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1153106988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78914afaa50342f4fbc6b2f0d1a6c036, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelNameText: {fileID: 0}
 --- !u!1 &1170341692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1226,7 +1252,6 @@ GameObject:
   - component: {fileID: 1170341695}
   - component: {fileID: 1170341694}
   - component: {fileID: 1170341693}
-  - component: {fileID: 1170341696}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: LevelLoader
@@ -1309,19 +1334,6 @@ Transform:
   - {fileID: 1153106989}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1170341696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1170341692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78914afaa50342f4fbc6b2f0d1a6c036, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelNameText: {fileID: 0}
 --- !u!1 &1174740937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1606,8 +1618,9 @@ GameObject:
   - component: {fileID: 1364527285}
   - component: {fileID: 1364527284}
   - component: {fileID: 1364527283}
+  - component: {fileID: 1364527286}
   m_Layer: 5
-  m_Name: NextLevel
+  m_Name: NextButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1677,8 +1690,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1170341696}
-        m_TargetAssemblyTypeName: SelectLevelMenu, Assembly-CSharp
+      - m_Target: {fileID: 1364527286}
+        m_TargetAssemblyTypeName: LevelNextButton, Assembly-CSharp
         m_MethodName: NextLevel
         m_Mode: 1
         m_Arguments:
@@ -1727,6 +1740,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1364527281}
   m_CullTransparentMesh: 1
+--- !u!114 &1364527286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364527281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34ef065650ba0802be580828cc0d474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

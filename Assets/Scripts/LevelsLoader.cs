@@ -1,28 +1,18 @@
 using System.IO;
 using System.Runtime.Serialization.Json;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class LevelLoader : MonoBehaviour
+public class LevelsLoader : MonoBehaviour
 {
-    public Text levelNameText;
     public Level level;
 
-    void Start()
+    public void Start()
     {
-        LoadLevel();
-        if (level != null)
-        {
-            levelNameText.text = level.Name;
-        }
-        else
-        {
-            levelNameText.text = "Failed to Load Level";
-        }
-    }
+        DontDestroyOnLoad(gameObject);
 
-    void LoadLevel()
-    {
+        //  var jsonTextFile = Resources.Load<TextAsset>("Text/jsonFile01");
+        //Then use JsonUtility.FromJson<T>() to deserialize jsonTextFile into an object
+
         string path = Path.Combine(Application.dataPath, "Levels", "back-on-track.json");
         if (File.Exists(path))
         {
