@@ -19,16 +19,17 @@ public class LevelsLoader : MonoBehaviour
         TextAsset[] levelFiles = Resources.LoadAll<TextAsset>("Levels");
         foreach (TextAsset jsonTextFile in levelFiles)
         {
-            Level loadedLevel = JsonUtility.FromJson<Level>(jsonTextFile.text);
-            levels.Add(loadedLevel);
+            Level level = Level.CreateFromJSON(jsonTextFile.text);
+            level.JsonName = jsonTextFile.name;
+            levels.Add(level);
         }
         levels.Sort((x, y) => x.order.CompareTo(y.order));
     }
 
     private void SaveLevelCurrent()
     {
-        string json = JsonUtility.ToJson(levelCurrent, true);
-        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "Levels", levelCurrent.name + ".json"), json);
+        string json = JsonUtility.ToJson(levelCurrent, true) + "\n";
+        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "Levels", levelCurrent.JsonName + ".json"), json);
     }
 
     public void NextLevel()

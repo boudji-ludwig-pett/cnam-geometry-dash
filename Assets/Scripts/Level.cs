@@ -3,6 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class Level
 {
+    public string JsonName { get; set; }
+
     public string name;
     public string musicName;
     public int totalJumps;

@@ -1,9 +1,9 @@
 {
-  "recommendations": [
-    "editorconfig.editorconfig",
-    "jebbs.plantuml",
-    "visualstudiotoolsforunity.vstuc",
-    "ms-dotnettools.csharp",
-    "ms-dotnettools.csdevkit"
-  ]
+    "recommendations": [
+        "editorconfig.editorconfig",
+        "jebbs.plantuml",
+        "visualstudiotoolsforunity.vstuc",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit"
+    ]
 }
