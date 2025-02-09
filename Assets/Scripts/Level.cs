@@ -1,20 +1,16 @@
-using System.Runtime.Serialization;
+using UnityEngine;
 
-[DataContract]
+[System.Serializable]
 public class Level
 {
-    [DataMember]
-    public string Name { get; set; }
+    public string name;
+    public string musicName;
+    public int totalJumps;
+    public int totalAttempts;
+    public int killedCount;
 
-    [DataMember]
-    public string MusicName { get; set; }
-
-    [DataMember]
-    public int TotalJumps { get; set; }
-
-    [DataMember]
-    public int TotalAttempts { get; set; }
-
-    [DataMember]
-    public int KilledCount { get; set; }
+    public static Level CreateFromJSON(string jsonString)
+    {
+        return JsonUtility.FromJson<Level>(jsonString);
+    }
 }

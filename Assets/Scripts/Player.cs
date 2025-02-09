@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
-using UnityEngine.Audio;
 
 public class Player : MonoBehaviour
 {
@@ -20,17 +19,8 @@ public class Player : MonoBehaviour
     {
         levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
 
-        string musicPath = Path.Combine("Musics", Path.GetFileNameWithoutExtension(levelsLoader.level.MusicName));
-        AudioClip clip = Resources.Load<AudioClip>(musicPath);
-        if (clip == null)
-        {
-            Debug.LogError("Music file not found at: " + musicPath);
-        }
-        else
-        {
-            audioSource.clip = clip;
-            audioSource.Play();
-        }
+        audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.level.musicName));
+        audioSource.Play();
 
         var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;

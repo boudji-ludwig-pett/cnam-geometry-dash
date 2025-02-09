@@ -10,6 +10,6 @@ public class LevelNameText : MonoBehaviour
     public void Start()
     {
         levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
-        levelNameText.text = levelsLoader.level.Name;
+        levelNameText.text = levelsLoader.level.name;
     }
 }
