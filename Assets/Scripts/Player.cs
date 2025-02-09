@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public void Start()
     {
         levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
+        levelsLoader.IncreaseTotalAttempts();
 
         audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
         audioSource.Play();
@@ -62,6 +63,7 @@ public class Player : MonoBehaviour
     {
         rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
         rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
+        levelsLoader.IncreaseTotalJumps();
     }
 
     private bool IsJumping()

@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
+using System.IO;
 
 public class LevelsLoader : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class LevelsLoader : MonoBehaviour
         levels.Sort((x, y) => x.order.CompareTo(y.order));
     }
 
+    private void SaveLevelCurrent()
+    {
+        string json = JsonUtility.ToJson(levelCurrent, true);
+        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "Levels", levelCurrent.name + ".json"), json);
+    }
+
     public void NextLevel()
     {
         int currentIndex = levels.IndexOf(levelCurrent);
@@ -34,5 +41,17 @@ public class LevelsLoader : MonoBehaviour
     {
         int currentIndex = levels.IndexOf(levelCurrent);
         levelCurrent = levels[(currentIndex - 1 + levels.Count) % levels.Count];
+    }
+
+    public void IncreaseTotalJumps()
+    {
+        levelCurrent.totalJumps += 1;
+        SaveLevelCurrent();
+    }
+
+    public void IncreaseTotalAttempts()
+    {
+        levelCurrent.totalAttempts += 1;
+        SaveLevelCurrent();
     }
 }
