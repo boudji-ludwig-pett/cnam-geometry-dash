@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
     public GameObject playerObject;
