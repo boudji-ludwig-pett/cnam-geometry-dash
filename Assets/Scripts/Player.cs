@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
-public class PlayerScript : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public Rigidbody2D rigidBody;
     public GameObject playerObject;
     public ParticleSystem particle;
+    public LevelsLoader levelsLoader;
 
     public bool isColliding = true;
     public AudioSource audioSource;
@@ -15,6 +17,12 @@ public class PlayerScript : MonoBehaviour
 
     public void Start()
     {
+        levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
+        levelsLoader.IncreaseTotalAttempts();
+
+        audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
+        audioSource.Play();
+
         var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         particle.transform.parent = null;
@@ -55,6 +63,7 @@ public class PlayerScript : MonoBehaviour
     {
         rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
         rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
+        levelsLoader.IncreaseTotalJumps();
     }
 
     private bool IsJumping()

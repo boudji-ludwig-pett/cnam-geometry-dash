@@ -1,0 +1,16 @@
+{
+    "name": "Stereo Madness",
+    "musicName": "StereoMadness",
+    "totalJumps": 0,
+    "totalAttempts": 0,
+    "order": 1,
+    "elements": [
+        {
+            "type": "Spike",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    ]
+}
