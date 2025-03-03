@@ -13,6 +13,14 @@ public class LevelLoader : MonoBehaviour
 
         audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
         audioSource.Play();
+
+        Level current = levelsLoader.levelCurrent;
+        // Debug.Log("Level: " + current.name);
+        // for (int i = 0; i < current.elements.Count; i++)
+        // {
+        //     LevelElement element = current.elements[i];
+        //     Debug.Log("Element: " + element.type + " " + element.x + " " + element.y);
+        // }
     }
 
     void Update()
