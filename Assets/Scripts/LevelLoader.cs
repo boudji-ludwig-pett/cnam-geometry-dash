@@ -5,17 +5,10 @@ public class LevelLoader : MonoBehaviour
 {
     public LevelsLoader levelsLoader;
     public AudioSource audioSource;
-    public GameObject obstaclePrefab;
-    public GameObject spikePrefab;
-    public GameObject winnerWall;
 
-    private GameObject GetPrefab(LevelElement.Type type)
+    private GameObject GetPrefab(string type)
     {
-        if (type == LevelElement.Type.Spike)
-        {
-            return spikePrefab;
-        }
-        return obstaclePrefab;
+        return Resources.Load<GameObject>("Prefabs/" + type);
     }
 
     private void LoadAudio()
@@ -26,10 +19,6 @@ public class LevelLoader : MonoBehaviour
 
     private void LoadElements()
     {
-        obstaclePrefab = Resources.Load<GameObject>("Prefabs/Obstacle");
-        spikePrefab = Resources.Load<GameObject>("Prefabs/Spike");
-        winnerWall = Resources.Load<GameObject>("Prefabs/WinnerWall");
-
         Level current = levelsLoader.levelCurrent;
         foreach (var element in current.elements)
         {
@@ -43,7 +32,7 @@ public class LevelLoader : MonoBehaviour
         {
             lastX += lastElement.x;
         }
-        Instantiate(winnerWall, new Vector3(lastX, 0, 0), Quaternion.Euler(0, 0, 90));
+        Instantiate(GetPrefab("WinnerWall"), new Vector3(lastX, 0, 0), Quaternion.Euler(0, 0, 90));
     }
 
     public void Start()

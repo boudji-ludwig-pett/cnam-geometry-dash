@@ -6,13 +6,7 @@ using System.Runtime.Serialization;
 [System.Serializable]
 public class LevelElement
 {
-    public enum Type
-    {
-        Obstacle = 0,
-        Spike = 1
-    }
-
-    public Type type;
+    public string type;
     public float x;
     public float y;
 }
