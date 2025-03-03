@@ -1,4 +1,21 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+[System.Serializable]
+public class LevelElement
+{
+    public enum Type
+    {
+        Obstacle = 0,
+        Spike = 1
+    }
+
+    public Type type;
+    public float x;
+    public float y;
+}
 
 [System.Serializable]
 public class Level
@@ -10,6 +27,8 @@ public class Level
     public string name;
     public string musicName;
     public int order;
+
+    public List<LevelElement> elements;
 
     public static Level CreateFromJSON(string jsonString)
     {

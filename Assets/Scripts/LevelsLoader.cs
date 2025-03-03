@@ -23,6 +23,7 @@ public class LevelsLoader : MonoBehaviour
         foreach (TextAsset jsonTextFileStats in levelStatsFiles)
         {
             LevelStat levelStat = LevelStat.CreateFromJSON(jsonTextFileStats.text);
+            levelStat.JsonName = jsonTextFileStats.name;
             levelStatsMap[levelStat.JsonName] = levelStat;
         }
 
