@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 [System.Serializable]
 public class LevelElement
 {
     public enum Type
     {
-        Spike,
-        Obstacle
+        Obstacle = 0,
+        Spike = 1
     }
 
     public Type type;
