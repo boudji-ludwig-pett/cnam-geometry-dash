@@ -17,10 +17,33 @@ public class LevelsLoader : MonoBehaviour
     private void LoadAllLevels()
     {
         TextAsset[] levelFiles = Resources.LoadAll<TextAsset>("Levels");
+        TextAsset[] levelStatsFiles = Resources.LoadAll<TextAsset>("LevelsStats");
+
+        Dictionary<string, LevelStat> levelStatsMap = new();
+        foreach (TextAsset jsonTextFileStats in levelStatsFiles)
+        {
+            LevelStat levelStat = LevelStat.CreateFromJSON(jsonTextFileStats.text);
+            levelStatsMap[levelStat.JsonName] = levelStat;
+        }
+
         foreach (TextAsset jsonTextFile in levelFiles)
         {
             Level level = Level.CreateFromJSON(jsonTextFile.text);
             level.JsonName = jsonTextFile.name;
+            level.TotalAttempts = 0;
+            level.TotalJumps = 0;
+
+            if (levelStatsMap.TryGetValue(level.JsonName, out LevelStat levelStat))
+            {
+                level.TotalJumps = levelStat.totalJumps;
+                level.TotalAttempts = levelStat.totalAttempts;
+            }
+            else
+            {
+                levelStat = new LevelStat { JsonName = level.JsonName, totalJumps = 0, totalAttempts = 0 };
+                levelStatsMap[level.JsonName] = levelStat;
+            }
+
             levels.Add(level);
         }
         levels.Sort((x, y) => x.order.CompareTo(y.order));
@@ -28,8 +51,17 @@ public class LevelsLoader : MonoBehaviour
 
     private void SaveLevelCurrent()
     {
-        string json = JsonUtility.ToJson(levelCurrent, true) + "\n";
-        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "Levels", levelCurrent.JsonName + ".json"), json);
+        string levelJson = JsonUtility.ToJson(levelCurrent, true) + "\n";
+        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "Levels", levelCurrent.JsonName + ".json"), levelJson);
+
+        LevelStat levelStat = new()
+        {
+            JsonName = levelCurrent.JsonName,
+            totalJumps = levelCurrent.TotalJumps,
+            totalAttempts = levelCurrent.TotalAttempts
+        };
+        string levelStatJson = JsonUtility.ToJson(levelStat, true) + "\n";
+        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "LevelsStats", levelCurrent.JsonName + ".json"), levelStatJson);
     }
 
     public void NextLevel()
@@ -46,13 +78,13 @@ public class LevelsLoader : MonoBehaviour
 
     public void IncreaseTotalJumps()
     {
-        levelCurrent.totalJumps += 1;
+        levelCurrent.TotalJumps += 1;
         SaveLevelCurrent();
     }
 
     public void IncreaseTotalAttempts()
     {
-        levelCurrent.totalAttempts += 1;
+        levelCurrent.TotalAttempts += 1;
         SaveLevelCurrent();
     }
 }

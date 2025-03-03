@@ -1,8 +1,6 @@
 {
     "name": "Stereo Madness",
     "musicName": "StereoMadness",
-    "totalJumps": 0,
-    "totalAttempts": 0,
     "order": 1,
     "elements": [
         {
