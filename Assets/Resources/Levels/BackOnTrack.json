@@ -1,14 +1,5 @@
 {
     "name": "Back on Track",
     "musicName": "BackOnTrack",
-    "order": 2,
-    "elements": [
-        {
-            "type": "Spike",
-            "position": {
-                "x": 0,
-                "y": 0
-            }
-        }
-    ]
+    "order": 2
 }

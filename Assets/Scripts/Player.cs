@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     public LevelsLoader levelsLoader;
 
     public bool isColliding = true;
-    public AudioSource audioSource;
     private bool hasStarted = false;
 
     private bool canJump = true;
@@ -18,10 +17,6 @@ public class Player : MonoBehaviour
     public void Start()
     {
         levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
-        levelsLoader.IncreaseTotalAttempts();
-
-        audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
-        audioSource.Play();
 
         var mainModule = particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
@@ -56,7 +51,6 @@ public class Player : MonoBehaviour
         }
 
         UpdateParticlePositionAndRotation();
-        UpdateParticleSystemSpeed();
     }
 
     private void Jump()
@@ -82,12 +76,6 @@ public class Player : MonoBehaviour
     {
         particle.transform.position = transform.position + new Vector3(-0.19f, -0.64f, -10);
         particle.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
-    }
-
-    private void UpdateParticleSystemSpeed()
-    {
-        var velocityOverLifetime = particle.velocityOverLifetime;
-        velocityOverLifetime.x = rigidBody.linearVelocity.x;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
