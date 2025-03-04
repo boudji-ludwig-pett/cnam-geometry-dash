@@ -23,7 +23,13 @@ public class LevelLoader : MonoBehaviour
         foreach (var element in current.elements)
         {
             GameObject prefab = GetPrefab(element.type);
-            Instantiate(prefab, new Vector3(element.x, element.y, 0), Quaternion.identity);
+            GameObject instance = Instantiate(prefab, new Vector3(element.x, element.y, 0), Quaternion.identity);
+
+            Vector3 originalScale = instance.transform.localScale;
+            float newScaleX = element.scaleX > 0 ? element.scaleX : originalScale.x;
+            float newScaleY = element.scaleY > 0 ? element.scaleY : originalScale.y;
+
+            instance.transform.localScale = new Vector3(newScaleX, newScaleY, originalScale.z);
         }
 
         LevelElement lastElement = current.elements[^1];

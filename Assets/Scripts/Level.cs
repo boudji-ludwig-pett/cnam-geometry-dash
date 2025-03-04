@@ -9,6 +9,8 @@ public class LevelElement
     public string type;
     public float x;
     public float y;
+    public float scaleX = -1;
+    public float scaleY = -1;
 }
 
 [System.Serializable]
