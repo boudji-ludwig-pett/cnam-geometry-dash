@@ -8,8 +8,6 @@ TagManager:
   - Win
   - LevelsLoader
   - LevelLoader
-  - CubePortal
-  - ShipPortal
   layers:
   - Default
   - TransparentFX
