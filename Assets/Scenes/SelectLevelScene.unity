@@ -1556,7 +1556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000013351, y: -147.36}
+  m_AnchoredPosition: {x: -52.318, y: -147.36}
   m_SizeDelta: {x: 629.6868, y: 98.2373}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1571276506
@@ -1592,7 +1592,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Progression:'
+  m_Text: 'Progression Max:'
 --- !u!222 &1571276507
 CanvasRenderer:
   m_ObjectHideFlags: 0

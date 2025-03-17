@@ -16,15 +16,32 @@ public class LevelElement
 [System.Serializable]
 public class Level
 {
+    public static readonly int LAST_X = 15;
     public string JsonName { get; set; }
     public int TotalJumps { get; set; }
     public int TotalAttempts { get; set; }
+    public int ProgressionPercent { get; set; }
+    public int ProgressionPercentMax { get; set; }
 
     public string name;
     public string musicName;
     public int order;
 
     public List<LevelElement> elements;
+
+    public float LastX
+    {
+        get
+        {
+            LevelElement lastElement = elements[^1];
+            float lastX = LAST_X;
+            if (lastElement != null)
+            {
+                lastX += lastElement.x;
+            }
+            return lastX;
+        }
+    }
 
     public static Level CreateFromJSON(string jsonString)
     {
