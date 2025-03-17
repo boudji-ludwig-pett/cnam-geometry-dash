@@ -5410,11 +5410,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe0bd74200510d4aa75c327a76499c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 1267397456}
-  playerObject: {fileID: 1267397455}
-  particle: {fileID: 725779776}
-  levelsLoader: {fileID: 0}
-  isColliding: 1
 --- !u!61 &1267397460
 BoxCollider2D:
   m_ObjectHideFlags: 0

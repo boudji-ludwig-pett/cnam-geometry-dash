@@ -7,6 +7,9 @@ TagManager:
   - Kill
   - Win
   - LevelsLoader
+  - LevelLoader
+  - CubePortal
+  - ShipPortal
   layers:
   - Default
   - TransparentFX

@@ -1,101 +1,75 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
 
 public class Player : MonoBehaviour
 {
-    public Rigidbody2D rigidBody;
-    public GameObject playerObject;
-    public ParticleSystem particle;
-    public LevelsLoader levelsLoader;
+    public Rigidbody2D RigidBody { get; private set; }
+    public Transform Transform { get; private set; }
+    public ParticleSystem Particle { get; private set; }
+    public LevelsLoader LevelsLoader { get; private set; }
+    public SpriteRenderer SpriteRenderer { get; private set; }
+    public bool IsColliding { get; set; } = true;
+    public bool HasStarted { get; private set; } = false;
+    public bool CanJump { get; set; } = true;
 
-    public bool isColliding = true;
-    private bool hasStarted = false;
+    public IGameMode CurrentGameMode { get; set; }
 
-    private bool canJump = true;
+    public void Awake()
+    {
+        RigidBody = GetComponent<Rigidbody2D>();
+        Transform = transform;
+        Particle = GetComponentInChildren<ParticleSystem>();
+        SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        LevelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
+    }
 
     public void Start()
     {
-        levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
-
-        var mainModule = particle.main;
+        var mainModule = Particle.main;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
-        particle.transform.parent = null;
+        Particle.transform.parent = null;
 
         Invoke(nameof(EnableInput), 0.1f);
+
+        CurrentGameMode = new NormalGameMode();
     }
 
     private void EnableInput()
     {
-        hasStarted = true;
+        HasStarted = true;
     }
 
     public void Update()
     {
-        rigidBody.linearVelocity = new Vector2(8.6f, rigidBody.linearVelocity.y);
-
-        if (hasStarted && isColliding && Input.GetKey(KeyCode.Space) && canJump)
-        {
-            Jump();
-        }
-
-        if (!IsJumping())
-        {
-            AlignRotation();
-            particle.gameObject.SetActive(true);
-        }
-        else
-        {
-            particle.gameObject.SetActive(false);
-            transform.Rotate(Vector3.back * 360 * Time.deltaTime);
-        }
-
-        UpdateParticlePositionAndRotation();
-    }
-
-    private void Jump()
-    {
-        rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
-        rigidBody.AddForce(Vector2.up * 26.6581f, ForceMode2D.Impulse);
-        levelsLoader.IncreaseTotalJumps();
-    }
-
-    private bool IsJumping()
-    {
-        return !isColliding;
-    }
-
-    private void AlignRotation()
-    {
-        Vector3 rotation = transform.rotation.eulerAngles;
-        rotation.z = Mathf.Round(rotation.z / 90) * 90;
-        transform.rotation = Quaternion.Euler(rotation);
-    }
-
-    private void UpdateParticlePositionAndRotation()
-    {
-        particle.transform.position = transform.position + new Vector3(-0.19f, -0.64f, -10);
-        particle.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
+        CurrentGameMode.Update(this);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        isColliding = true;
-        canJump = true;
-
-        if (collision.gameObject.CompareTag("Kill"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        if (collision.gameObject.CompareTag("Win"))
-        {
-            SceneManager.LoadScene("HomeScene");
-        }
+        CurrentGameMode.OnCollisionEnter(this, collision);
     }
 
     public void OnCollisionExit2D(Collision2D collision)
     {
-        isColliding = false;
+        CurrentGameMode.OnCollisionExit(this, collision);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("ShipPortal"))
+        {
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/Ship");
+            ChangeGameMode(new ShipGameMode());
+        }
+        else if (collision.CompareTag("CubePortal"))
+        {
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
+            ChangeGameMode(new NormalGameMode());
+        }
+    }
+
+    public void ChangeGameMode(IGameMode newMode)
+    {
+        CurrentGameMode = newMode;
     }
 }
