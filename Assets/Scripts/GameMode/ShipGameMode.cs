@@ -7,8 +7,8 @@ public class ShipGameMode : IGameMode
     private const float JumpForce = 26.6581f;
     private const KeyCode JumpKey = KeyCode.Space;
 
-    private const float UpperAngle = 45f; // vers la diagonale haut-droite
-    private const float LowerAngle = -45f; // vers la diagonale bas-droite
+    private const float UpperAngle = 45f;
+    private const float LowerAngle = -45f;
     private const float RotationLerpSpeed = 5f;
 
     public void Update(Player player)
