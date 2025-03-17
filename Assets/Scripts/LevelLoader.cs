@@ -31,14 +31,7 @@ public class LevelLoader : MonoBehaviour
 
             instance.transform.localScale = new Vector3(newScaleX, newScaleY, originalScale.z);
         }
-
-        LevelElement lastElement = current.elements[^1];
-        float lastX = 15;
-        if (lastElement != null)
-        {
-            lastX += lastElement.x;
-        }
-        Instantiate(GetPrefab("WinnerWall"), new Vector3(lastX, 0, 0), Quaternion.Euler(0, 0, 90));
+        Instantiate(GetPrefab("WinnerWall"), new Vector3(current.LastX, 0, 0), Quaternion.Euler(0, 0, 90));
     }
 
     public void Start()

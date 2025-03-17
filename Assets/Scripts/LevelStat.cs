@@ -7,6 +7,7 @@ public class LevelStat
 
     public int totalJumps;
     public int totalAttempts;
+    public int progressionPercent;
 
     public static LevelStat CreateFromJSON(string jsonString)
     {

@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     public void Update()
     {
         CurrentGameMode.Update(this);
+        LevelsLoader.CalculateCurrentProgressionPercent(transform.position);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
