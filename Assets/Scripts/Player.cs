@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public Transform Transform { get; private set; }
     public ParticleSystem Particle { get; private set; }
     public LevelsLoader LevelsLoader { get; private set; }
-
+    public SpriteRenderer SpriteRenderer { get; private set; }
     public bool IsColliding { get; set; } = true;
     public bool HasStarted { get; private set; } = false;
     public bool CanJump { get; set; } = true;
@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
         RigidBody = GetComponent<Rigidbody2D>();
         Transform = transform;
         Particle = GetComponentInChildren<ParticleSystem>();
+        SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         LevelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
     }
 
@@ -51,6 +52,20 @@ public class Player : MonoBehaviour
     public void OnCollisionExit2D(Collision2D collision)
     {
         CurrentGameMode.OnCollisionExit(this, collision);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("ShipPortal"))
+        {
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/Ship");
+            ChangeGameMode(new ShipGameMode());
+        }
+        else if (collision.CompareTag("CubePortal"))
+        {
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
+            ChangeGameMode(new NormalGameMode());
+        }
     }
 
     public void ChangeGameMode(IGameMode newMode)
