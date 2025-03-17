@@ -21,6 +21,7 @@ public class Level
     public int TotalJumps { get; set; }
     public int TotalAttempts { get; set; }
     public int ProgressionPercent { get; set; }
+    public int ProgressionPercentMax { get; set; }
 
     public string name;
     public string musicName;

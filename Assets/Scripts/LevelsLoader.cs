@@ -35,12 +35,13 @@ public class LevelsLoader : MonoBehaviour
             level.TotalAttempts = 0;
             level.TotalJumps = 0;
             level.ProgressionPercent = 0;
+            level.ProgressionPercentMax = 0;
 
             if (levelStatsMap.TryGetValue(level.JsonName, out LevelStat levelStat))
             {
-                level.TotalJumps = levelStat.totalJumps;
                 level.TotalAttempts = levelStat.totalAttempts;
-                level.ProgressionPercent = levelStat.progressionPercent;
+                level.TotalJumps = levelStat.totalJumps;
+                level.ProgressionPercentMax = levelStat.progressionPercent;
             }
             else
             {
@@ -63,7 +64,7 @@ public class LevelsLoader : MonoBehaviour
             JsonName = levelCurrent.JsonName,
             totalJumps = levelCurrent.TotalJumps,
             totalAttempts = levelCurrent.TotalAttempts,
-            progressionPercent = levelCurrent.ProgressionPercent
+            progressionPercent = levelCurrent.ProgressionPercentMax,
         };
         string levelStatJson = JsonUtility.ToJson(levelStat, true) + "\n";
         File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "LevelsStats", levelCurrent.JsonName + ".json"), levelStatJson);
@@ -104,7 +105,8 @@ public class LevelsLoader : MonoBehaviour
         float rawPercentage = (playerPosition.x / totalDistance) * 100;
         int clampedPercentage = Mathf.Clamp(Mathf.RoundToInt(rawPercentage), 0, 100);
 
-        levelCurrent.ProgressionPercent = Math.Max(levelCurrent.ProgressionPercent, clampedPercentage);
+        levelCurrent.ProgressionPercent = clampedPercentage;
+        levelCurrent.ProgressionPercentMax = Math.Max(levelCurrent.ProgressionPercentMax, levelCurrent.ProgressionPercent);
         SaveLevelCurrent();
 
         return clampedPercentage;

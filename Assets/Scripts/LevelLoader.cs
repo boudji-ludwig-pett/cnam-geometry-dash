@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 
 public class LevelLoader : MonoBehaviour
 {
     public LevelsLoader levelsLoader;
     public AudioSource audioSource;
+    public Text progressionText;
 
     private GameObject GetPrefab(string type)
     {
@@ -45,6 +47,7 @@ public class LevelLoader : MonoBehaviour
 
     public void Update()
     {
-
+        Level current = levelsLoader.levelCurrent;
+        progressionText.text = current.ProgressionPercent + "%";
     }
 }

@@ -9,7 +9,7 @@ public class LevelProgression : MonoBehaviour
 
     private string GetText()
     {
-        return "Progression: " + levelsLoader.levelCurrent.ProgressionPercent + "%";
+        return "Progression Max: " + levelsLoader.levelCurrent.ProgressionPercentMax + "%";
     }
 
     public void Start()
