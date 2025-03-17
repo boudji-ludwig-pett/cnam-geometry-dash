@@ -7,6 +7,10 @@ public class ShipGameMode : IGameMode
     private const float JumpForce = 26.6581f;
     private const KeyCode JumpKey = KeyCode.Space;
 
+    private const float UpperAngle = 45f; // vers la diagonale haut-droite
+    private const float LowerAngle = -45f; // vers la diagonale bas-droite
+    private const float RotationLerpSpeed = 5f;
+
     public void Update(Player player)
     {
         player.RigidBody.linearVelocity = new Vector2(HorizontalSpeed, player.RigidBody.linearVelocity.y);
@@ -15,6 +19,21 @@ public class ShipGameMode : IGameMode
         {
             Jump(player);
         }
+
+        float targetAngle = Input.GetKey(JumpKey) ? UpperAngle : LowerAngle;
+        float currentAngle = player.Transform.rotation.eulerAngles.z;
+        if (currentAngle > 180f)
+            currentAngle -= 360f;
+        float newAngle = Mathf.Lerp(currentAngle, targetAngle, RotationLerpSpeed * Time.deltaTime);
+        player.Transform.rotation = Quaternion.Euler(0, 0, newAngle);
+
+        UpdateParticlePositionAndRotation(player);
+    }
+
+    private void UpdateParticlePositionAndRotation(Player player)
+    {
+        player.Particle.transform.position = player.Transform.position + new Vector3(-0.19f, -0.64f, -10);
+        player.Particle.transform.rotation = Quaternion.Euler(0, 0, 150.464f);
     }
 
     private void Jump(Player player)
@@ -29,11 +48,17 @@ public class ShipGameMode : IGameMode
         if (collision.gameObject.CompareTag("Kill"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            return;
         }
         if (collision.gameObject.CompareTag("Win"))
         {
             SceneManager.LoadScene("HomeScene");
+            return;
         }
+
+        float currentAngle = player.Transform.rotation.eulerAngles.z;
+        float shortestAngle = Mathf.DeltaAngle(currentAngle, 0);
+        player.Transform.rotation = Quaternion.RotateTowards(player.Transform.rotation, Quaternion.Euler(0, 0, 0), Mathf.Abs(shortestAngle));
     }
 
     public void OnCollisionExit(Player player, Collision2D collision)
