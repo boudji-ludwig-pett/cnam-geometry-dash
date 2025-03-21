@@ -1,0 +1,21 @@
+{
+    "name": "Test Imported",
+    "musicName": "BackOnTrack",
+    "order": 3,
+    "elements": [
+        {
+            "type": "Spike",
+            "x": -9.0,
+            "y": -3.200000047683716,
+            "scaleX": -1.0,
+            "scaleY": -1.0
+        },
+        {
+            "type": "SmallSpike",
+            "x": 0.20000004768371583,
+            "y": -3.4000000953674318,
+            "scaleX": -1.0,
+            "scaleY": -1.0
+        }
+    ]
+}

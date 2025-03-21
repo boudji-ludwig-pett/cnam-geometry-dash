@@ -110,5 +110,14 @@ public class LevelsLoader : MonoBehaviour
         SaveLevelCurrent();
 
         return clampedPercentage;
+
+    }
+
+    public void RefreshLevels()
+    {
+        levels.Clear();
+        LoadAllLevels();
+        if (levels.Count > 0)
+            levelCurrent = levels[0];
     }
 }

@@ -8,6 +8,11 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadSceneAsync("SelectLevelScene");
     }
 
+    public void OpenImportExport()
+    {
+        SceneManager.LoadSceneAsync("ImportExportScene");
+    }
+
     public void OpenSettings()
     {
         // SceneManager.LoadSceneAsync(?);
