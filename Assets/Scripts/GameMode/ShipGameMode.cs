@@ -63,6 +63,5 @@ public class ShipGameMode : IGameMode
 
     public void OnCollisionExit(Player player, Collision2D collision)
     {
-        // rien pour l'instant
     }
 }
