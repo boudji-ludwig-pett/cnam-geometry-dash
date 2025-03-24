@@ -110,7 +110,6 @@ public class LevelsLoader : MonoBehaviour
         SaveLevelCurrent();
 
         return clampedPercentage;
-
     }
 
     public void RefreshLevels()
