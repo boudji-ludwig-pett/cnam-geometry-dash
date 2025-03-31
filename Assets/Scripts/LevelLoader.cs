@@ -16,6 +16,16 @@ public class LevelLoader : MonoBehaviour
     private void LoadAudio()
     {
         audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
+
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSource.volume = PlayerPrefs.GetFloat("Volume");
+        }
+        else
+        {
+            audioSource.volume = 1f;
+        }
+
         audioSource.Play();
     }
 
