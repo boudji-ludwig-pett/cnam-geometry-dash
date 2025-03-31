@@ -9,7 +9,7 @@ public class NormalGameMode : IGameMode
 
     public void Update(Player player)
     {
-        player.RigidBody.linearVelocity = new Vector2(HorizontalSpeed, player.RigidBody.linearVelocity.y);
+        player.RigidBody.linearVelocity = new Vector2(HorizontalSpeed * player.SpeedMultiplier, player.RigidBody.linearVelocity.y);
 
         if (player.HasStarted && player.IsColliding && Input.GetKey(JumpKey) && player.CanJump)
         {
