@@ -1,1 +1,795 @@
-{"data":[{"TaskID":1,"TaskName":"Analyse et Conception","StartDate":"2024-11-18T07:00:00.000Z","EndDate":"2024-12-06T16:00:00.000Z","Duration":15,"Predecessor":null,"resources":[],"Progress":47,"color":"","info":"<p><br></p>","DurationUnit":"day","subtasks":[{"TaskID":2,"TaskName":"Diagrammes UML ","StartDate":"2024-11-18T07:00:00.000Z","EndDate":"2024-12-02T16:00:00.000Z","Duration":11,"Predecessor":null,"resources":[],"Progress":48,"color":"","info":"<p><br></p>","DurationUnit":"day","subtasks":[{"TaskID":6,"TaskName":"Diagramme de cas d'utilisation","StartDate":"2024-11-18T07:00:00.000Z","EndDate":"2024-11-29T16:00:00.000Z","Duration":10,"Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"Progress":100,"color":"61","info":"<p><br></p>","DurationUnit":"day"},{"TaskID":7,"TaskName":"Diagramme d'activités","StartDate":"2024-11-18T07:00:00.000Z","EndDate":"2024-12-02T16:00:00.000Z","Duration":11,"Predecessor":"","resources":[{"resourceId":"Vincent","resourceName":"Vincent","unit":100}],"Progress":50,"color":"61","info":"<p><br></p>","DurationUnit":"day"},{"TaskID":8,"TaskName":"Diagramme de classes","StartDate":"2024-11-18T07:00:00.000Z","EndDate":"2024-11-29T16:00:00.000Z","Duration":10,"Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"Progress":0,"color":"61","info":"<p><br></p>","DurationUnit":"day"},{"TaskID":12,"TaskName":"Diagramme d'états du joueur","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-02T16:00:00.000Z","Duration":1,"Progress":0,"color":"61","Predecessor":"","resources":[{"resourceId":"Vincent","resourceName":"Vincent","unit":100}],"info":"<p><br></p>","DurationUnit":"day"}]},{"TaskID":3,"TaskName":"Diagramme de Gantt","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-06T16:00:00.000Z","Duration":5,"Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"Progress":50,"color":"61","info":"<p><br></p>","DurationUnit":"day"},{"TaskID":14,"TaskName":"Se documenter sur Unity","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-02T16:00:00.000Z","Duration":1,"Progress":0,"color":"61","Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100},{"resourceId":"Vincent","resourceName":"Vincent","unit":100},{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"}]},{"TaskID":13,"TaskName":"Initialisation","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-13T16:00:00.000Z","Duration":10,"Progress":0,"color":"","Predecessor":null,"resources":[],"info":"<p><br></p>","DurationUnit":"day","subtasks":[{"TaskID":9,"TaskName":"Initialiser le projet Unity","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-02T16:00:00.000Z","Duration":1,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":10,"TaskName":"Récupération des éléments graphiques du jeu","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-13T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":11,"TaskName":"Récupération de la musique en jeu","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-13T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"info":"<p><br></p>","DurationUnit":"day"}]},{"TaskID":15,"TaskName":"Développement","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2025-03-28T16:00:00.000Z","Duration":85,"Progress":0,"color":"","Predecessor":null,"resources":[],"info":"<p><br></p>","DurationUnit":"day","subtasks":[{"TaskID":16,"TaskName":"Placer le cube, gérer sa vitesse, les sauts, la rotation et l'atterissage","StartDate":"2024-12-02T07:00:00.000Z","EndDate":"2024-12-13T16:00:00.000Z","Duration":10,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":17,"TaskName":"Gérer les collisions et la mort","StartDate":"2024-12-16T07:00:00.000Z","EndDate":"2024-12-27T16:00:00.000Z","Duration":10,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":18,"TaskName":"Gérer la sauvegarde du nombre d'essai","StartDate":"2024-12-30T07:00:00.000Z","EndDate":"2025-01-10T16:00:00.000Z","Duration":10,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":25,"TaskName":"Gérer le bumper et la fusée","StartDate":"2025-01-13T07:00:00.000Z","EndDate":"2025-01-24T16:00:00.000Z","Duration":10,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":26,"TaskName":"Gérer le sens inversé","StartDate":"2025-01-27T07:00:00.000Z","EndDate":"2025-02-07T16:00:00.000Z","Duration":10,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":27,"TaskName":"Gérer la gravité inversé","StartDate":"2025-02-10T07:00:00.000Z","EndDate":"2025-02-21T16:00:00.000Z","Duration":10,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":22,"TaskName":"Mettre en place les checkpoints pour simplifier le jeu","StartDate":"2025-02-24T07:00:00.000Z","EndDate":"2025-03-07T16:00:00.000Z","Duration":10,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Théo","resourceName":"Théo","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":19,"TaskName":"Créer un éditeur de map graphique","StartDate":"2024-12-16T07:00:00.000Z","EndDate":"2025-03-07T16:00:00.000Z","Duration":60,"Progress":0,"color":"31","Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":20,"TaskName":"Créer l'interface du menu d'accueil","StartDate":"2024-12-16T07:00:00.000Z","EndDate":"2024-12-27T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Vincent","resourceName":"Vincent","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":29,"TaskName":"Créer l'interface du menu pause en jeu","StartDate":"2024-12-30T07:00:00.000Z","EndDate":"2025-01-10T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Vincent","resourceName":"Vincent","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":21,"TaskName":"Créer l'interface des paramètres","StartDate":"2025-01-13T07:00:00.000Z","EndDate":"2025-01-24T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Vincent","resourceName":"Vincent","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":30,"TaskName":"Créer l'interface du choix des niveaux","StartDate":"2025-01-27T07:00:00.000Z","EndDate":"2025-02-21T16:00:00.000Z","Duration":20,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":28,"TaskName":"Créer l'interface d'import de map","StartDate":"2025-03-03T07:00:00.000Z","EndDate":"2025-03-14T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":23,"TaskName":"Créer l'écran des statistiques","StartDate":"2025-03-17T07:00:00.000Z","EndDate":"2025-03-28T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Djelal","resourceName":"Djelal","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":24,"TaskName":"Créer l'écran de personnalisation des skins","StartDate":"2025-01-27T07:00:00.000Z","EndDate":"2025-02-21T16:00:00.000Z","Duration":20,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Vincent","resourceName":"Vincent","unit":100}],"info":"<p><br></p>","DurationUnit":"day"},{"TaskID":31,"TaskName":"Créer l'interface des trophées","StartDate":"2025-02-24T07:00:00.000Z","EndDate":"2025-03-07T16:00:00.000Z","Duration":10,"Progress":0,"color":"271","Predecessor":"","resources":[{"resourceId":"Vincent","resourceName":"Vincent","unit":100}],"info":"<p><br></p>","DurationUnit":"day"}]}],"resources":[{"resourceId":"Djelal","resourceName":"Djelal"},{"resourceId":"Théo","resourceName":"Théo"},{"resourceId":"Vincent","resourceName":"Vincent"}],"projectStartDate":null,"projectEndDate":null,"advanced":{"columns":[{"name":"Task ID","width":"70","show":true},{"name":"Task Name","width":"350","show":true},{"name":"Start Date","width":"130","show":false},{"name":"End Date","width":"130","show":false},{"name":"Duration","width":"130","show":false},{"name":"Progress %","width":"150","show":false},{"name":"Dependency","width":"150","show":false},{"name":"Resources","width":"200","show":false},{"name":"Color","width":"100","show":false}],"zoomLevel":0,"timezone":"Europe/Paris","timezoneOffset":-60,"dependencyConflict":"Add Offset to Dependency","dateFormat":"yyyy-MM-dd","timeFormat":"HH:mm","firstDayOfWeek":0,"workWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"workTime":[{"from":8,"to":12},{"from":13,"to":17}],"holidays":[]}}
+{
+  "data": [
+    {
+      "TaskID": 1,
+      "TaskName": "Analyse et Conception",
+      "StartDate": "2024-11-18T07:00:00.000Z",
+      "EndDate": "2024-12-06T16:00:00.000Z",
+      "Duration": 15,
+      "Predecessor": null,
+      "resources": [],
+      "Progress": 47,
+      "color": "",
+      "info": "<p><br></p>",
+      "DurationUnit": "day",
+      "subtasks": [
+        {
+          "TaskID": 2,
+          "TaskName": "Diagrammes UML",
+          "StartDate": "2024-11-18T07:00:00.000Z",
+          "EndDate": "2024-12-02T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": null,
+          "resources": [],
+          "Progress": 48,
+          "color": "",
+          "info": "<p><br></p>",
+          "DurationUnit": "day",
+          "subtasks": [
+            {
+              "TaskID": 6,
+              "TaskName": "Diagramme de cas d'utilisation",
+              "StartDate": "2024-11-18T07:00:00.000Z",
+              "EndDate": "2024-12-02T16:00:00.000Z",
+              "Duration": 10,
+              "Predecessor": "",
+              "resources": [
+                {
+                  "resourceId": "Djelal",
+                  "resourceName": "Djelal",
+                  "unit": 100
+                }
+              ],
+              "Progress": 100,
+              "color": "61",
+              "info": "<p><br></p>",
+              "DurationUnit": "day"
+            },
+            {
+              "TaskID": 7,
+              "TaskName": "Diagramme d'activités",
+              "StartDate": "2024-11-18T07:00:00.000Z",
+              "EndDate": "2024-12-02T16:00:00.000Z",
+              "Duration": 10,
+              "Predecessor": "",
+              "resources": [
+                {
+                  "resourceId": "Vincent",
+                  "resourceName": "Vincent",
+                  "unit": 100
+                }
+              ],
+              "Progress": 50,
+              "color": "61",
+              "info": "<p><br></p>",
+              "DurationUnit": "day"
+            },
+            {
+              "TaskID": 8,
+              "TaskName": "Diagramme de classes",
+              "StartDate": "2024-11-18T07:00:00.000Z",
+              "EndDate": "2024-12-16T16:00:00.000Z",
+              "Duration": 20,
+              "Predecessor": "",
+              "resources": [
+                {
+                  "resourceId": "Théo",
+                  "resourceName": "Théo",
+                  "unit": 100
+                }
+              ],
+              "Progress": 0,
+              "color": "61",
+              "info": "<p><br></p>",
+              "DurationUnit": "day"
+            },
+            {
+              "TaskID": 12,
+              "TaskName": "Diagramme d'états du joueur",
+              "StartDate": "2024-12-02T07:00:00.000Z",
+              "EndDate": "2024-12-16T16:00:00.000Z",
+              "Duration": 10,
+              "Predecessor": "",
+              "resources": [
+                {
+                  "resourceId": "Vincent",
+                  "resourceName": "Vincent",
+                  "unit": 100
+                }
+              ],
+              "Progress": 0,
+              "color": "61",
+              "info": "<p><br></p>",
+              "DurationUnit": "day"
+            }
+          ]
+        },
+        {
+          "TaskID": 3,
+          "TaskName": "Diagramme de Gantt",
+          "StartDate": "2024-12-02T07:00:00.000Z",
+          "EndDate": "2024-12-16T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 50,
+          "color": "61",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 14,
+          "TaskName": "Se documenter sur Unity",
+          "StartDate": "2024-12-09T07:00:00.000Z",
+          "EndDate": "2024-12-23T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            },
+            {
+              "resourceId": "Vincent",
+              "resourceName": "Vincent",
+              "unit": 100
+            },
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 0,
+          "color": "61",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        }
+      ]
+    },
+    {
+      "TaskID": 13,
+      "TaskName": "Initialisation",
+      "StartDate": "2024-12-02T07:00:00.000Z",
+      "EndDate": "2024-12-16T16:00:00.000Z",
+      "Duration": 10,
+      "Predecessor": null,
+      "resources": [],
+      "Progress": 0,
+      "color": "",
+      "info": "<p><br></p>",
+      "DurationUnit": "day",
+      "subtasks": [
+        {
+          "TaskID": 9,
+          "TaskName": "Initialiser le projet Unity",
+          "StartDate": "2024-12-02T07:00:00.000Z",
+          "EndDate": "2024-12-16T16:00:00.000Z",
+          "Duration": 10,
+          "Progress": 100,
+          "color": "31",
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 10,
+          "TaskName": "Récupération des éléments graphiques du jeu",
+          "StartDate": "2024-12-02T07:00:00.000Z",
+          "EndDate": "2024-12-16T16:00:00.000Z",
+          "Duration": 10,
+          "Progress": 0,
+          "color": "271",
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 11,
+          "TaskName": "Récupérer les musiques background et sprites",
+          "StartDate": "2024-12-16T07:00:00.000Z",
+          "EndDate": "2024-12-30T16:00:00.000Z",
+          "Duration": 10,
+          "Progress": 0,
+          "color": "271",
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Vincent",
+              "resourceName": "Vincent",
+              "unit": 100
+            }
+          ],
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        }
+      ]
+    },
+    {
+      "TaskID": 15,
+      "TaskName": "Développement",
+      "StartDate": "2024-12-02T07:00:00.000Z",
+      "EndDate": "2025-03-28T16:00:00.000Z",
+      "Duration": 85,
+      "Predecessor": null,
+      "resources": [],
+      "Progress": 0,
+      "color": "",
+      "info": "<p><br></p>",
+      "DurationUnit": "day",
+      "subtasks": [
+        {
+          "TaskID": 32,
+          "TaskName": "Initiation de l'intégration continue",
+          "StartDate": "2024-11-18T07:00:00.000Z",
+          "EndDate": "2024-12-02T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 33,
+          "TaskName": "Placer le cube",
+          "StartDate": "2024-12-02T07:00:00.000Z",
+          "EndDate": "2024-12-16T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            },
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 34,
+          "TaskName": "Intégration continue Unity",
+          "StartDate": "2024-12-09T07:00:00.000Z",
+          "EndDate": "2024-12-23T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 35,
+          "TaskName": "Gérer la rotation et l'atterissage",
+          "StartDate": "2024-12-16T07:00:00.000Z",
+          "EndDate": "2024-12-30T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 36,
+          "TaskName": "Gérer les particules",
+          "StartDate": "2024-12-16T07:00:00.000Z",
+          "EndDate": "2024-12-30T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 37,
+          "TaskName": "Gérer les collisions",
+          "StartDate": "2024-12-16T07:00:00.000Z",
+          "EndDate": "2024-12-30T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            },
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 38,
+          "TaskName": "Gérer le saut",
+          "StartDate": "2024-12-16T07:00:00.000Z",
+          "EndDate": "2024-12-30T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 39,
+          "TaskName": "Gérer la vitesse du cube",
+          "StartDate": "2024-12-16T07:00:00.000Z",
+          "EndDate": "2024-12-30T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 40,
+          "TaskName": "Créer le menu d'accueil",
+          "StartDate": "2025-01-20T07:00:00.000Z",
+          "EndDate": "2025-02-03T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 41,
+          "TaskName": "Créer le menu du choix des niveaux",
+          "StartDate": "2025-01-20T07:00:00.000Z",
+          "EndDate": "2025-02-03T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 42,
+          "TaskName": "Détecter la victoire d'un joueur",
+          "StartDate": "2025-01-20T07:00:00.000Z",
+          "EndDate": "2025-02-03T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 43,
+          "TaskName": "Lecture d'un fichier json",
+          "StartDate": "2025-02-03T07:00:00.000Z",
+          "EndDate": "2025-02-17T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 44,
+          "TaskName": "Sauvegarde des stats dans des json",
+          "StartDate": "2025-03-03T07:00:00.000Z",
+          "EndDate": "2025-03-17T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            },
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            },
+            {
+              "resourceId": "Vincent",
+              "resourceName": "Vincent",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 45,
+          "TaskName": "Génération dynamique de la map",
+          "StartDate": "2025-03-03T07:00:00.000Z",
+          "EndDate": "2025-03-17T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            },
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 46,
+          "TaskName": "Gérer la caméra par rapport au joueur",
+          "StartDate": "2025-03-03T07:00:00.000Z",
+          "EndDate": "2025-03-17T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 47,
+          "TaskName": "Gérer le nombre de tentatives",
+          "StartDate": "2025-03-03T07:00:00.000Z",
+          "EndDate": "2025-03-17T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "31",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 48,
+          "TaskName": "Création du premier niveau",
+          "StartDate": "2025-03-17T07:00:00.000Z",
+          "EndDate": "2025-03-31T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 49,
+          "TaskName": "Créer l'écran des stats",
+          "StartDate": "2025-03-17T07:00:00.000Z",
+          "EndDate": "2025-03-31T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 50,
+          "TaskName": "Mettre en place le mode fusée",
+          "StartDate": "2025-03-17T07:00:00.000Z",
+          "EndDate": "2025-03-31T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 51,
+          "TaskName": "Mettre en place la rotation dans le mode fusée",
+          "StartDate": "2025-03-17T07:00:00.000Z",
+          "EndDate": "2025-03-31T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 52,
+          "TaskName": "Créer l'écran de pause",
+          "StartDate": "2025-03-17T07:00:00.000Z",
+          "EndDate": "2025-03-31T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Théo",
+              "resourceName": "Théo",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 53,
+          "TaskName": "Créer une map d'import de map",
+          "StartDate": "2025-03-17T07:00:00.000Z",
+          "EndDate": "2025-03-31T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Djelal",
+              "resourceName": "Djelal",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        },
+        {
+          "TaskID": 54,
+          "TaskName": "Mettre en place l'éditeur de map",
+          "StartDate": "2025-03-17T07:00:00.000Z",
+          "EndDate": "2025-03-31T16:00:00.000Z",
+          "Duration": 10,
+          "Predecessor": "",
+          "resources": [
+            {
+              "resourceId": "Vincent",
+              "resourceName": "Vincent",
+              "unit": 100
+            }
+          ],
+          "Progress": 100,
+          "color": "271",
+          "info": "<p><br></p>",
+          "DurationUnit": "day"
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "resourceId": "Djelal",
+      "resourceName": "Djelal"
+    },
+    {
+      "resourceId": "Théo",
+      "resourceName": "Théo"
+    },
+    {
+      "resourceId": "Vincent",
+      "resourceName": "Vincent"
+    }
+  ],
+  "advanced": {
+    "columns": [
+      {
+        "name": "Task ID",
+        "width": "70",
+        "show": true
+      },
+      {
+        "name": "Task Name",
+        "width": "350",
+        "show": true
+      },
+      {
+        "name": "Start Date",
+        "width": "130",
+        "show": false
+      },
+      {
+        "name": "End Date",
+        "width": "130",
+        "show": false
+      },
+      {
+        "name": "Duration",
+        "width": "130",
+        "show": false
+      },
+      {
+        "name": "Progress %",
+        "width": "150",
+        "show": false
+      },
+      {
+        "name": "Dependency",
+        "width": "150",
+        "show": false
+      },
+      {
+        "name": "Resources",
+        "width": "200",
+        "show": false
+      },
+      {
+        "name": "Color",
+        "width": "100",
+        "show": false
+      }
+    ],
+    "zoomLevel": 0,
+    "timezone": "Europe/Paris",
+    "timezoneOffset": -60,
+    "dependencyConflict": "Add Offset to Dependency",
+    "dateFormat": "yyyy-MM-dd",
+    "timeFormat": "HH:mm",
+    "firstDayOfWeek": 0,
+    "workWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "workTime": [
+      {
+        "from": 8,
+        "to": 12
+      },
+      {
+        "from": 13,
+        "to": 17
+      }
+    ],
+    "holidays": []
+  }
+}
