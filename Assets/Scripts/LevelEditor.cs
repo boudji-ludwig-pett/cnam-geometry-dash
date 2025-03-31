@@ -13,15 +13,12 @@ public class LevelEditor : MonoBehaviour
 
     [Header("UI")]
     public Transform blockGroupContainer;
-    public Transform portalGroupContainer;
     public GameObject buttonPrefabTemplate;
 
-    private bool showingBlocks = true;
     private int currentPage = 0;
-    private const int buttonsPerPage = 8;
+    private const int buttonsPerPage = 4;
 
     private List<GameObject> blockPrefabs = new();
-    private List<GameObject> portalPrefabs = new();
     private List<GameObject> currentButtons = new();
 
     private GameObject resizingTarget = null;
@@ -40,19 +37,14 @@ public class LevelEditor : MonoBehaviour
 
     void LoadPrefabs()
     {
-        blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Block"));
-        blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Spike"));
-        portalPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Portals"));
-        portalPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Bonus"));
-
+        blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs"));
     }
 
     void GenerateButtons()
     {
         ClearCurrentButtons();
 
-        List<GameObject> source = showingBlocks ? blockPrefabs : portalPrefabs;
-        Transform container = showingBlocks ? blockGroupContainer : portalGroupContainer;
+        Transform container = blockGroupContainer;
 
         if (container == null || buttonPrefabTemplate == null)
         {
@@ -61,7 +53,7 @@ public class LevelEditor : MonoBehaviour
         }
 
         int start = currentPage * buttonsPerPage;
-        int end = Mathf.Min(start + buttonsPerPage, source.Count);
+        int end = Mathf.Min(start + buttonsPerPage, blockPrefabs.Count);
 
         for (int i = start; i < end; i++)
         {
@@ -86,15 +78,15 @@ public class LevelEditor : MonoBehaviour
             Image iconImage = icon.GetComponent<Image>();
 
             bgImage.sprite = Resources.Load<Sprite>("InGame/ButtonSkin/BlankSquare");
-            iconImage.sprite = source[i].GetComponent<SpriteRenderer>()?.sprite;
+            iconImage.sprite = blockPrefabs[i].GetComponent<SpriteRenderer>()?.sprite;
 
-            string prefabName = source[i].name.ToLower();
+            string prefabName = blockPrefabs[i].name.ToLower();
             if (prefabName.Contains("smallspike") || prefabName.Contains("smallobstacle"))
                 icon.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 25);
             else
                 icon.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
 
-            GameObject prefab = source[i];
+            GameObject prefab = blockPrefabs[i];
             button.GetComponent<Button>().onClick.AddListener(() => SelectPrefab(prefab));
             currentButtons.Add(button);
         }
@@ -108,16 +100,10 @@ public class LevelEditor : MonoBehaviour
         currentButtons.Clear();
     }
 
-    public void ToggleButtonGroup()
-    {
-        showingBlocks = !showingBlocks;
-        currentPage = 0;
-        GenerateButtons();
-    }
-
     public void NextPage()
     {
-        int maxPage = Mathf.CeilToInt((showingBlocks ? blockPrefabs.Count : portalPrefabs.Count) / (float)buttonsPerPage);
+        int maxPage = 3;
+        Debug.Log(currentPage);
         if (currentPage < maxPage - 1)
         {
             currentPage++;
@@ -127,6 +113,7 @@ public class LevelEditor : MonoBehaviour
 
     public void PreviousPage()
     {
+        Debug.Log(currentPage);
         if (currentPage > 0)
         {
             currentPage--;
@@ -192,7 +179,6 @@ public class LevelEditor : MonoBehaviour
             }
         }
 
-        // Sélection pour redimensionnement
         if (Input.GetMouseButtonDown(0) && !isPlacingBlock)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -216,7 +202,6 @@ public class LevelEditor : MonoBehaviour
             }
         }
 
-        // Étirement en cours
         if (isResizing && resizingTarget != null)
         {
             Vector3 currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
