@@ -1,11 +1,33 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject pauseButton;
     public LevelLoader levelLoader;
+    public Slider volumeSlider;
+
+    public void Start()
+    {
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            levelLoader.audioSource.volume = PlayerPrefs.GetFloat("Volume");
+            volumeSlider.value = levelLoader.audioSource.volume;
+        }
+        else
+        {
+            levelLoader.audioSource.volume = 1f;
+            volumeSlider.value = 1f;
+        }
+    }
+
+    public void ChangeVolume()
+    {
+        levelLoader.audioSource.volume = volumeSlider.value;
+        PlayerPrefs.SetFloat("Volume", levelLoader.audioSource.volume);
+    }
 
     public void Pause()
     {
