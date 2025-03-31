@@ -3,7 +3,8 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     public GameObject playerObject;
-    public const float MIN_Y_FOLLOW = 2.0f;
+    public float normalMinYFollow = 2.0f;
+    public float shipMinYFollow = 6.0f;
     private float initialY;
 
     private void Start()
@@ -13,9 +14,16 @@ public class PlayerCamera : MonoBehaviour
 
     private void Update()
     {
-        float targetY = initialY;
+        Player player = playerObject.GetComponent<Player>();
 
-        if (playerObject.transform.position.y > MIN_Y_FOLLOW)
+        float minYFollow = normalMinYFollow;
+        if (player.CurrentGameMode is ShipGameMode)
+        {
+            minYFollow = shipMinYFollow;
+        }
+
+        float targetY = initialY;
+        if (playerObject.transform.position.y > minYFollow)
         {
             targetY = playerObject.transform.position.y;
         }
