@@ -7,6 +7,15 @@ TagManager:
   - Kill
   - Win
   - LevelsLoader
+  - LevelLoader
+  - ObstacleBlock
+  - Spike
+  - SmallSpike
+  - ShipPortal
+  - Platform
+  - CubePortal
+  - BlockButtonGroup
+  - PortalButtonGroup
   layers:
   - Default
   - TransparentFX

@@ -76,3 +76,6 @@ crashlytics-build.properties
 # Ignore temporaries from GameCI
 /[Aa]rtifacts/
 /[Cc]odeCoverage/
+
+# Saves
+/[Aa]ssets/[Rr]esources/LevelsStats

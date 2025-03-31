@@ -1,31 +1,165 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+
 public class LevelEditor : MonoBehaviour
 {
-    public Transform mapParent; // Parent pour organiser les objets
-    private GameObject currentBlock; // Block en cours de placement
-    public Image blockButtonImage; // Image du bouton pour récupérer le sprite
+    [Header("Placement")]
+    public Transform mapParent;
+    private GameObject currentBlock;
+    private bool isPlacingBlock = false;
+    private Vector3 currentScale = new Vector3(1f, 1f, 1);
+    private float scaleStep = 0.1f;
 
-    private bool isPlacingBlock = false; // Indique si un block est en mode placement
-    private float scaleStep = 0.1f; // Incrément de redimensionnement avec la molette
-    private Vector3 currentScale = new Vector3(1f, 1f, 1); // Échelle actuelle appliquée au block
+    [Header("UI")]
+    public Transform blockGroupContainer;
+    public Transform portalGroupContainer;
+    public GameObject buttonPrefabTemplate;
+
+    private bool showingBlocks = true;
+    private int currentPage = 0;
+    private const int buttonsPerPage = 8;
+
+    private List<GameObject> blockPrefabs = new();
+    private List<GameObject> portalPrefabs = new();
+    private List<GameObject> currentButtons = new();
+
+    private GameObject resizingTarget = null;
+    private bool isResizing = false;
+    private Vector3 originalMousePos;
+    private Vector3 originalScale;
+
+    private enum ResizeAxis { None, Horizontal, Vertical }
+    private ResizeAxis currentResizeAxis = ResizeAxis.None;
 
     void Start()
     {
-
+        LoadPrefabs();
+        GenerateButtons();
     }
 
-    // Update is called once per frame
+    void LoadPrefabs()
+    {
+        blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Block"));
+        blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Spike"));
+        portalPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Portals"));
+    }
+
+    void GenerateButtons()
+    {
+        ClearCurrentButtons();
+
+        List<GameObject> source = showingBlocks ? blockPrefabs : portalPrefabs;
+        Transform container = showingBlocks ? blockGroupContainer : portalGroupContainer;
+
+        if (container == null || buttonPrefabTemplate == null)
+        {
+            Debug.LogError("UI Container ou prefab de bouton manquant.");
+            return;
+        }
+
+        int start = currentPage * buttonsPerPage;
+        int end = Mathf.Min(start + buttonsPerPage, source.Count);
+
+        for (int i = start; i < end; i++)
+        {
+            GameObject button = Instantiate(buttonPrefabTemplate, container);
+            button.SetActive(true);
+
+            Transform canvas = button.transform.Find("Canvas");
+            Transform bg = canvas?.Find("BlankSquare");
+            Transform icon = canvas?.Find("PrefabIcon");
+
+            if (bg == null || icon == null)
+            {
+                Destroy(button);
+                continue;
+            }
+
+            float xOffset = -375f + (i - start) * 125f;
+            bg.GetComponent<RectTransform>().anchoredPosition = new Vector2(xOffset, bg.GetComponent<RectTransform>().anchoredPosition.y);
+            icon.GetComponent<RectTransform>().anchoredPosition = new Vector2(xOffset, icon.GetComponent<RectTransform>().anchoredPosition.y);
+
+            Image bgImage = bg.GetComponent<Image>();
+            Image iconImage = icon.GetComponent<Image>();
+
+            bgImage.sprite = Resources.Load<Sprite>("InGame/ButtonSkin/BlankSquare");
+            iconImage.sprite = source[i].GetComponent<SpriteRenderer>()?.sprite;
+
+            string prefabName = source[i].name.ToLower();
+            if (prefabName.Contains("smallspike") || prefabName.Contains("smallobstacle"))
+                icon.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 25);
+            else
+                icon.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
+
+            GameObject prefab = source[i];
+            button.GetComponent<Button>().onClick.AddListener(() => SelectPrefab(prefab));
+            currentButtons.Add(button);
+        }
+    }
+
+    void ClearCurrentButtons()
+    {
+        foreach (var button in currentButtons)
+            Destroy(button);
+
+        currentButtons.Clear();
+    }
+
+    public void ToggleButtonGroup()
+    {
+        showingBlocks = !showingBlocks;
+        currentPage = 0;
+        GenerateButtons();
+    }
+
+    public void NextPage()
+    {
+        int maxPage = Mathf.CeilToInt((showingBlocks ? blockPrefabs.Count : portalPrefabs.Count) / (float)buttonsPerPage);
+        if (currentPage < maxPage - 1)
+        {
+            currentPage++;
+            GenerateButtons();
+        }
+    }
+
+    public void PreviousPage()
+    {
+        if (currentPage > 0)
+        {
+            currentPage--;
+            GenerateButtons();
+        }
+    }
+
+    void SelectPrefab(GameObject prefab)
+    {
+        if (isPlacingBlock) return;
+
+        string name = prefab.name.ToLower();
+
+        if (name.Contains("portal"))
+            currentScale = new Vector3(0.5f, 0.5f, 1);
+        else if (name.Contains("small"))
+            currentScale = new Vector3(0.15f, 0.07f, 1);
+        else if (name.Contains("spike"))
+            currentScale = new Vector3(0.15f, 0.15f, 1);
+        else if (name.Contains("block"))
+            currentScale = new Vector3(0.2f, 0.2f, 1);
+        else
+            currentScale = new Vector3(1f, 1f, 1);
+
+        InstantiateAndPrepare(prefab, currentScale);
+    }
+
     void Update()
     {
-        // Déplacement du block sous la souris
         if (isPlacingBlock && currentBlock != null)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            currentBlock.transform.position = new Vector3(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y), -1); // Aligne sur une grille
+            currentBlock.transform.position = new Vector3(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y), -1);
 
-            // Redimensionnement avec la molette sauf pour les portails
-            if (currentBlock.name != "ShipPortal" && currentBlock.name != "CubePortal")
+            if (!currentBlock.name.ToLower().Contains("portal"))
             {
                 float scroll = Input.GetAxis("Mouse ScrollWheel");
                 if (scroll != 0)
@@ -36,13 +170,15 @@ public class LevelEditor : MonoBehaviour
                 }
             }
 
-            // Placer définitivement le block quand on clique
             if (Input.GetMouseButtonDown(0))
             {
-                // Vérifie les collisions avec d'autres objets
-                Collider2D[] overlaps = Physics2D.OverlapBoxAll(currentBlock.transform.position, currentBlock.GetComponent<Collider2D>().bounds.size, 0f);
+                Collider2D[] overlaps = Physics2D.OverlapBoxAll(
+                    currentBlock.transform.position,
+                    currentBlock.GetComponent<Collider2D>().bounds.size,
+                    0f
+                );
 
-                if (overlaps.Length > 1) // >1 car le bloc en cours a déjà un collider
+                if (overlaps.Length > 1)
                 {
                     Debug.Log("Placement annulé : un objet est déjà présent à cet endroit.");
                     return;
@@ -51,192 +187,81 @@ public class LevelEditor : MonoBehaviour
                 PlaceBlock();
             }
         }
+
+        // Sélection pour redimensionnement
+        if (Input.GetMouseButtonDown(0) && !isPlacingBlock)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hit = Physics2D.OverlapPoint(mousePos);
+
+            if (hit != null)
+            {
+                resizingTarget = hit.gameObject;
+                originalMousePos = mousePos;
+                originalScale = resizingTarget.transform.localScale;
+
+                Vector2 localClick = mousePos - (Vector2)resizingTarget.transform.position;
+                float ratio = resizingTarget.GetComponent<Collider2D>().bounds.size.x /
+                              resizingTarget.GetComponent<Collider2D>().bounds.size.y;
+
+                currentResizeAxis = Mathf.Abs(localClick.x) > Mathf.Abs(localClick.y * ratio)
+                    ? ResizeAxis.Horizontal
+                    : ResizeAxis.Vertical;
+
+                isResizing = true;
+            }
+        }
+
+        // Étirement en cours
+        if (isResizing && resizingTarget != null)
+        {
+            Vector3 currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 delta = currentMousePos - originalMousePos;
+
+            if (currentResizeAxis == ResizeAxis.Horizontal)
+            {
+                float newScaleX = Mathf.Max(0.1f, originalScale.x + delta.x);
+                resizingTarget.transform.localScale = new Vector3(newScaleX, originalScale.y, 1);
+            }
+            else if (currentResizeAxis == ResizeAxis.Vertical)
+            {
+                float newScaleY = Mathf.Max(0.1f, originalScale.y + delta.y);
+                resizingTarget.transform.localScale = new Vector3(originalScale.x, newScaleY, 1);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                isResizing = false;
+                resizingTarget = null;
+                currentResizeAxis = ResizeAxis.None;
+            }
+        }
     }
-    public void AddBlock()
-    {
-        if (isPlacingBlock) return;
 
-        GameObject newBlock = new GameObject("Block");
-        SpriteRenderer spriteRenderer = newBlock.AddComponent<SpriteRenderer>();
-
-        if (blockButtonImage != null && blockButtonImage.sprite != null)
-        {
-            spriteRenderer.sprite = blockButtonImage.sprite;
-        }
-        else
-        {
-            spriteRenderer.sprite = Resources.Load<Sprite>("InGame/BlockSkin/RegularBlock01");
-            Debug.LogError("L'image du bouton de block n'est pas assignée !");
-        }
-
-        BoxCollider2D collider = newBlock.AddComponent<BoxCollider2D>();
-        collider.offset = Vector2.zero;
-        collider.size = spriteRenderer.sprite.bounds.size;
-
-        newBlock.transform.position = new Vector2(0, 0);
-        currentScale = new Vector3(1f, 1f, 1);
-        newBlock.transform.localScale = currentScale;
-
-        if (mapParent != null)
-        {
-            newBlock.transform.SetParent(mapParent);
-        }
-
-        currentBlock = newBlock;
-        isPlacingBlock = true;
-    }
-
-    private void PlaceBlock()
+    void PlaceBlock()
     {
         isPlacingBlock = false;
         currentBlock = null;
     }
 
-    public void AddSpike()
+    void InstantiateAndPrepare(GameObject prefab, Vector3? scaleOverride = null)
     {
-        if (isPlacingBlock) return;
+        GameObject obj = Instantiate(prefab);
+        obj.transform.position = new Vector3(0, 0, -1);
+        obj.transform.localScale = scaleOverride ?? currentScale;
 
-        GameObject newSpike = new GameObject("Spike");
-        SpriteRenderer spriteRenderer = newSpike.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Resources.Load<Sprite>("InGame/SpikeSkin/BlueSpike");
-        if (spriteRenderer.sprite == null)
-        {
-            Debug.LogError("Le sprite de la plateforme est introuvable. Vérifiez le chemin Resources/InGame/SpikeSkin/BlueSpike");
-        }
-
-        BoxCollider2D collider = newSpike.AddComponent<BoxCollider2D>();
-        collider.offset = Vector2.zero;
-        collider.size = spriteRenderer.sprite.bounds.size;
-
-        newSpike.transform.position = new Vector2(0, 0);
-        currentScale = new Vector3(1f, 1f, 1);
-        newSpike.transform.localScale = currentScale;
+        try { obj.tag = prefab.name; }
+        catch { Debug.LogWarning($"Le tag '{prefab.name}' n'existe pas. Ajoutez-le dans Project Settings > Tags."); }
 
         if (mapParent != null)
-        {
-            newSpike.transform.SetParent(mapParent);
-        }
+            obj.transform.SetParent(mapParent);
 
-        currentBlock = newSpike;
-        isPlacingBlock = true;
-    }
-
-    public void AddSmallSpike()
-    {
-        if (isPlacingBlock) return;
-
-        GameObject newSmallSpike = new GameObject("SmallSpike");
-        SpriteRenderer spriteRenderer = newSmallSpike.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Resources.Load<Sprite>("InGame/SmallSpikeSkin/BaseSmallSpike");
-        if (spriteRenderer.sprite == null)
-        {
-            Debug.LogError("Le sprite de la plateforme est introuvable. Vérifiez le chemin Resources/InGame/SpikeSkin/BlueSpike");
-        }
-
-        BoxCollider2D collider = newSmallSpike.AddComponent<BoxCollider2D>();
-        collider.offset = Vector2.zero;
-        collider.size = spriteRenderer.sprite.bounds.size;
-
-        newSmallSpike.transform.position = new Vector2(0, 0);
-        currentScale = new Vector3(0.25f, 0.25f, 1);
-        newSmallSpike.transform.localScale = currentScale;
-
-        if (mapParent != null)
-        {
-            newSmallSpike.transform.SetParent(mapParent);
-        }
-
-        currentBlock = newSmallSpike;
-        isPlacingBlock = true;
-    }
-
-    public void AddPlatform()
-    {
-        if (isPlacingBlock) return;
-
-        GameObject newPlatform = new GameObject("Platform");
-        SpriteRenderer spriteRenderer = newPlatform.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Resources.Load<Sprite>("InGame/PlateformSkin/RegularPlatform01");
-        if (spriteRenderer.sprite == null)
-        {
-            Debug.LogError("Le sprite de la plateforme est introuvable. Vérifiez le chemin Resources/InGame/Platform/Platform01.png");
-        }
-
-        BoxCollider2D collider = newPlatform.AddComponent<BoxCollider2D>();
-        collider.offset = Vector2.zero;
-        collider.size = spriteRenderer.sprite.bounds.size;
-
-        newPlatform.transform.position = new Vector2(0, 0);
-        currentScale = new Vector3(1f, 1f, 1);
-        newPlatform.transform.localScale = currentScale;
-
-        if (mapParent != null)
-        {
-            newPlatform.transform.SetParent(mapParent);
-        }
-
-        currentBlock = newPlatform;
-        isPlacingBlock = true;
-    }
-
-    public void AddShipPortal()
-    {
-        if (isPlacingBlock) return;
-
-        GameObject newShipPortal = new GameObject("ShipPortal");
-        SpriteRenderer spriteRenderer = newShipPortal.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Resources.Load<Sprite>("InGame/PortalsSkin/ShipPortalLabelled");
-        if (spriteRenderer.sprite == null)
-        {
-            Debug.LogError("Le sprite de la plateforme est introuvable. Vérifiez le chemin Resources/InGame/PortalSkin/ShipPortalLabelled");
-        }
-
-        BoxCollider2D collider = newShipPortal.AddComponent<BoxCollider2D>();
-        collider.offset = Vector2.zero;
-        collider.size = spriteRenderer.sprite.bounds.size;
-
-        newShipPortal.transform.position = new Vector2(0, 0);
-        newShipPortal.transform.localScale = new Vector3(0.5f, 0.5f, 1);
-
-        if (mapParent != null)
-        {
-            newShipPortal.transform.SetParent(mapParent);
-        }
-
-        currentBlock = newShipPortal;
-        isPlacingBlock = true;
-    }
-
-    public void AddCubePortal()
-    {
-        if (isPlacingBlock) return;
-
-        GameObject newCubePortal = new GameObject("CubePortal");
-        SpriteRenderer spriteRenderer = newCubePortal.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Resources.Load<Sprite>("InGame/PortalsSkin/CubePortalLabelled");
-        if (spriteRenderer.sprite == null)
-        {
-            Debug.LogError("Le sprite de la plateforme est introuvable. Vérifiez le chemin Resources/InGame/PortalSkin/ShipPortalLabelled");
-        }
-
-        BoxCollider2D collider = newCubePortal.AddComponent<BoxCollider2D>();
-        collider.offset = Vector2.zero;
-        collider.size = spriteRenderer.sprite.bounds.size;
-
-        newCubePortal.transform.position = new Vector2(0, 0);
-        newCubePortal.transform.localScale = new Vector3(0.5f, 0.5f, 1);
-
-        if (mapParent != null)
-        {
-            newCubePortal.transform.SetParent(mapParent);
-        }
-
-        currentBlock = newCubePortal;
+        currentBlock = obj;
         isPlacingBlock = true;
     }
 
     public void Save()
     {
-        //TODO
+        // TODO : Implémenter la sauvegarde du niveau
     }
 }

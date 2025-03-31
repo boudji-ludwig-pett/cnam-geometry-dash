@@ -1,16 +1,21 @@
 {
     "name": "Back on Track",
     "musicName": "BackOnTrack",
-    "totalJumps": 0,
-    "totalAttempts": 0,
     "order": 2,
     "elements": [
         {
             "type": "Spike",
-            "position": {
-                "x": 0,
-                "y": 0
-            }
+            "x": -6.684000015258789,
+            "y": -2.8970000743865969,
+            "scaleX": -1.0,
+            "scaleY": -1.0
+        },
+        {
+            "type": "Spike",
+            "x": -3.059999942779541,
+            "y": -2.930000066757202,
+            "scaleX": -1.0,
+            "scaleY": -1.0
         }
     ]
 }
