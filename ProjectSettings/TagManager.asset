@@ -8,6 +8,10 @@ TagManager:
   - Win
   - LevelsLoader
   - LevelLoader
+  - CubePortal
+  - ShipPortal
+  - BonusBoostSpeed
+  - BonusSlowSpeed
   layers:
   - Default
   - TransparentFX

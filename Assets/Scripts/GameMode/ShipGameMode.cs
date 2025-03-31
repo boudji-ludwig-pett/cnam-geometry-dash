@@ -12,7 +12,7 @@ public class ShipGameMode : IGameMode
 
     public void Update(Player player)
     {
-        player.RigidBody.linearVelocity = new Vector2(HorizontalSpeed, player.RigidBody.linearVelocity.y);
+        player.RigidBody.linearVelocity = new Vector2(HorizontalSpeed * player.SpeedMultiplier, player.RigidBody.linearVelocity.y);
 
         bool jumpPressed = Input.GetKey(JumpKey);
 
