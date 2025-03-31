@@ -43,6 +43,8 @@ public class LevelEditor : MonoBehaviour
         blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Block"));
         blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Spike"));
         portalPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Portals"));
+        portalPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs/Bonus"));
+
     }
 
     void GenerateButtons()
@@ -146,6 +148,8 @@ public class LevelEditor : MonoBehaviour
             currentScale = new Vector3(0.15f, 0.15f, 1);
         else if (name.Contains("block"))
             currentScale = new Vector3(0.2f, 0.2f, 1);
+        else if (name.Contains("bonus"))
+            currentScale = new Vector3(0.3f, 0.3f, 1);
         else
             currentScale = new Vector3(1f, 1f, 1);
 
