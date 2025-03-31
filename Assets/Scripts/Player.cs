@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public bool CanJump { get; set; } = true;
 
     public IGameMode CurrentGameMode { get; set; }
+    public float SpeedMultiplier = 1f;
 
     public void Awake()
     {
@@ -66,6 +67,16 @@ public class Player : MonoBehaviour
         {
             SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
             ChangeGameMode(new NormalGameMode());
+        }
+        else if (collision.CompareTag("BonusBoostSpeed"))
+        {
+            SpeedMultiplier *= 1.5f;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.CompareTag("BonusSlowSpeed"))
+        {
+            SpeedMultiplier /= 1.5f;
+            Destroy(collision.gameObject);
         }
     }
 
