@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 0eaa34404437fe54aaa454f7c0c88872
+guid: ab96f0812e9d38deb97628bf7fe0245a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8820715720815460284
-    second: Ship_0
+      213: 4433539168102762298
+    second: Home_0
+  - first:
+      213: -5679780796083437369
+    second: Home_1
+  - first:
+      213: 1189664590173161521
+    second: Home_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +78,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -96,17 +102,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ship_0
+      name: Home_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 21
-        width: 152
-        height: 121
+        x: 7
+        y: 8
+        width: 231
+        height: 230
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 440471c39c5869580800000000000000
-      internalID: -8820715720815460284
+      spriteID: a37cb8c2268178d30800000000000000
+      internalID: 4433539168102762298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Home_1
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 145
+        width: 6
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c08c5f657d5d21b0800000000000000
+      internalID: -5679780796083437369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Home_2
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 114
+        width: 6
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 138c12344a9828010800000000000000
+      internalID: 1189664590173161521
       vertices: []
       indices: 
       edges: []
@@ -135,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Ship_0: -8820715720815460284
+      Home_0: 4433539168102762298
+      Home_1: -5679780796083437369
+      Home_2: 1189664590173161521
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -16,6 +16,8 @@ TagManager:
   - CubePortal
   - BlockButtonGroup
   - PortalButtonGroup
+  - BonusBoostSpeed
+  - BonusSlowSpeed
   layers:
   - Default
   - TransparentFX
