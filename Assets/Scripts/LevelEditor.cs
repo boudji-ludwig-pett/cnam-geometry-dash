@@ -192,7 +192,7 @@ public class LevelEditor : MonoBehaviour
 
                 Vector2 localClick = mousePos - (Vector2)resizingTarget.transform.position;
                 float ratio = resizingTarget.GetComponent<Collider2D>().bounds.size.x /
-                              resizingTarget.GetComponent<Collider2D>().bounds.size.y;
+                resizingTarget.GetComponent<Collider2D>().bounds.size.y;
 
                 currentResizeAxis = Mathf.Abs(localClick.x) > Mathf.Abs(localClick.y * ratio)
                     ? ResizeAxis.Horizontal
