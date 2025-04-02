@@ -142,9 +142,9 @@ public class LevelEditor : MonoBehaviour
 
         InstantiateAndPrepare(prefab, currentScale);
     }
-
     void Update()
     {
+        // Déplacement de l'objet en cours de placement
         if (isPlacingBlock && currentBlock != null)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -178,13 +178,33 @@ public class LevelEditor : MonoBehaviour
                 PlaceBlock();
             }
         }
-
-        if (Input.GetMouseButtonDown(0) && !isPlacingBlock)
+        else if (Input.GetMouseButtonDown(0)) // Clic gauche pour reprendre un objet déjà placé
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
 
-            if (hit != null)
+            if (hit != null && hit.transform != null && hit.transform.parent == mapParent)
+            {
+                if (hit.CompareTag("Ground"))
+                {
+                    Debug.Log("Impossible de déplacer le sol (tag Ground).");
+                    return;
+                }
+                currentBlock = hit.gameObject;
+                isPlacingBlock = true;
+                currentScale = currentBlock.transform.localScale;
+                Debug.Log($"Déplacement de l'objet : {currentBlock.name}");
+                return;
+            }
+        }
+
+        // Redimensionnement d'un objet déjà placé
+        if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift) && !isPlacingBlock)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hit = Physics2D.OverlapPoint(mousePos);
+
+            if (hit != null && hit.transform != null && hit.transform.parent == mapParent && !hit.CompareTag("Ground"))
             {
                 resizingTarget = hit.gameObject;
                 originalMousePos = mousePos;
@@ -192,13 +212,14 @@ public class LevelEditor : MonoBehaviour
 
                 Vector2 localClick = mousePos - (Vector2)resizingTarget.transform.position;
                 float ratio = resizingTarget.GetComponent<Collider2D>().bounds.size.x /
-                resizingTarget.GetComponent<Collider2D>().bounds.size.y;
+                              resizingTarget.GetComponent<Collider2D>().bounds.size.y;
 
                 currentResizeAxis = Mathf.Abs(localClick.x) > Mathf.Abs(localClick.y * ratio)
                     ? ResizeAxis.Horizontal
                     : ResizeAxis.Vertical;
 
                 isResizing = true;
+                Debug.Log($"Début de redimensionnement : {resizingTarget.name}, axe = {currentResizeAxis}");
             }
         }
 
@@ -207,15 +228,34 @@ public class LevelEditor : MonoBehaviour
             Vector3 currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 delta = currentMousePos - originalMousePos;
 
+            Vector3 newScale = originalScale;
+
             if (currentResizeAxis == ResizeAxis.Horizontal)
-            {
-                float newScaleX = Mathf.Max(0.1f, originalScale.x + delta.x);
-                resizingTarget.transform.localScale = new Vector3(newScaleX, originalScale.y, 1);
-            }
+                newScale.x = Mathf.Max(0.1f, originalScale.x + delta.x);
             else if (currentResizeAxis == ResizeAxis.Vertical)
+                newScale.y = Mathf.Max(0.1f, originalScale.y + delta.y);
+
+            // Temporarily apply the new scale for collision testing
+            Vector3 originalPos = resizingTarget.transform.position;
+            resizingTarget.transform.localScale = newScale;
+
+            Bounds bounds = resizingTarget.GetComponent<Collider2D>().bounds;
+            Collider2D[] overlaps = Physics2D.OverlapBoxAll(bounds.center, bounds.size, 0f);
+
+            bool hasCollision = false;
+            foreach (var col in overlaps)
             {
-                float newScaleY = Mathf.Max(0.1f, originalScale.y + delta.y);
-                resizingTarget.transform.localScale = new Vector3(originalScale.x, newScaleY, 1);
+                if (col.gameObject != resizingTarget && col.transform.parent == mapParent)
+                {
+                    hasCollision = true;
+                    break;
+                }
+            }
+
+            if (hasCollision)
+            {
+                resizingTarget.transform.localScale = originalScale; // revert
+                Debug.Log("Étirement annulé : collision détectée.");
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -225,10 +265,72 @@ public class LevelEditor : MonoBehaviour
                 currentResizeAxis = ResizeAxis.None;
             }
         }
+
+
+        // Clic droit pour supprimer un objet déjà placé (sauf le sol)
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hit = Physics2D.OverlapPoint(mousePos);
+
+            if (hit != null && hit.transform != null && hit.transform.parent == mapParent)
+            {
+                if (hit.CompareTag("Ground"))
+                {
+                    Debug.Log("Impossible de supprimer le sol (tag Ground).");
+                    return;
+                }
+
+                Destroy(hit.gameObject);
+                Debug.Log($"Objet supprimé : {hit.name}");
+            }
+        }
+
     }
 
     void PlaceBlock()
     {
+        if (currentBlock.name.ToLower().Contains("smallobstacle") || currentBlock.name.ToLower().Contains("portal"))
+        {
+            // Pas de snap pour les small blocks
+            isPlacingBlock = false;
+            currentBlock = null;
+            return;
+        }
+
+        // Calcul de la position au sol ou sur le bloc le plus bas
+        Vector2 origin = currentBlock.transform.position;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.down, 100f);
+
+        float highestY = -Mathf.Infinity;
+        GameObject bestTarget = null;
+
+        foreach (var hit in hits)
+        {
+            if (hit.collider != null && hit.collider.gameObject != currentBlock)
+            {
+                float topOfObject = hit.collider.bounds.max.y;
+                if (topOfObject > highestY)
+                {
+                    highestY = topOfObject;
+                    bestTarget = hit.collider.gameObject;
+                }
+            }
+        }
+
+        // Si on a trouvé un bloc en dessous, on s'aligne sur le dessus
+        if (bestTarget != null)
+        {
+            float height = currentBlock.GetComponent<Collider2D>().bounds.size.y;
+            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, highestY + height / 2f, -1);
+        }
+        else
+        {
+            // Sinon on pose au sol (y = 0)
+            float height = currentBlock.GetComponent<Collider2D>().bounds.size.y;
+            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, height / 2f, -1);
+        }
+
         isPlacingBlock = false;
         currentBlock = null;
     }
