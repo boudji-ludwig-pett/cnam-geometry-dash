@@ -46,12 +46,6 @@ public class LevelEditor : MonoBehaviour
 
         Transform container = blockGroupContainer;
 
-        if (container == null || buttonPrefabTemplate == null)
-        {
-            Debug.LogError("UI Container ou prefab de bouton manquant.");
-            return;
-        }
-
         int start = currentPage * buttonsPerPage;
         int end = Mathf.Min(start + buttonsPerPage, blockPrefabs.Count);
 
@@ -82,9 +76,13 @@ public class LevelEditor : MonoBehaviour
 
             string prefabName = blockPrefabs[i].name.ToLower();
             if (prefabName.Contains("smallspike") || prefabName.Contains("smallobstacle"))
+            {
                 icon.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 25);
+            }
             else
+            {
                 icon.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
+            }
 
             GameObject prefab = blockPrefabs[i];
             button.GetComponent<Button>().onClick.AddListener(() => SelectPrefab(prefab));
@@ -95,7 +93,9 @@ public class LevelEditor : MonoBehaviour
     void ClearCurrentButtons()
     {
         foreach (var button in currentButtons)
+        {
             Destroy(button);
+        }
 
         currentButtons.Clear();
     }
@@ -103,7 +103,6 @@ public class LevelEditor : MonoBehaviour
     public void NextPage()
     {
         int maxPage = 3;
-        Debug.Log(currentPage);
         if (currentPage < maxPage - 1)
         {
             currentPage++;
@@ -113,7 +112,6 @@ public class LevelEditor : MonoBehaviour
 
     public void PreviousPage()
     {
-        Debug.Log(currentPage);
         if (currentPage > 0)
         {
             currentPage--;
@@ -123,22 +121,38 @@ public class LevelEditor : MonoBehaviour
 
     void SelectPrefab(GameObject prefab)
     {
-        if (isPlacingBlock) return;
+        if (isPlacingBlock)
+        {
+            return;
+        }
 
         string name = prefab.name.ToLower();
 
         if (name.Contains("portal"))
+        {
             currentScale = new Vector3(0.5f, 0.5f, 1);
+        }
         else if (name.Contains("small"))
+        {
             currentScale = new Vector3(0.15f, 0.07f, 1);
+        }
         else if (name.Contains("spike"))
+        {
             currentScale = new Vector3(0.15f, 0.15f, 1);
+        }
         else if (name.Contains("block"))
+        {
+
             currentScale = new Vector3(0.2f, 0.2f, 1);
+        }
         else if (name.Contains("bonus"))
+        {
             currentScale = new Vector3(0.3f, 0.3f, 1);
+        }
         else
+        {
             currentScale = new Vector3(1f, 1f, 1);
+        }
 
         InstantiateAndPrepare(prefab, currentScale);
     }
@@ -171,7 +185,6 @@ public class LevelEditor : MonoBehaviour
 
                 if (overlaps.Length > 1)
                 {
-                    Debug.Log("Placement annulé : un objet est déjà présent à cet endroit.");
                     return;
                 }
 
@@ -239,11 +252,10 @@ public class LevelEditor : MonoBehaviour
         obj.transform.position = new Vector3(0, 0, -1);
         obj.transform.localScale = scaleOverride ?? currentScale;
 
-        try { obj.tag = prefab.name; }
-        catch { Debug.LogWarning($"Le tag '{prefab.name}' n'existe pas. Ajoutez-le dans Project Settings > Tags."); }
-
         if (mapParent != null)
+        {
             obj.transform.SetParent(mapParent);
+        }
 
         currentBlock = obj;
         isPlacingBlock = true;
@@ -251,6 +263,5 @@ public class LevelEditor : MonoBehaviour
 
     public void Save()
     {
-        // TODO : Implémenter la sauvegarde du niveau
     }
 }
