@@ -8,8 +8,14 @@ TagManager:
   - Win
   - LevelsLoader
   - LevelLoader
-  - CubePortal
+  - ObstacleBlock
+  - Spike
+  - SmallSpike
   - ShipPortal
+  - Platform
+  - CubePortal
+  - BlockButtonGroup
+  - PortalButtonGroup
   - BonusBoostSpeed
   - BonusSlowSpeed
   layers:

@@ -17,18 +17,6 @@ public class JSONImporter : MonoBehaviour
             if (statusObj != null)
             {
                 statusText = statusObj.GetComponent<TMP_Text>();
-                if (statusText != null)
-                {
-                    Debug.Log("✅ StatusText found and assigned automatically!");
-                }
-                else
-                {
-                    Debug.LogError("⚠️ 'StatusText' was found but does not have a TMP_Text component!");
-                }
-            }
-            else
-            {
-                Debug.LogError("⚠️ No GameObject named 'StatusText' found in the scene. Please create a TextMeshPro element and name it 'StatusText'.");
             }
         }
     }
@@ -40,15 +28,10 @@ public class JSONImporter : MonoBehaviour
             statusText.text = "Ready to import...";
             statusText.color = Color.white;
         }
-        else
-        {
-            Debug.LogError("statusText is not assigned!");
-        }
     }
 
     public void ImportJSON()
     {
-        Debug.Log("Button clicked, starting import...");
         if (statusText != null)
         {
             statusText.text = "Importing...";
@@ -80,10 +63,7 @@ public class JSONImporter : MonoBehaviour
                 File.Copy(sourcePath, destinationPath, true);
                 success = true;
             }
-            catch (IOException e)
-            {
-                Debug.LogError("Error copying file: " + e.Message);
-            }
+            catch { }
 
             if (success)
             {
@@ -119,10 +99,6 @@ public class JSONImporter : MonoBehaviour
             statusText.gameObject.SetActive(false);
             statusText.gameObject.SetActive(true);
             Canvas.ForceUpdateCanvases();
-        }
-        else
-        {
-            Debug.LogError("statusText is NULL!");
         }
     }
 }

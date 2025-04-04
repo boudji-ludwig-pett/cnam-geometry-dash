@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b1045b8864d217948b2b89134b7f9b32
+guid: cfdff025b05e3d9459dc5ca15c0b7218
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1834338360412052916
-    second: ShipPortalLabelled_0
+      213: 3787390808643081465
+    second: RegularPlatform01_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ShipPortalLabelled_0
+      name: RegularPlatform01_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 60
-        height: 106
+        width: 122
+        height: 56
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4264cddafe1b86e0800000000000000
-      internalID: -1834338360412052916
+      spriteID: 9f410cebfd38f8430800000000000000
+      internalID: 3787390808643081465
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ShipPortalLabelled_0: -1834338360412052916
+      RegularPlatform01_0: 3787390808643081465
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
