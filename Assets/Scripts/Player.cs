@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     public LevelsLoader LevelsLoader { get; private set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
     public bool IsColliding { get; set; } = true;
-    public bool HasStarted { get; private set; } = false;
 
     public IGameMode CurrentGameMode { get; set; }
     public float SpeedMultiplier = 1f;
@@ -29,14 +28,7 @@ public class Player : MonoBehaviour
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         Particle.transform.parent = null;
 
-        Invoke(nameof(EnableInput), 0.1f);
-
         CurrentGameMode = new NormalGameMode();
-    }
-
-    private void EnableInput()
-    {
-        HasStarted = true;
     }
 
     public void Update()
@@ -59,7 +51,6 @@ public class Player : MonoBehaviour
     {
         if (collision.CompareTag("ShipPortal"))
         {
-            Debug.Log("ShipPortal");
             SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/Ship");
             ChangeGameMode(new ShipGameMode());
         }

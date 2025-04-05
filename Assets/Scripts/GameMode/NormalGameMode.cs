@@ -11,12 +11,12 @@ public class NormalGameMode : IGameMode
     private float targetRotationAngle = 0f;
     private readonly float rotationSpeed = 360f;
 
-
     public void Update(Player player)
     {
         player.RigidBody.linearVelocity = new Vector2(HorizontalSpeed * player.SpeedMultiplier, player.RigidBody.linearVelocity.y);
 
-        if (player.HasStarted && player.IsColliding && Input.GetKey(JumpKey) && !isRotating)
+
+        if (player.IsColliding && Input.GetKey(JumpKey) && !isRotating)
         {
             Jump(player);
         }

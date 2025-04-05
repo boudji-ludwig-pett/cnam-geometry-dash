@@ -16,7 +16,7 @@ public class ShipGameMode : IGameMode
 
         bool jumpPressed = Input.GetKey(JumpKey);
 
-        if (player.HasStarted && jumpPressed)
+        if (jumpPressed)
         {
             Jump(player);
 
