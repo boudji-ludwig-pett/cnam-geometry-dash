@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     public SpriteRenderer SpriteRenderer { get; private set; }
     public bool IsColliding { get; set; } = true;
     public bool HasStarted { get; private set; } = false;
-    public bool CanJump { get; set; } = true;
 
     public IGameMode CurrentGameMode { get; set; }
     public float SpeedMultiplier = 1f;
@@ -60,6 +59,7 @@ public class Player : MonoBehaviour
     {
         if (collision.CompareTag("ShipPortal"))
         {
+            Debug.Log("ShipPortal");
             SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/Ship");
             ChangeGameMode(new ShipGameMode());
         }

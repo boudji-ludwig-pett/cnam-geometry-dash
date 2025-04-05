@@ -49,7 +49,9 @@ public class ShipGameMode : IGameMode
     {
         float angle = player.Transform.rotation.eulerAngles.z;
         if (angle > 180f)
+        {
             angle -= 360f;
+        }
         return angle;
     }
 

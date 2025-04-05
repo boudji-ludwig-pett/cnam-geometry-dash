@@ -543,6 +543,7 @@ MonoBehaviour:
   playerObject: {fileID: 1267397455}
   normalMinYFollow: 2
   shipMinYFollow: 6
+  smoothSpeed: 5
 --- !u!1 &521952199
 GameObject:
   m_ObjectHideFlags: 0
@@ -6451,9 +6452,9 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!212 &1267397457
 SpriteRenderer:
   m_ObjectHideFlags: 0
