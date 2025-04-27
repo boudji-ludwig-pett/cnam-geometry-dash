@@ -6,10 +6,10 @@ public class Player : MonoBehaviour
     public Rigidbody2D RigidBody { get; private set; }
     public Transform Transform { get; private set; }
     public ParticleSystem Particle { get; private set; }
-    public LevelsLoader LevelsLoader { get; private set; }
+    public LevelsLoader LevelsLoader { get; set; }
     public SpriteRenderer SpriteRenderer { get; private set; }
     public bool IsColliding { get; set; } = true;
-    public bool HasStarted { get; private set; } = false;
+    public bool HasStarted { get; set; } = false;
     public bool CanJump { get; set; } = true;
 
     public IGameMode CurrentGameMode { get; set; }
@@ -21,7 +21,12 @@ public class Player : MonoBehaviour
         Transform = transform;
         Particle = GetComponentInChildren<ParticleSystem>();
         SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        LevelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
+
+        GameObject loaderObj = GameObject.FindGameObjectWithTag("LevelsLoader");
+        if (loaderObj != null)
+            LevelsLoader = loaderObj.GetComponent<LevelsLoader>();
+        else
+            Debug.LogWarning("LevelsLoader introuvable : Progression désactivée pour ce niveau.");
     }
 
     public void Start()
@@ -42,21 +47,27 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
-        CurrentGameMode.Update(this);
-        LevelsLoader.CalculateCurrentProgressionPercent(transform.position);
+        if (!HasStarted)
+            return;
+
+        if (CurrentGameMode != null)
+            CurrentGameMode.Update(this);
+
+        if (LevelsLoader != null)
+            LevelsLoader.CalculateCurrentProgressionPercent(transform.position);
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        CurrentGameMode.OnCollisionEnter(this, collision);
+        CurrentGameMode?.OnCollisionEnter(this, collision);
     }
 
     public void OnCollisionExit2D(Collision2D collision)
     {
-        CurrentGameMode.OnCollisionExit(this, collision);
+        CurrentGameMode?.OnCollisionExit(this, collision);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("ShipPortal"))
         {
@@ -83,5 +94,17 @@ public class Player : MonoBehaviour
     public void ChangeGameMode(IGameMode newMode)
     {
         CurrentGameMode = newMode;
+    }
+
+    // ➔ Ajout pour supporter le TestManager directement :
+    public void StartTest()
+    {
+        HasStarted = true;
+    }
+
+    public void StopTest()
+    {
+        HasStarted = false;
+        RigidBody.linearVelocity = Vector2.zero; // Reset la vitesse proprement
     }
 }

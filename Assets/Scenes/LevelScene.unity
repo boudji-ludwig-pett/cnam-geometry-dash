@@ -543,6 +543,7 @@ MonoBehaviour:
   playerObject: {fileID: 1267397455}
   normalMinYFollow: 2
   shipMinYFollow: 6
+  isPlaying: 1
 --- !u!1 &521952199
 GameObject:
   m_ObjectHideFlags: 0
