@@ -140,6 +140,15 @@ jobs:
           name: build-linux
           path: build/linux
 
+      - name: Zip Builds
+        run: |
+          cd build/windows
+          zip -r ../windows.zip .
+          cd ../macos
+          zip -r ../macos.zip .
+          cd ../linux
+          zip -r ../linux.zip .
+
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2.2.2
@@ -154,6 +163,6 @@ jobs:
             Commit: `${{ github.sha }}`
           prerelease: ${{ github.ref != 'refs/heads/main' }}
           files: |
-            build/windows/**/*
-            build/macos/**/*
-            build/linux/**/*
+            build/windows.zip
+            build/macos.zip
+            build/linux.zip
