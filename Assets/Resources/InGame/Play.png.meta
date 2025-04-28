@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e0426acdd6d763946bab617252a0f5aa
+guid: 6b64c942662170e44b2f80d605a405f4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1925945982471551178
-    second: BlankSquare 1_0
+      213: -2073137460773038770
+    second: PauseIcon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BlankSquare 1_0
+      name: PauseIcon_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 512
-        height: 512
+        x: 17
+        y: 19
+        width: 239
+        height: 218
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac8becdbaa55aba10800000000000000
-      internalID: 1925945982471551178
+      spriteID: e455110a67cba33e0800000000000000
+      internalID: -2073137460773038770
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BlankSquare 1_0: 1925945982471551178
+      PauseIcon_0: -2073137460773038770
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

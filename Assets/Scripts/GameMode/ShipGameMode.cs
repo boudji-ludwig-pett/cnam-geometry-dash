@@ -59,7 +59,10 @@ public class ShipGameMode : IGameMode
     {
         player.RigidBody.linearVelocity = new Vector2(player.RigidBody.linearVelocity.x, 0);
         player.RigidBody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
-        player.LevelsLoader.IncreaseTotalJumps();
+        if (player.LevelsLoader != null)
+        {
+            player.LevelsLoader.IncreaseTotalJumps();
+        }
     }
 
     public void OnCollisionEnter(Player player, Collision2D collision)

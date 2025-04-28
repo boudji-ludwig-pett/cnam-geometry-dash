@@ -18,6 +18,7 @@ TagManager:
   - PortalButtonGroup
   - BonusBoostSpeed
   - BonusSlowSpeed
+  - Ground
   layers:
   - Default
   - TransparentFX
