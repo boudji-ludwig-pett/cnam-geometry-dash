@@ -27,4 +27,9 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadSceneAsync("CreateLevelScene");
     }
+
+    public void EditLevel()
+    {
+        SceneManager.LoadSceneAsync("SelectLevelToEditScene");
+    }
 }
