@@ -6002,7 +6002,7 @@ MonoBehaviour:
   currentPlayer: {fileID: 78453697}
   spawnPoint: {fileID: 0}
   editorUI: {fileID: 0}
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 746393166}
 --- !u!114 &1561821050
 MonoBehaviour:
   m_ObjectHideFlags: 0
