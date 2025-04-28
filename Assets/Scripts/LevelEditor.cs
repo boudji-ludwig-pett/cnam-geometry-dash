@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class LevelEditor : MonoBehaviour
 {
     [Header("Placement")]
-    public Transform mapParent;
     private GameObject currentBlock;
     private bool isPlacingBlock = false;
     private Vector3 currentScale = new Vector3(1f, 1f, 1);
@@ -150,6 +149,11 @@ public class LevelEditor : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             currentBlock.transform.position = new Vector3(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y), -1);
 
+            if (currentBlock != null && Input.GetKeyDown(KeyCode.R))
+            {
+                HandleBlockRotation(); // ✅ Nouvelle rotation
+            }
+
             if (!currentBlock.name.ToLower().Contains("portal"))
             {
                 float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -183,7 +187,7 @@ public class LevelEditor : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
 
-            if (hit != null && hit.transform != null && hit.transform.parent == mapParent)
+            if (hit != null && hit.transform != null)
             {
                 if (hit.CompareTag("Ground"))
                 {
@@ -204,7 +208,7 @@ public class LevelEditor : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
 
-            if (hit != null && hit.transform != null && hit.transform.parent == mapParent && !hit.CompareTag("Ground"))
+            if (hit != null && hit.transform != null && !hit.CompareTag("Ground"))
             {
                 resizingTarget = hit.gameObject;
                 originalMousePos = mousePos;
@@ -212,7 +216,7 @@ public class LevelEditor : MonoBehaviour
 
                 Vector2 localClick = mousePos - (Vector2)resizingTarget.transform.position;
                 float ratio = resizingTarget.GetComponent<Collider2D>().bounds.size.x /
-                              resizingTarget.GetComponent<Collider2D>().bounds.size.y;
+                resizingTarget.GetComponent<Collider2D>().bounds.size.y;
 
                 currentResizeAxis = Mathf.Abs(localClick.x) > Mathf.Abs(localClick.y * ratio)
                     ? ResizeAxis.Horizontal
@@ -245,7 +249,7 @@ public class LevelEditor : MonoBehaviour
             bool hasCollision = false;
             foreach (var col in overlaps)
             {
-                if (col.gameObject != resizingTarget && col.transform.parent == mapParent)
+                if (col.gameObject != resizingTarget)
                 {
                     hasCollision = true;
                     break;
@@ -273,7 +277,7 @@ public class LevelEditor : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
 
-            if (hit != null && hit.transform != null && hit.transform.parent == mapParent)
+            if (hit != null && hit.transform != null)
             {
                 if (hit.CompareTag("Ground"))
                 {
@@ -290,51 +294,134 @@ public class LevelEditor : MonoBehaviour
 
     void PlaceBlock()
     {
+        bool skipVerticalSnap = false;
+
         if (currentBlock.name.ToLower().Contains("smallobstacle") || currentBlock.name.ToLower().Contains("portal"))
         {
-            // Pas de snap pour les small blocks
-            isPlacingBlock = false;
-            currentBlock = null;
-            return;
+            skipVerticalSnap = true; // On saute l'alignement vertical pour ces cas-là
         }
 
-        // Calcul de la position au sol ou sur le bloc le plus bas
-        Vector2 origin = currentBlock.transform.position;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.down, 100f);
-
-        float highestY = -Mathf.Infinity;
-        GameObject bestTarget = null;
-
-        foreach (var hit in hits)
+        if (!skipVerticalSnap)
         {
-            if (hit.collider != null && hit.collider.gameObject != currentBlock)
+            Vector2 origin = currentBlock.transform.position;
+            RaycastHit2D[] hitsBelow = Physics2D.RaycastAll(origin, Vector2.down, 100f);
+
+            float highestY = -Mathf.Infinity;
+            GameObject bestTargetBelow = null;
+
+            foreach (var hit in hitsBelow)
             {
-                float topOfObject = hit.collider.bounds.max.y;
-                if (topOfObject > highestY)
+                if (hit.collider != null && hit.collider.gameObject != currentBlock)
                 {
-                    highestY = topOfObject;
-                    bestTarget = hit.collider.gameObject;
+                    float topOfObject = hit.collider.bounds.max.y;
+                    if (topOfObject > highestY)
+                    {
+                        highestY = topOfObject;
+                        bestTargetBelow = hit.collider.gameObject;
+                    }
                 }
             }
-        }
 
-        // Si on a trouvé un bloc en dessous, on s'aligne sur le dessus
-        if (bestTarget != null)
-        {
-            float height = currentBlock.GetComponent<Collider2D>().bounds.size.y;
-            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, highestY + height / 2f, -1);
+            if (bestTargetBelow != null)
+            {
+                float height = currentBlock.GetComponent<Collider2D>().bounds.size.y;
+                currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, highestY + height / 2f, -1);
+            }
+            else
+            {
+                float height = currentBlock.GetComponent<Collider2D>().bounds.size.y;
+                currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, height / 2f, -1);
+            }
         }
-        else
-        {
-            // Sinon on pose au sol (y = 0)
-            float height = currentBlock.GetComponent<Collider2D>().bounds.size.y;
-            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, height / 2f, -1);
-        }
+        // ➔ Toujours essayer de snap sur la droite et en bas même pour Portal et SmallObstacle
+        TrySnapToNearbyBlock();
 
         isPlacingBlock = false;
         currentBlock = null;
     }
 
+
+    private void TrySnapToNearbyBlock()
+    {
+        if (currentBlock == null)
+            return;
+
+        Collider2D blockCollider = currentBlock.GetComponent<Collider2D>();
+        Bounds bounds = blockCollider.bounds;
+
+        float snapDistance = 1f; // Distance de snap (en Unity units)
+
+        // Zone de scan à droite
+        Vector2 rightAreaStart = new Vector2(bounds.max.x, bounds.min.y);
+        Vector2 rightAreaEnd = new Vector2(bounds.max.x + snapDistance, bounds.max.y);
+
+        // Zone de scan à gauche
+        Vector2 leftAreaStart = new Vector2(bounds.min.x - snapDistance, bounds.min.y);
+        Vector2 leftAreaEnd = new Vector2(bounds.min.x, bounds.max.y);
+
+        // Zone de scan en dessous
+        Vector2 bottomAreaStart = new Vector2(bounds.min.x, bounds.min.y - snapDistance);
+        Vector2 bottomAreaEnd = new Vector2(bounds.max.x, bounds.min.y);
+
+        // Zone de scan au dessus
+        Vector2 topAreaStart = new Vector2(bounds.min.x, bounds.max.y);
+        Vector2 topAreaEnd = new Vector2(bounds.max.x, bounds.max.y + snapDistance);
+
+        Collider2D[] hitsRight = Physics2D.OverlapAreaAll(rightAreaStart, rightAreaEnd);
+        Collider2D[] hitsLeft = Physics2D.OverlapAreaAll(leftAreaStart, leftAreaEnd);
+        Collider2D[] hitsBelow = Physics2D.OverlapAreaAll(bottomAreaStart, bottomAreaEnd);
+        Collider2D[] hitsAbove = Physics2D.OverlapAreaAll(topAreaStart, topAreaEnd);
+
+        // ➔ Priorité : droite > gauche > bas > haut
+
+        foreach (var hit in hitsRight)
+        {
+            if (hit != null && hit.gameObject != currentBlock)
+            {
+                float theirLeft = hit.bounds.min.x;
+                float ourWidth = bounds.size.x;
+                currentBlock.transform.position = new Vector3(theirLeft - ourWidth / 2f, currentBlock.transform.position.y, -1);
+                Debug.Log("✅ Snap automatique à droite !");
+                return;
+            }
+        }
+
+        foreach (var hit in hitsLeft)
+        {
+            if (hit != null && hit.gameObject != currentBlock)
+            {
+                float theirRight = hit.bounds.max.x;
+                float ourWidth = bounds.size.x;
+                currentBlock.transform.position = new Vector3(theirRight + ourWidth / 2f, currentBlock.transform.position.y, -1);
+                Debug.Log("✅ Snap automatique à gauche !");
+                return;
+            }
+        }
+
+        foreach (var hit in hitsBelow)
+        {
+            if (hit != null && hit.gameObject != currentBlock)
+            {
+                float theirTop = hit.bounds.max.y;
+                float ourHeight = bounds.size.y;
+                currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, theirTop + ourHeight / 2f, -1);
+                Debug.Log("✅ Snap automatique en bas !");
+                return;
+            }
+        }
+
+        foreach (var hit in hitsAbove)
+        {
+            if (hit != null && hit.gameObject != currentBlock)
+            {
+                float theirBottom = hit.bounds.min.y;
+                float ourHeight = bounds.size.y;
+                currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, theirBottom - ourHeight / 2f, -1);
+                Debug.Log("✅ Snap automatique en haut !");
+                return;
+            }
+        }
+    }
     void InstantiateAndPrepare(GameObject prefab, Vector3? scaleOverride = null)
     {
         GameObject obj = Instantiate(prefab);
@@ -344,11 +431,14 @@ public class LevelEditor : MonoBehaviour
         try { obj.tag = prefab.name; }
         catch { Debug.LogWarning($"Le tag '{prefab.name}' n'existe pas. Ajoutez-le dans Project Settings > Tags."); }
 
-        if (mapParent != null)
-            obj.transform.SetParent(mapParent);
-
         currentBlock = obj;
         isPlacingBlock = true;
+    }
+
+    private void HandleBlockRotation()
+    {
+        currentBlock.transform.Rotate(0f, 0f, -90f); // ➔ Rotation de 90° dans le sens horaire
+        Debug.Log("🔄 Bloc pivoté de 90° !");
     }
 
     public void Save()
