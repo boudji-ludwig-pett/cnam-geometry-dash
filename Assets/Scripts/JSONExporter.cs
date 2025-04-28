@@ -59,13 +59,11 @@ public class JSONExporter : MonoBehaviour
         string fileName = Path.GetFileNameWithoutExtension(chosenPath);
         string destPath = Path.Combine(levelsFolder, fileName + ".json");
 
-        // Collect all placed blocks by Collider2D clones, excluding ground
         var elements = new List<SerializableElement>();
         var allCols = Object.FindObjectsByType<Collider2D>(FindObjectsSortMode.None);
         foreach (var col in allCols)
         {
             var go = col.gameObject;
-            // skip non-clones and ground objects
             if (!go.name.Contains("(Clone)") || go.name.ToLower().Contains("ground"))
                 continue;
 
@@ -82,19 +80,17 @@ public class JSONExporter : MonoBehaviour
             });
         }
 
-        // Only export if there's at least one element (excluding ground)
         if (elements.Count == 0)
         {
             SetStatus("No elements to export.", Color.red);
             yield break;
         }
 
-        // Build level data
         LevelData data = new LevelData
         {
             name = fileName,
-            musicName = "",    // assign or leave empty
-            order = 0,           // set ordering if needed
+            musicName = "",
+            order = 0,
             elements = elements.ToArray()
         };
         string json = JsonUtility.ToJson(data, prettyPrint: true);
