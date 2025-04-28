@@ -81,7 +81,7 @@ jobs:
 
       - name: Upload macOS Build Artifact
         id: upload
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4.3.0
         with:
           name: build-macos
           path: build/
@@ -122,6 +122,15 @@ jobs:
     if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: Get version from commit message
+        id: get_version
+        run: |
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          # Extract the version number after "chore(release): "
+          VERSION=$(echo "$COMMIT_MESSAGE" | sed -n 's/^chore(release): \(v[0-9]*\.[0-9]*\.[0-9]*[-a-zA-Z0-9.]*\).*$/\1/p')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+        shell: bash
+
       - name: Download Windows Build Artifact
         uses: actions/download-artifact@v4.3.0
         with:
@@ -153,9 +162,9 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2.2.2
         with:
-          tag_name: v${{ github.run_number }}
+          tag_name: ${{ steps.get_version.outputs.version }}
           name: |
-            ${{ github.ref == 'refs/heads/main' && 'Production Release' || 'Pre-release' }} v${{ github.run_number }}
+            ${{ github.ref == 'refs/heads/main' && 'Production Release' || 'Pre-release' }} ${{ steps.get_version.outputs.version }}
           body: |
             🎮 Automatic ${{ github.ref == 'refs/heads/main' && 'Production' || 'Pre-release' }} build
 
