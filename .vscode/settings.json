@@ -1,10 +1,10 @@
 {
-    "editor.bracketPairColorization.enabled": true,
-    "editor.wordWrap": "on",
-    "[csharp]": {
-        "editor.tabSize": 4,
-        "editor.formatOnSave": true,
-        "editor.formatOnType": true
-    },
-    "omnisharp.useModernNet": false
+  "editor.bracketPairColorization.enabled": true,
+  "editor.wordWrap": "on",
+  "[csharp]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true
+  },
+  "omnisharp.useModernNet": false
 }
