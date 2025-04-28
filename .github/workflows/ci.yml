@@ -50,6 +50,7 @@ jobs:
 
       - name: Upload Windows Build Artifact
         id: upload
+        if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4.4.3
         with:
           name: build-windows
@@ -81,6 +82,7 @@ jobs:
 
       - name: Upload macOS Build Artifact
         id: upload
+        if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4.3.0
         with:
           name: build-macos
@@ -112,6 +114,7 @@ jobs:
 
       - name: Upload Linux Build Artifact
         id: upload
+        if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4.6.2
         with:
           name: build-linux
@@ -163,13 +166,9 @@ jobs:
         uses: softprops/action-gh-release@v2.2.2
         with:
           tag_name: ${{ steps.get_version.outputs.version }}
-          name: |
-            ${{ github.ref == 'refs/heads/main' && 'Production Release' || 'Pre-release' }} ${{ steps.get_version.outputs.version }}
+          name: ${{ steps.get_version.outputs.version }}
           body: |
             🎮 Automatic ${{ github.ref == 'refs/heads/main' && 'Production' || 'Pre-release' }} build
-
-            Branch: `${{ github.ref_name }}`
-            Commit: `${{ github.sha }}`
           prerelease: ${{ github.ref != 'refs/heads/main' }}
           files: |
             build/windows.zip
