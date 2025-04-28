@@ -5,6 +5,7 @@ public class PlayerCamera : MonoBehaviour
     public GameObject playerObject;
     public float normalMinYFollow = 2.0f;
     public float shipMinYFollow = 6.0f;
+    public float smoothSpeed = 5.0f;
     private float initialY;
 
     [Header("References")]
@@ -33,7 +34,9 @@ public class PlayerCamera : MonoBehaviour
                 targetY = playerObject.transform.position.y;
             }
 
-            transform.position = new Vector3(playerObject.transform.position.x, targetY, transform.position.z);
+            float newY = Mathf.Lerp(transform.position.y, targetY, smoothSpeed * Time.deltaTime);
+
+            transform.position = new Vector3(playerObject.transform.position.x, newY, transform.position.z);
         }
     }
 }

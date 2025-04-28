@@ -35,14 +35,7 @@ public class Player : MonoBehaviour
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
         Particle.transform.parent = null;
 
-        Invoke(nameof(EnableInput), 0.1f);
-
         CurrentGameMode = new NormalGameMode();
-    }
-
-    private void EnableInput()
-    {
-        HasStarted = true;
     }
 
     public void Update()

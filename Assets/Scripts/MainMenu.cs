@@ -13,11 +13,6 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadSceneAsync("ImportScene");
     }
 
-    public void OpenSettings()
-    {
-        // SceneManager.LoadSceneAsync(?);
-    }
-
     public void QuitGame()
     {
         Application.Quit();
@@ -26,5 +21,15 @@ public class MainMenu : MonoBehaviour
     public void LevelEditor()
     {
         SceneManager.LoadSceneAsync("LevelEditorScene");
+    }
+
+    public void EditorChoice()
+    {
+        SceneManager.LoadSceneAsync("EditorChoiceScene");
+    }
+
+    public void CreateLevel()
+    {
+        SceneManager.LoadSceneAsync("CreateLevelScene");
     }
 }

@@ -7,6 +7,7 @@ public class LevelLoader : MonoBehaviour
     public LevelsLoader levelsLoader;
     public AudioSource audioSource;
     public Text progressionText;
+    private readonly float groundY = -6.034f;
 
     private GameObject GetPrefab(string type)
     {
@@ -43,6 +44,12 @@ public class LevelLoader : MonoBehaviour
 
             instance.transform.localScale = new Vector3(newScaleX, newScaleY, originalScale.z);
         }
+
+        GameObject groundPrefab = GetPrefab("Ground");
+        GameObject groundInstance = Instantiate(groundPrefab, new Vector3(current.LastX / 2, groundY, 0), Quaternion.identity);
+        float groundWidth = current.LastX;
+        groundInstance.transform.localScale = new Vector3(groundWidth / 5f * 2, 1, 1);
+
         Instantiate(GetPrefab("WinnerWall"), new Vector3(current.LastX, 0, 0), Quaternion.Euler(0, 0, 90));
     }
 

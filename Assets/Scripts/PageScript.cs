@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PageScript : MonoBehaviour
 {
-    public List<GameObject> buttons; // À assigner dans l’inspector
+    public List<GameObject> buttons;
     public int visibleCount = 4;
     private int currentIndex = 0;
 
