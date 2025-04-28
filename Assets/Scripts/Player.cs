@@ -40,9 +40,6 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
-        if (!HasStarted)
-            return;
-
         if (CurrentGameMode != null)
             CurrentGameMode.Update(this);
 
@@ -87,17 +84,5 @@ public class Player : MonoBehaviour
     public void ChangeGameMode(IGameMode newMode)
     {
         CurrentGameMode = newMode;
-    }
-
-    // ➔ Ajout pour supporter le TestManager directement :
-    public void StartTest()
-    {
-        HasStarted = true;
-    }
-
-    public void StopTest()
-    {
-        HasStarted = false;
-        RigidBody.linearVelocity = Vector2.zero; // Reset la vitesse proprement
     }
 }

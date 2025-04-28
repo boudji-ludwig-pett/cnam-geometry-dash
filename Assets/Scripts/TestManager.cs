@@ -26,7 +26,7 @@ public class TestManager : MonoBehaviour
         }
         else
         {
-            gameMode = new LevelEditorGameMode();
+            gameMode = new NormalGameMode();
             currentPlayer.ChangeGameMode(gameMode);
             currentPlayer.SpeedMultiplier = 0f;
 
@@ -76,7 +76,6 @@ public class TestManager : MonoBehaviour
         currentPlayer.SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
 
         currentPlayer.ChangeGameMode(gameMode);
-        currentPlayer.StartTest();
         isTesting = true;
 
         if (playerCamera != null)
@@ -98,7 +97,6 @@ public class TestManager : MonoBehaviour
     {
         if (currentPlayer != null)
         {
-            currentPlayer.StopTest();
             currentPlayer.transform.position = spawnPoint.position;
             currentPlayer.RigidBody.linearVelocity = Vector2.zero;
             currentPlayer.RigidBody.angularVelocity = 0f;
