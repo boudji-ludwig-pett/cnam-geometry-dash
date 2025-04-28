@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class LevelEditor : MonoBehaviour
 {
     [Header("Placement")]
-    public Transform mapParent;
     private GameObject currentBlock;
     private bool isPlacingBlock = false;
     private Vector3 currentScale = new Vector3(1f, 1f, 1);
@@ -42,6 +41,16 @@ public class LevelEditor : MonoBehaviour
 
     void GenerateButtons()
     {
+        if (buttonPrefabTemplate == null)
+        {
+            Debug.LogError("LevelEditor.GenerateButtons(): buttonPrefabTemplate n’est pas assigné !");
+            return;
+        }
+        if (blockGroupContainer == null)
+        {
+            Debug.LogError("LevelEditor.GenerateButtons(): blockGroupContainer n’est pas assigné !");
+            return;
+        }
         ClearCurrentButtons();
 
         Transform container = blockGroupContainer;
@@ -251,11 +260,6 @@ public class LevelEditor : MonoBehaviour
         GameObject obj = Instantiate(prefab);
         obj.transform.position = new Vector3(0, 0, -1);
         obj.transform.localScale = scaleOverride ?? currentScale;
-
-        if (mapParent != null)
-        {
-            obj.transform.SetParent(mapParent);
-        }
 
         currentBlock = obj;
         isPlacingBlock = true;
