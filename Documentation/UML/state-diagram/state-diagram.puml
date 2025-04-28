@@ -1,58 +1,30 @@
 @startuml Geometry Dash - Diagramme d'etats du joueur
 
-start
+[*] --> Avance
 
-:avancer;
+Avance --> Saute : Saute
+Avance --> HeurteObstacle : Heurte un obstacle
+Avance --> HeurtePortail : Heurte un portail
+Avance --> HeurteEclairAcc : Heurte un éclair, accélère
+Avance --> HeurteEclairRalentit : Heurte un éclair, ralentit
+Avance --> Pause : Pause
 
-repeat
-  partition "en l'air" {
-    if (Le joueur percute un obstacle ?) then (Oui)
-      :Le joueur meurt;
-      stop
-    endif
-  }
+HeurteObstacle --> Mort : Meurt
+Mort --> [*] : Redémarrer le niveau
 
-  partition "Forme" {
-    switch (Forme)
-      case (Forme fusée)
-        :Mode fusée;
-      case (Forme roue)
-        :Mode roue;
-      case (Forme sens inversé)
-        :Mode sens inversé;
-      case (Forme gravité inversée)
-        :Mode gravité inversée;
-    endswitch
-    if (Le joueur percute un obstacle ?) then (Oui)
-      :Le joueur meurt;
-      stop
-    endif
-  }
+HeurtePortail --> Fusée : Passer en mode fusée
+Fusée --> Avance : Avance en fusée
+Fusée --> HeurteObstacle : Heurte un obstacle
+Fusée --> Pause : Pause
 
-  partition "Activer un bonus" {
-    switch (Type de bonus)
-      case (Temps ralenti)
-        :Activer ralentissement du temps;
-        :Temps ralenti : 3 secondes;
-        if (Le joueur percute un obstacle ?) then (Oui)
-          :Le joueur meurt;
-          stop
-        endif
-      case (Annulation d'obstacle)
-        :Supprimer tous les obstacles;
-        :Durée : 3 secondes;
-    endswitch
-  }
+HeurteEclairAcc --> Accelère : Accélère
+Accelère --> HeurteEclairRalentit : Heurte un éclair, ralentit
+Accelère --> Avance : Retour à vitesse normale
 
-  partition "Menu de Pause" {
-    if (Le joueur clique sur reprendre?) then (Oui)
-        :Le niveau reprend correctement;
-    else (le joueur clique sur quitter)
-        stop
-    endif
-  }
-while (Le joueur n'a pas fini le niveau)
+HeurteEclairRalentit --> Ralentit : Ralentit
+Ralentit --> HeurteEclairAcc : Heurte un éclair, accélère
+Ralentit --> Avance : Retour à vitesse normale
 
-stop
+Pause --> Avance : Reprendre
 
 @enduml
