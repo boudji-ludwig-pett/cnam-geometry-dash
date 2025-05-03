@@ -41,6 +41,16 @@ public class LevelEditor : MonoBehaviour
 
     void GenerateButtons()
     {
+        if (buttonPrefabTemplate == null)
+        {
+            Debug.LogError("LevelEditor.GenerateButtons(): buttonPrefabTemplate n’est pas assigné !");
+            return;
+        }
+        if (blockGroupContainer == null)
+        {
+            Debug.LogError("LevelEditor.GenerateButtons(): blockGroupContainer n’est pas assigné !");
+            return;
+        }
         ClearCurrentButtons();
 
         Transform container = blockGroupContainer;
@@ -439,10 +449,5 @@ public class LevelEditor : MonoBehaviour
     {
         currentBlock.transform.Rotate(0f, 0f, -90f); // ➔ Rotation de 90° dans le sens horaire
         Debug.Log("🔄 Bloc pivoté de 90° !");
-    }
-
-    public void Save()
-    {
-        // TODO : Implémenter la sauvegarde du niveau
     }
 }
