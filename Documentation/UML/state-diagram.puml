@@ -1,4 +1,4 @@
-@startuml Geometry Dash - Diagramme d'etats du joueur
+@startuml Geometry Dash - Diagramme d'états du joueur
 
 start
 
@@ -16,12 +16,6 @@ repeat
     switch (Forme)
       case (Forme fusée)
         :Mode fusée;
-      case (Forme roue)
-        :Mode roue;
-      case (Forme sens inversé)
-        :Mode sens inversé;
-      case (Forme gravité inversée)
-        :Mode gravité inversée;
     endswitch
     if (Le joueur percute un obstacle ?) then (Oui)
       :Le joueur meurt;
@@ -38,8 +32,8 @@ repeat
           :Le joueur meurt;
           stop
         endif
-      case (Annulation d'obstacle)
-        :Supprimer tous les obstacles;
+      case (Temps accéléré)
+        :Activer accélération du temps;
         :Durée : 3 secondes;
     endswitch
   }

@@ -4,100 +4,64 @@ left to right direction
 
 actor Joueur as Joueur
 
-
 rectangle "Menu principal" {
-  usecase "Configurer les paramètres" as ConfigurerParametres
   usecase "Accéder à la sélection des niveaux" as SelectionNiveau
-  usecase "Accéder à l'éditeur de cartes" as EditeurCartes
-  usecase "Consulter les statistiques" as ConsulterStats
-  usecase "Voir les trophées et récompenses" as VoirTrophees
+  usecase "Accéder à l'éditeur de niveau" as EditeurNiveau
+  usecase "Importer un niveau" as ImporterNiveau
+  usecase "Quitter le jeu" as QuitterJeu
 }
 
 rectangle "Sélection des niveaux" {
-  usecase "Parcourir les niveaux disponibles" as ParcourirNiveaux
-  usecase "Afficher les détails d'un niveau" as AfficherDetailsNiveau
+  usecase "Parcourir les niveaux disponibles (passer au niveau suivant ou précédent)" as ParcourirNiveaux
+  usecase "Afficher les statistiques d'un niveau (nombre d'essais, nombre de sauts et progression record)" as AfficherDetailsNiveau
   usecase "Commencer un niveau" as CommencerNiveau
 }
 
 rectangle "Pendant un niveau" {
-  usecase "Sauter" as Sauter
+  usecase "Appuyer sur la barre d'espace" as Sauter
+  usecase "Voir la progression dans le niveau" as VoirProgression
   usecase "Mettre le jeu en pause" as MettrePause
-}
-
-rectangle "Paramètres" {
-  usecase "Régler le volume du jeu" as ReglerVolume
-  usecase "Changer la musique de fond" as ChangerMusique
-  usecase "Lire les instructions d'aide" as LireAide
-}
-
-rectangle "Création de cartes" {
-  usecase "Créer une nouvelle carte" as CreerNouvelleCarte
-  usecase "Modifier une carte existante" as ModifierCarte
-  usecase "Tester une carte" as TesterCarte
-  usecase "Partager une carte" as PartagerCarte
-  usecase "Télécharger des cartes de la communauté" as TelechargerCartes
-}
-
-rectangle "Statistiques" {
-  usecase "Afficher les statistiques globales" as AfficherStatsGlobales
-  usecase "Afficher les statistiques de session" as AfficherStatsSession
-}
-
-rectangle "Trophées et récompenses" {
-  usecase "Voir les trophées débloqués" as VoirTropheesDebloques
-  usecase "Voir les pièces collectées" as VoirPieces
 }
 
 rectangle "Menu Pause" {
   usecase "Continuer" as Continuer
-  usecase "Redémarrer la partie" as RedemarrerPartie
-  usecase "Retour à la sélection des maps" as RetourSelection
+  usecase "Revenir au menu principal" as RevenirMenuPrincipal
+  usecase "Régler le volume de la musique" as ReglerVolumeMusique
+  usecase "Voir le nombre d'essais, nombre de sauts et progression record" as StatistiquesNiveau
 }
 
-Joueur --> ConfigurerParametres : <<extends>>
-Joueur --> SelectionNiveau : <<extends>>
-Joueur --> EditeurCartes : <<extends>>
-Joueur --> ConsulterStats : <<extends>>
-Joueur --> VoirTrophees : <<extends>>
+rectangle "Création de niveaux" {
+  usecase "Créer un nouveau niveau" as CreerNouveauNiveau
+  usecase "Modifier un niveau existante" as ModifierNiveau
+  usecase "Tester un niveau" as TesterNiveau
+  usecase "Exporter un niveau" as ExporterNiveau
+}
 
-SelectionNiveau --> ParcourirNiveaux : <<include>>
-ParcourirNiveaux --> AfficherDetailsNiveau : <<extends>>
-ParcourirNiveaux --> CommencerNiveau : <<extends>>
+Joueur --> SelectionNiveau : <<extends>>
+Joueur --> EditeurNiveau : <<extends>>
+Joueur --> ImporterNiveau : <<extends>>
+Joueur --> QuitterJeu : <<extends>>
+
+SelectionNiveau --> AfficherDetailsNiveau : <<include>>
+SelectionNiveau --> ParcourirNiveaux : <<extends>>
+SelectionNiveau --> CommencerNiveau : <<extends>>
 
 CommencerNiveau --> Sauter : <<extends>>
+CommencerNiveau --> VoirProgression : <<include>>
 CommencerNiveau --> MettrePause : <<extends>>
 
-ConfigurerParametres --> ReglerVolume : <<extends>>
-ConfigurerParametres --> ChangerMusique : <<extends>>
-ConfigurerParametres --> LireAide : <<extends>>
-
-EditeurCartes --> CreerNouvelleCarte : <<extends>>
-EditeurCartes --> ModifierCarte : <<extends>>
-EditeurCartes --> TelechargerCartes : <<extends>>
-CreerNouvelleCarte --> TesterCarte : <<extends>>
-ModifierCarte --> TesterCarte : <<extends>>
-CreerNouvelleCarte --> PartagerCarte : <<extends>>
-ModifierCarte --> PartagerCarte : <<extends>>
-
-TesterCarte--> Sauter : <<extends>>
-TesterCarte--> MettrePause : <<extends>>
-
-ConsulterStats --> AfficherStatsGlobales : <<extends>>
-ConsulterStats --> AfficherStatsSession : <<extends>>
-
-VoirTrophees --> VoirTropheesDebloques : <<extends>>
-VoirTrophees --> VoirPieces : <<extends>>
-
 MettrePause --> Continuer : <<extends>>
-MettrePause --> RedemarrerPartie : <<extends>>
-MettrePause --> RetourSelection : <<extends>>
+MettrePause --> RevenirMenuPrincipal : <<extends>>
+MettrePause --> ReglerVolumeMusique : <<extends>>
+MettrePause --> StatistiquesNiveau : <<include>>
 
-RedemarrerPartie --> Sauter : <<extends>>
-RedemarrerPartie --> MettrePause : <<extends>>
+EditeurNiveau --> CreerNouveauNiveau : <<extends>>
+EditeurNiveau --> ModifierNiveau : <<extends>>
 
-Continuer --> Sauter : <<extends>>
-Continuer --> MettrePause : <<extends>>
+CreerNouveauNiveau --> TesterNiveau  : <<extends>>
+ModifierNiveau --> TesterNiveau : <<extends>>
 
-RetourSelection --> ParcourirNiveaux : <<include>>
+CreerNouveauNiveau --> ExporterNiveau  : <<extends>>
+ModifierNiveau --> ExporterNiveau  : <<extends>>
 
 @enduml
