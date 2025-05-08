@@ -1,0 +1,52 @@
+@startuml Geometry Dash - Diagramme d'états du joueur
+
+start
+
+:avancer;
+
+repeat
+  partition "en l'air" {
+    if (Le joueur percute un obstacle ?) then (Oui)
+      :Le joueur meurt;
+      stop
+    endif
+  }
+
+  partition "Forme" {
+    switch (Forme)
+      case (Forme fusée)
+        :Mode fusée;
+    endswitch
+    if (Le joueur percute un obstacle ?) then (Oui)
+      :Le joueur meurt;
+      stop
+    endif
+  }
+
+  partition "Activer un bonus" {
+    switch (Type de bonus)
+      case (Temps ralenti)
+        :Activer ralentissement du temps;
+        :Temps ralenti : 3 secondes;
+        if (Le joueur percute un obstacle ?) then (Oui)
+          :Le joueur meurt;
+          stop
+        endif
+      case (Temps accéléré)
+        :Activer accélération du temps;
+        :Durée : 3 secondes;
+    endswitch
+  }
+
+  partition "Menu de Pause" {
+    if (Le joueur clique sur reprendre?) then (Oui)
+        :Le niveau reprend correctement;
+    else (le joueur clique sur quitter)
+        stop
+    endif
+  }
+while (Le joueur n'a pas fini le niveau)
+
+stop
+
+@enduml
