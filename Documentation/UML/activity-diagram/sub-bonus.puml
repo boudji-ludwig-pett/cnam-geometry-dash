@@ -1,7 +1,7 @@
 @startuml sub-bonus
 
 start
-if (Le joueur touche un bonus ?) then (Oui)
+if (Le joueur percute un bonus ?) then (Oui)
   :Ajouter le bonus à l'inventaire;
 else (Non)
 endif

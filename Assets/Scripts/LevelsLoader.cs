@@ -18,46 +18,39 @@ public class LevelsLoader : MonoBehaviour
     private void LoadAllLevels()
     {
         TextAsset[] levelFiles = Resources.LoadAll<TextAsset>("Levels");
-        TextAsset[] levelStatsFiles = Resources.LoadAll<TextAsset>("LevelsStats");
-
-        Dictionary<string, LevelStat> levelStatsMap = new();
-        foreach (TextAsset jsonTextFileStats in levelStatsFiles)
-        {
-            LevelStat levelStat = LevelStat.CreateFromJSON(jsonTextFileStats.text);
-            levelStat.JsonName = jsonTextFileStats.name;
-            levelStatsMap[levelStat.JsonName] = levelStat;
-        }
 
         foreach (TextAsset jsonTextFile in levelFiles)
         {
             Level level = Level.CreateFromJSON(jsonTextFile.text);
             level.JsonName = jsonTextFile.name;
-            level.TotalAttempts = 0;
-            level.TotalJumps = 0;
-            level.ProgressionPercent = 0;
-            level.ProgressionPercentMax = 0;
 
-            if (levelStatsMap.TryGetValue(level.JsonName, out LevelStat levelStat))
+            string statPath = Path.Combine(Application.persistentDataPath, level.JsonName + ".json");
+            if (File.Exists(statPath))
             {
+                string statJson = File.ReadAllText(statPath);
+                LevelStat levelStat = JsonUtility.FromJson<LevelStat>(statJson);
+
                 level.TotalAttempts = levelStat.totalAttempts;
                 level.TotalJumps = levelStat.totalJumps;
                 level.ProgressionPercentMax = levelStat.progressionPercent;
             }
             else
             {
-                levelStat = new LevelStat { JsonName = level.JsonName, totalJumps = 0, totalAttempts = 0 };
-                levelStatsMap[level.JsonName] = levelStat;
+                level.TotalAttempts = 0;
+                level.TotalJumps = 0;
+                level.ProgressionPercentMax = 0;
             }
 
+            level.ProgressionPercent = 0;
             levels.Add(level);
         }
+
         levels.Sort((x, y) => x.order.CompareTo(y.order));
     }
 
     private void SaveLevelCurrent()
     {
-        string levelJson = JsonUtility.ToJson(levelCurrent, true) + "\n";
-        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "Levels", levelCurrent.JsonName + ".json"), levelJson);
+        if (levelCurrent == null) return;
 
         LevelStat levelStat = new()
         {
@@ -66,39 +59,54 @@ public class LevelsLoader : MonoBehaviour
             totalAttempts = levelCurrent.TotalAttempts,
             progressionPercent = levelCurrent.ProgressionPercentMax,
         };
+
         string levelStatJson = JsonUtility.ToJson(levelStat, true) + "\n";
-        File.WriteAllText(Path.Combine(Application.dataPath, "Resources", "LevelsStats", levelCurrent.JsonName + ".json"), levelStatJson);
+
+        string savePath = Path.Combine(Application.persistentDataPath, levelCurrent.JsonName + ".json");
+        File.WriteAllText(savePath, levelStatJson);
     }
 
     public void NextLevel()
     {
+        if (levels.Count == 0) return;
+
         int currentIndex = levels.IndexOf(levelCurrent);
         levelCurrent = levels[(currentIndex + 1) % levels.Count];
     }
 
     public void PreviousLevel()
     {
+        if (levels.Count == 0) return;
+
         int currentIndex = levels.IndexOf(levelCurrent);
         levelCurrent = levels[(currentIndex - 1 + levels.Count) % levels.Count];
     }
 
     public void IncreaseTotalJumps()
     {
+        if (levelCurrent == null) return;
+
         levelCurrent.TotalJumps += 1;
         SaveLevelCurrent();
     }
 
     public void IncreaseTotalAttempts()
     {
+        if (levelCurrent == null) return;
+
         levelCurrent.TotalAttempts += 1;
         SaveLevelCurrent();
     }
 
     public int CalculateCurrentProgressionPercent(Vector3 playerPosition)
     {
+        if (levelCurrent == null) return 0;
+
         float lastX = levelCurrent.LastX;
         GameObject winnerWallPrefab = Resources.Load<GameObject>("Prefabs/WinnerWall");
-        float winnerWallWidth = winnerWallPrefab.GetComponent<Renderer>().bounds.size.x;
+        float winnerWallWidth = winnerWallPrefab != null
+            ? winnerWallPrefab.GetComponent<Renderer>().bounds.size.x
+            : 0f;
         float marginError = 0.5f;
         float totalDistance = lastX - (winnerWallWidth / 2) - marginError;
 
