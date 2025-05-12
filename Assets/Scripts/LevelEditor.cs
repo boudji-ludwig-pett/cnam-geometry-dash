@@ -238,7 +238,7 @@ public class LevelEditor : MonoBehaviour
     {
         string name = currentBlock.name.ToLower();
 
-        bool grounded = name.Contains("spike") || name.Contains("bonus") || name.Contains("smallobstacle");
+        bool grounded = name.Contains("spike") || name.Contains("bonus") || name.Contains("kill");
 
         if (grounded)
         {
