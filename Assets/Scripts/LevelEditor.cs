@@ -213,13 +213,26 @@ public class LevelEditor : MonoBehaviour
 
             if (hit != null && !hit.CompareTag("Ground"))
             {
-                currentBlock = hit.gameObject;
+                GameObject selected = hit.gameObject;
+
+                // ✅ Cas spécial : sélectionner le parent ObstacleBlock si clic sur enfant
+                if (selected.name.Contains("ObstacleSafer") || selected.name.Contains("ObstacleKiller"))
+                {
+                    Transform parent = selected.transform.parent;
+                    if (parent != null && parent.name.Contains("ObstacleBlock"))
+                    {
+                        selected = parent.gameObject;
+                    }
+                }
+
+                currentBlock = selected;
                 isPlacingBlock = true;
                 currentScale = currentBlock.transform.localScale;
-                Debug.Log($"Bloc sélectionné : {currentBlock.name}");
+                Debug.Log($"🟢 Bloc sélectionné : {currentBlock.name}");
             }
         }
     }
+
 
     void PlaceBlock()
     {
