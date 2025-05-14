@@ -1,0 +1,303 @@
+@startuml Geometry Dash - Diagramme de classe léger
+
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+hide enum methods
+
+class PlayerCamera {
+    {field} + playerObject: GameObject
+    {field} + normalMinYFollow: float
+    {field} + shipMinYFollow: float
+    {field} + smoothSpeed: float
+    {field} - initialY: float
+    {field} + isPlaying: bool
+
+    {method} - Start()
+    {method} - Update()
+}
+
+class Player {
+    {field} + RigidBody: Rigidbody2D {get} {private set}
+    {field} + Transform: Transform {get} {private set}
+    {field} + Particle: ParticleSystem {get} {private set}
+    {field} + LevelsLoader: LevelsLoader {get} {set}
+    {field} + SpriteRenderer: SpriteRenderer {get} {private set}
+    {field} + IsColliding: bool {get} {set}
+    {field} + HasStarted: bool {get} {set}
+    {field} + CanJump: bool {get} {set}
+    {field} + CurrentGameMode: IGameMode {get} {set}
+    {field} + SpeedMultiplier: float
+
+    {method} + Awake()
+    {method} + Start()
+    {method} + Update()
+    {method} + OnCollisionEnter2D(collision: Collision2D)
+    {method} + OnCollisionExit2D(collision: Collision2D)
+    {method} + OnTriggerEnter2D(collision: Collider2D)
+    {method} + ChangeGameMode(newMode: IGameMode)
+}
+Player o--> LevelsLoader : <<References>>
+Player o--> IGameMode : <<Has>>
+
+class PauseMenu {
+    {field} + pauseMenu: GameObject
+    {field} + pauseButton: GameObject
+    {field} + levelLoader: LevelLoader
+    {field} + volumeSlider: Slider
+
+    {method} + Start()
+    {method} + ChangeVolume()
+    {method} + Pause()
+    {method} + Home()
+    {method} + Resume()
+}
+PauseMenu --> LevelLoader : <<References>>
+PauseMenu --> GameObject : <<References>>
+PauseMenu --> Slider : <<References>>
+
+class MainMenu {
+    {method} + LaunchGame()
+    {method} + OpenImport()
+    {method} + QuitGame()
+    {method} + LevelEditor()
+    {method} + EditorChoice()
+    {method} + CreateLevel()
+}
+
+class LevelStat {
+    {field} + JsonName: string {get} {set}
+    {field} + totalJumps: Integer
+    {field} + totalAttempts: Integer
+    {field} + progressionPercent: Integer
+
+    {method} + {static} CreateFromJSON(jsonString: string): LevelStat
+}
+
+class LevelsLoader {
+    {field} + levels: List<Level>
+    {field} + levelCurrent: Level
+
+    {method} - Start()
+    {method} - LoadAllLevels()
+    {method} - SaveLevelCurrent()
+    {method} + NextLevel()
+    {method} + PreviousLevel()
+    {method} + IncreaseTotalJumps()
+    {method} + IncreaseTotalAttempts()
+    {method} + CalculateCurrentProgressionPercent(playerPosition: Vector3): Integer
+    {method} + RefreshLevels()
+}
+LevelsLoader *--> Level : <<Owns>>
+
+class LevelLoader {
+    {field} + levelsLoader: LevelsLoader
+    {field} + audioSource: AudioSource
+    {field} + progressionText: Text
+    {field} - groundY: float
+
+    {method} - GetPrefab(type: string): GameObject
+    {method} - LoadAudio()
+    {method} - LoadElements()
+    {method} + Start()
+    {method} + Update()
+}
+LevelLoader o--> LevelsLoader : <<References>>
+LevelLoader *--> AudioSource : <<Owns>>
+LevelLoader --> Text : <<References>>
+
+
+class LevelEditor {
+    {field} - currentBlock: GameObject
+    {field} - isPlacingBlock: bool
+    {field} - currentScale: Vector3
+    {field} - scaleStep: float
+    {field} + blockGroupContainer: Transform
+    {field} + buttonPrefabTemplate: GameObject
+    {field} - currentPage: Integer
+    {field} - buttonsPerPage: Integer {constant}
+    {field} - blockPrefabs: List<GameObject>
+    {field} - currentButtons: List<GameObject>
+    {field} - resizingTarget: GameObject
+    {field} - isResizing: bool
+    {field} - originalMousePos: Vector3
+    {field} - originalScale: Vector3
+    {field} - currentResizeAxis: ResizeAxis
+
+    {method} - Start()
+    {method} - LoadPrefabs()
+    {method} - GenerateButtons()
+    {method} - ClearCurrentButtons()
+    {method} + NextPage()
+    {method} + PreviousPage()
+    {method} - SelectPrefab(prefab: GameObject)
+    {method} - Update()
+    {method} - PlaceBlock()
+    {method} - TrySnapToNearbyBlock()
+    {method} - InstantiateAndPrepare(prefab: GameObject, scaleOverride: Vector3?)
+    {method} - HandleBlockRotation()
+}
+LevelEditor o--> blockGroupContainer : <<References>>
+LevelEditor --> buttonPrefabTemplate : <<References>>
+LevelEditor *--> blockPrefabs : <<Owns>>
+LevelEditor *--> currentButtons : <<Owns>>
+LevelEditor o--> currentBlock : <<References>>
+LevelEditor o--> resizingTarget : <<References>>
+LevelEditor *--> ResizeAxis : <<Has>>
+
+enum ResizeAxis <<enumeration>> {
+  None
+  Horizontal
+  Vertical
+}
+
+
+class LevelElement {
+    {field} + type: string
+    {field} + x: float
+    {field} + y: float
+    {field} + scaleX: float
+    {field} + scaleY: float
+}
+
+class Level {
+    {field} + {static} {readOnly} LAST_X: Integer = 15
+    {field} + JsonName: string {get} {set}
+    {field} + TotalJumps: Integer {get} {set}
+    {field} + TotalAttempts: Integer {get} {set}
+    {field} + ProgressionPercent: Integer {get} {set}
+    {field} + ProgressionPercentMax: Integer {get} {set}
+    {field} + name: string
+    {field} + musicName: string
+    {field} + order: Integer
+    {field} + elements: List<LevelElement>
+    {field} + LastX: float {get}
+
+    {method} + {static} CreateFromJSON(jsonString: string): Level
+}
+Level *--> LevelElement : <<Composed of>>
+
+class JSONImporter {
+    {field} + statusText: TMP_Text
+
+    {method} - Awake()
+    {method} - Start()
+    {method} + ImportJSON()
+    {method} - ShowFileBrowser(): IEnumerator
+    {method} - UpdateStatus(message: string, color: Color)
+}
+JSONImporter --> TMP_Text : <<References>>
+
+class JSONExporter {
+    {field} + statusText: TMP_Text
+    {field} - editor: LevelEditor
+    {field} - levelsFolder: string
+
+    {method} - Awake()
+    {method} - Start()
+    {method} + ExportJSON()
+    {method} - ShowSaveDialog(): IEnumerator
+    {method} - SetStatus(message: string, color: Color)
+}
+JSONExporter o--> LevelEditor : <<References>>
+JSONExporter --> TMP_Text : <<References>>
+
+class SerializableElement <<private>> {
+    {field} + type: string
+    {field} + x: float
+    {field} + y: float
+    {field} + scaleX: float
+    {field} + scaleY: float
+}
+JSONExporter ..> SerializableElement : <<Uses>>
+
+class LevelData <<private>> {
+    {field} + name: string
+    {field} + musicName: string
+    {field} + order: Integer
+    {field} + elements: SerializableElement[*]
+}
+LevelData *--> SerializableElement : <<Composed of>>
+JSONExporter ..> LevelData : <<Uses>>
+
+
+interface IGameMode <<interface>> {
+    {method} + Update(player: Player) {abstract}
+    {method} + OnCollisionEnter(player: Player, collision: Collision2D) {abstract}
+    {method} + OnCollisionExit(player: Player, collision: Collision2D) {abstract}
+}
+
+class ShipGameMode implements IGameMode {
+    {field} - HorizontalSpeed: float {constant}
+    {field} - JumpForce: float {constant}
+    {field} - JumpKey: KeyCode {constant}
+    {field} - UpperAngle: float {constant}
+    {field} - LowerAngle: float {constant}
+    {field} - RotationTransitionDuration: float {constant}
+
+    {method} + Update(player: Player)
+    {method} - GetCurrentZAngle(player: Player): float
+    {method} - Jump(player: Player)
+    {method} + OnCollisionEnter(player: Player, collision: Collision2D)
+    {method} + OnCollisionExit(player: Player, collision: Collision2D)
+}
+ShipGameMode ..|> IGameMode
+ShipGameMode ..> Player : <<Uses>>
+
+
+class NormalGameMode implements IGameMode {
+    {field} - HorizontalSpeed: float {constant}
+    {field} - JumpForce: float {constant}
+    {field} - JumpKey: KeyCode {constant}
+    {field} - isRotating: bool
+    {field} - targetRotationAngle: float
+    {field} - rotationSpeed: float {readOnly}
+
+    {method} + Update(player: Player)
+    {method} - Jump(player: Player)
+    {method} - PerformRotation(player: Player)
+    {method} - IsJumping(player: Player): bool
+    {method} - AlignRotation(player: Player)
+    {method} - UpdateParticlePositionAndRotation(player: Player)
+    {method} + OnCollisionEnter(player: Player, collision: Collision2D)
+    {method} + OnCollisionExit(player: Player, collision: Collision2D)
+}
+NormalGameMode ..|> IGameMode
+NormalGameMode ..> Player : <<Uses>>
+
+
+' Tags
+class ShipPortal { }
+class CubePortal { }
+class BonusBoostSpeed { }
+class BonusSlowSpeed { }
+class Kill { }
+class Win { }
+class Ground { }
+class WinnerWall { }
+class Block { }
+class SmallObstacle { }
+class Spike { }
+class Portal { }
+class Bonus { }
+
+Player ..> ShipPortal : <<Uses Tag>>
+Player ..> CubePortal : <<Uses Tag>>
+Player ..> BonusBoostSpeed : <<Uses Tag>>
+Player ..> BonusSlowSpeed : <<Uses Tag>>
+ShipGameMode ..> Kill : <<Uses Tag>>
+ShipGameMode ..> Win : <<Uses Tag>>
+ShipGameMode ..> Ground : <<Uses Tag>>
+NormalGameMode ..> Kill : <<Uses Tag>>
+NormalGameMode ..> Win : <<Uses Tag>>
+LevelLoader ..> WinnerWall : <<Uses Prefab>>
+LevelLoader ..> Ground : <<Uses Prefab>>
+LevelEditor ..> Ground : <<Uses Tag>>
+LevelEditor ..> Block : <<Uses Tag>>
+LevelEditor ..> SmallObstacle : <<Uses Tag>>
+LevelEditor ..> Spike : <<Uses Tag>>
+LevelEditor ..> Portal : <<Uses Tag>>
+LevelEditor ..> Bonus : <<Uses Tag>>
+LevelsLoader ..> WinnerWall : <<Uses Prefab>>
+
+@enduml
