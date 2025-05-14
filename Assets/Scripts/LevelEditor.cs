@@ -8,7 +8,7 @@ public class LevelEditor : MonoBehaviour
     [Header("Placement")]
     private GameObject currentBlock;
     private bool isPlacingBlock = false;
-    private Vector3 currentScale = new Vector3(1f, 1f, 1);
+    private Vector3 currentScale = Vector3.one;
     private float scaleStep = 0.1f;
 
     [Header("UI")]
@@ -59,10 +59,8 @@ public class LevelEditor : MonoBehaviour
         blockPrefabs.Clear();
         foreach (var prefab in all)
         {
-            // Exclure par nom
-            var namePrefab = prefab.name.ToLower();
-            if (namePrefab.Equals("ground") || namePrefab.Equals("winnerwall"))
-                continue;
+            var name = prefab.name.ToLower();
+            if (name == "ground" || name == "winnerwall") continue;
             blockPrefabs.Add(prefab);
         }
     }
@@ -70,77 +68,57 @@ public class LevelEditor : MonoBehaviour
     void GenerateButtons()
     {
         ClearCurrentButtons();
-
         if (blockGroupContainer == null || buttonPrefabTemplate == null)
         {
-            Debug.LogError("UI Container ou prefab de bouton manquant.");
+            Debug.LogError("UI Container ou prefab manquant.");
             return;
         }
-
         int start = currentPage * buttonsPerPage;
         int end = Mathf.Min(start + buttonsPerPage, blockPrefabs.Count);
-
         for (int i = start; i < end; i++)
         {
-            GameObject button = Instantiate(buttonPrefabTemplate, blockGroupContainer);
-            button.SetActive(true);
-
-            SetupButtonVisual(button.transform, blockPrefabs[i], i - start);
-
-            GameObject prefab = blockPrefabs[i];
-            button.GetComponent<Button>().onClick.AddListener(() => SelectPrefab(prefab));
-            currentButtons.Add(button);
+            var btn = Instantiate(buttonPrefabTemplate, blockGroupContainer);
+            btn.SetActive(true);
+            SetupButtonVisual(btn.transform, blockPrefabs[i], i - start);
+            var prefab = blockPrefabs[i];
+            btn.GetComponent<Button>().onClick.AddListener(() => SelectPrefab(prefab));
+            currentButtons.Add(btn);
         }
     }
 
-    void SetupButtonVisual(Transform buttonTransform, GameObject prefab, int index)
+    void SetupButtonVisual(Transform t, GameObject prefab, int idx)
     {
-        Transform canvas = buttonTransform.Find("Canvas");
-        Transform bg = canvas?.Find("BlankSquare");
-        Transform icon = canvas?.Find("PrefabIcon");
-
-        if (bg == null || icon == null)
-        {
-            Destroy(buttonTransform.gameObject);
-            return;
-        }
-
-        float xOffset = -375f + index * 125f;
-        bg.GetComponent<RectTransform>().anchoredPosition = new Vector2(xOffset, bg.GetComponent<RectTransform>().anchoredPosition.y);
-        icon.GetComponent<RectTransform>().anchoredPosition = new Vector2(xOffset, icon.GetComponent<RectTransform>().anchoredPosition.y);
-
+        var canvas = t.Find("Canvas");
+        var bg = canvas?.Find("BlankSquare");
+        var icon = canvas?.Find("PrefabIcon");
+        if (bg == null || icon == null) { Destroy(t.gameObject); return; }
+        float xOff = -375f + idx * 125f;
+        var bgRt = bg.GetComponent<RectTransform>();
+        var icRt = icon.GetComponent<RectTransform>();
+        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y);
+        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y);
         bg.GetComponent<Image>().sprite = Resources.Load<Sprite>("InGame/ButtonSkin/BlankSquare");
         icon.GetComponent<Image>().sprite = prefab.GetComponent<SpriteRenderer>()?.sprite;
-
-        icon.GetComponent<RectTransform>().sizeDelta = prefab.name.ToLower().Contains("small")
+        icRt.sizeDelta = prefab.name.ToLower().Contains("small")
             ? new Vector2(50, 25)
             : new Vector2(50, 50);
     }
 
     void ClearCurrentButtons()
     {
-        foreach (var button in currentButtons)
-            Destroy(button);
+        foreach (var b in currentButtons) Destroy(b);
         currentButtons.Clear();
     }
 
     public void NextPage()
     {
-        int maxPage = Mathf.CeilToInt(blockPrefabs.Count / (float)buttonsPerPage);
-        if (currentPage < maxPage - 1)
-        {
-            currentPage++;
-            GenerateButtons();
-        }
+        int max = Mathf.CeilToInt(blockPrefabs.Count / (float)buttonsPerPage);
+        if (currentPage < max - 1) { currentPage++; GenerateButtons(); }
     }
 
     public void PreviousPage()
     {
-        if (currentPage > 0)
-        {
-            currentPage--;
-            GenerateButtons();
-        }
+        if (currentPage > 0) { currentPage--; GenerateButtons(); }
     }
 
     #endregion
@@ -150,7 +128,6 @@ public class LevelEditor : MonoBehaviour
     void SelectPrefab(GameObject prefab)
     {
         if (isPlacingBlock) return;
-
         currentScale = DetermineScaleFromName(prefab.name);
         InstantiateAndPrepare(prefab, currentScale);
     }
@@ -158,267 +135,247 @@ public class LevelEditor : MonoBehaviour
     Vector3 DetermineScaleFromName(string name)
     {
         name = name.ToLower();
-
         if (name.Contains("portal")) return new Vector3(0.5f, 0.5f, 1);
         if (name.Contains("small")) return new Vector3(0.15f, 0.07f, 1);
         if (name.Contains("spike")) return new Vector3(0.15f, 0.15f, 1);
         if (name.Contains("block")) return new Vector3(0.2f, 0.2f, 1);
         if (name.Contains("bonus")) return new Vector3(0.3f, 0.3f, 1);
-
-        return new Vector3(1f, 1f, 1);
+        return Vector3.one;
     }
 
     void HandleBlockPlacement()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        currentBlock.transform.position = new Vector3(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y), -1);
-
-        if (Input.GetKeyDown(KeyCode.R))
-            HandleBlockRotation();
-
+        Vector2 m = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        currentBlock.transform.position = new Vector3(Mathf.Round(m.x), Mathf.Round(m.y), -1);
+        if (Input.GetKeyDown(KeyCode.R)) HandleBlockRotation();
         if (!currentBlock.name.ToLower().Contains("portal"))
         {
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
-            if (scroll != 0)
+            float s = Input.GetAxis("Mouse ScrollWheel");
+            if (s != 0)
             {
-                float newScale = Mathf.Max(0.1f, currentScale.x + scroll * scaleStep);
-                currentScale = new Vector3(newScale, newScale, 1);
+                float ns = Mathf.Max(0.1f, currentScale.x + s * scaleStep);
+                currentScale = Vector3.one * ns;
                 currentBlock.transform.localScale = currentScale;
             }
         }
-
         if (Input.GetMouseButtonDown(0))
         {
             if (!IsPlacementValid())
             {
-                Debug.Log("Placement annulé : collision.");
+                Debug.Log("Placement invalide : collision.");
                 return;
             }
-
             PlaceBlock();
         }
     }
 
     bool IsPlacementValid()
     {
-        Collider2D currentCollider = currentBlock.GetComponent<Collider2D>();
-        Bounds bounds = currentCollider.bounds;
-
-        Collider2D[] overlaps = Physics2D.OverlapBoxAll(
-            bounds.center,
-            bounds.size,
-            0f
-        );
-
-        foreach (var col in overlaps)
+        var col = currentBlock.GetComponent<Collider2D>();
+        var hits = Physics2D.OverlapBoxAll(col.bounds.center, col.bounds.size, 0f);
+        foreach (var h in hits)
         {
-            if (col == currentCollider)
-                continue; // ✅ Ignore son propre collider
-
-            if (col.CompareTag("Ground"))
-                continue; // ✅ Ignore le sol
-
-            if (col.transform.IsChildOf(currentBlock.transform))
-                continue; // ✅ Ignore ses propres enfants (si composite)
-
-            // Sinon, collision valide ➤ bloc non plaçable ici
+            if (h == col) continue;
+            if (h.CompareTag("Ground")) continue;
+            if (h.transform.IsChildOf(currentBlock.transform)) continue;
             return false;
         }
-
         return true;
     }
 
-
     void HandleBlockSelection()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!Input.GetMouseButtonDown(0)) return;
+        Vector2 m = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var hit = Physics2D.OverlapPoint(m);
+        if (hit != null && !hit.CompareTag("Ground"))
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(mousePos);
-
-            if (hit != null && !hit.CompareTag("Ground"))
-            {
-                GameObject selected = hit.gameObject;
-
-                // ✅ Cas spécial : sélectionner le parent ObstacleBlock si clic sur enfant
-                if (selected.name.Contains("ObstacleSafer") || selected.name.Contains("ObstacleKiller"))
-                {
-                    Transform parent = selected.transform.parent;
-                    if (parent != null && parent.name.Contains("ObstacleBlock"))
-                    {
-                        selected = parent.gameObject;
-                    }
-                }
-
-                currentBlock = selected;
-                isPlacingBlock = true;
-                currentScale = currentBlock.transform.localScale;
-                Debug.Log($"🟢 Bloc sélectionné : {currentBlock.name}");
-            }
+            var sel = hit.gameObject;
+            if ((sel.name.Contains("ObstacleSafer") || sel.name.Contains("ObstacleKiller"))
+                && sel.transform.parent != null
+                && sel.transform.parent.name.Contains("ObstacleBlock"))
+                sel = sel.transform.parent.gameObject;
+            currentBlock = sel;
+            isPlacingBlock = true;
+            currentScale = currentBlock.transform.localScale;
+            Debug.Log($"🟢 Sélection : {sel.name}");
         }
     }
-
-
     void PlaceBlock()
     {
         string name = currentBlock.name.ToLower();
-        bool grounded = name.Contains("spike")
-                     || name.Contains("bonus")
-                     || name.Contains("killzone");
+        bool isSpikeType = name.Contains("spike")
+                           || name.Contains("smallspike")
+                           || name.Contains("killzone");
 
-        if (grounded)
+        if (isSpikeType)
         {
-            StickBlockToGround();
-        }
-        else if (!ShouldSkipVerticalSnap(name))
-        {
-            SnapBlockVertically();
-            TrySnapToNearbyBlock();
+            // 1) Bloquer si on perçoit un spike de même type dans la direction de snap
+            if (IsBlockedBySameTypeInSnapDirection())
+            {
+                Debug.LogError("❌ Impossible de poser un spike sur un autre spike !");
+                Destroy(currentBlock);
+            }
+            else
+            {
+                // 2) On snap dans la direction (down/left/up/right), et on détruit si aucun support
+                if (!SnapSpikeByRotation())
+                {
+                    Debug.LogError("❌ Impossible de poser un spike dans le vide !");
+                    Destroy(currentBlock);
+                }
+                else
+                {
+                    // 3) On fait l’ajustement fin (si besoin)
+                    TrySnapToNearbyBlock();
+                }
+            }
         }
         else
         {
+            // tous les autres blocs
             TrySnapToNearbyBlock();
         }
 
-        TrySnapToNearbyBlock();
         isPlacingBlock = false;
         currentBlock = null;
     }
 
-
-    void StickBlockToGround()
+    /// <summary>
+    /// Vérifie qu’il n’y ait pas déjà un spike/smallspike/killzone
+    /// juste devant le spike selon sa rotation.
+    /// </summary>
+    bool IsBlockedBySameTypeInSnapDirection()
     {
-        Collider2D col = currentBlock.GetComponent<Collider2D>();
-        Bounds b = col.bounds;
+        var col = currentBlock.GetComponent<Collider2D>();
+        var b = col.bounds;
 
-        float halfWidth = b.extents.x;
-        float halfHeight = b.extents.y;
-        float maxDistance = 100f;
-
-        // Origines : gauche, centre, droite, juste sous le bloc
-        Vector2[] origins = new Vector2[]
+        // 1) Détermine direction de snap (0→down,1→left,2→up,3→right)
+        int rot = (Mathf.RoundToInt(currentBlock.transform.eulerAngles.z / 90) % 4 + 4) % 4;
+        Vector2 dir = rot switch
         {
-        new Vector2(b.center.x - halfWidth + 0.01f, b.min.y + 0.01f),
-        new Vector2(b.center.x,               b.min.y + 0.01f),
-        new Vector2(b.center.x + halfWidth - 0.01f, b.min.y + 0.01f)
+            1 => Vector2.right,
+            2 => Vector2.up,
+            3 => Vector2.left,
+            _ => Vector2.down
         };
 
-        float bestY = -Mathf.Infinity;
-        Collider2D bestHit = null;
-
-        // 1) On teste trois rayons
-        foreach (var origin in origins)
+        // 2) Origine : on place la « boîte » juste en bordure du sprite
+        float offset = 0.01f;
+        Vector2 origin = rot switch
         {
-            RaycastHit2D h = Physics2D.Raycast(origin, Vector2.down, maxDistance);
-            if (h.collider != null && h.collider.gameObject != currentBlock)
+            1 => new Vector2(b.min.x - offset, b.center.y),    // gauche
+            3 => new Vector2(b.max.x + offset, b.center.y),    // droite
+            2 => new Vector2(b.center.x, b.max.y + offset), // haut
+            _ => new Vector2(b.center.x, b.min.y - offset)  // bas
+        };
+
+        // 3) On box‐cast exactement la taille du sprite pour 100 unités
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(
+            origin,
+            b.size,
+            0f,
+            dir,
+            100f
+        );
+
+        foreach (var h in hits)
+        {
+            if (h.collider == null || h.collider.gameObject == currentBlock) continue;
+            if (h.collider.isTrigger) continue;
+
+            string me = currentBlock.name.ToLower();
+            string other = h.collider.gameObject.name.ToLower();
+
+            bool meIsSpikeFamily = me.Contains("spike") || me.Contains("killzone");
+            bool otherIsSpikeFamily = other.Contains("spike") || other.Contains("killzone");
+
+            if (meIsSpikeFamily && otherIsSpikeFamily)
             {
-                float hitY = h.point.y;
-                if (hitY > bestY)
+                // on bloque absolument tout chevauchement entre ces trois types
+                return true;
+            }
+
+            // si on tape autre chose (sol, block, bonus…), on arrête le scan
+            break;
+        }
+
+        return false;
+    }
+
+    bool SnapSpikeByRotation()
+    {
+        // Récupère bounds et demi-tailles
+        var col = currentBlock.GetComponent<Collider2D>();
+        var b = col.bounds;
+        float hw = b.extents.x;
+        float hh = b.extents.y;
+
+        // 1) Détermine la rotation en quarts de tour : 0→down, 1→left, 2→up, 3→right
+        int rot = ((Mathf.RoundToInt(currentBlock.transform.eulerAngles.z / 90f) % 4) + 4) % 4;
+        Vector2 dir;
+        switch (rot)
+        {
+            case 1: dir = Vector2.right; break;
+            case 2: dir = Vector2.up; break;
+            case 3: dir = Vector2.left; break;
+            default: dir = Vector2.down; break;
+        }
+
+        // 2) Calcule 3 origines le long de la face « avant » du spike
+        const float eps = 0.01f;
+        List<Vector2> origins = new List<Vector2>();
+        if (dir == Vector2.down || dir == Vector2.up)
+        {
+            // face inférieure ou supérieure → balaye l’axe X
+            float y0 = (dir == Vector2.down) ? b.min.y - eps : b.max.y + eps;
+            origins.Add(new Vector2(b.min.x + 0.1f * b.size.x, y0));
+            origins.Add(new Vector2(b.center.x, y0));
+            origins.Add(new Vector2(b.max.x - 0.1f * b.size.x, y0));
+        }
+        else
+        {
+            // face gauche ou droite → balaye l’axe Y
+            float x0 = (dir == Vector2.left) ? b.min.x - eps : b.max.x + eps;
+            origins.Add(new Vector2(x0, b.min.y + 0.1f * b.size.y));
+            origins.Add(new Vector2(x0, b.center.y));
+            origins.Add(new Vector2(x0, b.max.y - 0.1f * b.size.y));
+        }
+
+        // 3) Pour chaque origine, on lance un RaycastAll et on garde le hit le plus proche
+        float bestDist = float.PositiveInfinity;
+        RaycastHit2D bestHit = default;
+        foreach (var o in origins)
+        {
+            var hits = Physics2D.RaycastAll(o, dir, 100f);
+            foreach (var h in hits)
+            {
+                if (h.collider == null || h.collider.gameObject == currentBlock) continue;
+                if (h.collider.isTrigger) continue;
+                if (h.distance < bestDist)
                 {
-                    bestY = hitY;
-                    bestHit = h.collider;
+                    bestDist = h.distance;
+                    bestHit = h;
                 }
             }
         }
 
-        // 2) Si aucun rayon n'a frappé, on fait un OverlapArea très bas
-        if (bestHit == null)
-        {
-            Vector2 areaStart = new Vector2(b.min.x, -maxDistance);
-            Vector2 areaEnd = new Vector2(b.max.x, b.min.y);
+        // 4) Aucun support trouvé → échec
+        if (bestHit.collider == null)
+            return false;
 
-            foreach (var hit in Physics2D.OverlapAreaAll(areaStart, areaEnd))
-            {
-                if (hit == null || hit.gameObject == currentBlock || hit.transform.IsChildOf(currentBlock.transform))
-                    continue;
-                float top = hit.bounds.max.y;
-                if (top > bestY)
-                {
-                    bestY = top;
-                    bestHit = hit;
-                }
-            }
-        }
+        // 5) Sinon, colle bord à bord
+        Vector3 p = currentBlock.transform.position;
+        if (dir == Vector2.down) p.y = bestHit.point.y + hh;
+        else if (dir == Vector2.up) p.y = bestHit.point.y - hh;
+        else if (dir == Vector2.left) p.x = bestHit.point.x + hw;
+        else if (dir == Vector2.right) p.x = bestHit.point.x - hw;
 
-        // 3) On snap si on a trouvé
-        if (bestHit != null)
-        {
-            float newY = bestY + halfHeight;
-            currentBlock.transform.position = new Vector3(b.center.x, newY, b.center.z);
-            Debug.Log($"📌 {currentBlock.name} posé sur « {bestHit.name} » à Y={newY}");
-        }
-        else
-        {
-            Debug.LogWarning($"❗ {currentBlock.name} : pas de support détecté sous le bloc.");
-        }
+        currentBlock.transform.position = new Vector3(p.x, p.y, -1f);
+        Debug.Log($"📌 Spike snapé {dir} sur « {bestHit.collider.name} » à {currentBlock.transform.position}");
+        return true;
     }
 
-    bool ShouldSkipVerticalSnap(string name)
-    {
-        name = name.ToLower();
-        return name.Contains("smallobstacle") || name.Contains("portal");
-    }
-
-    void SnapBlockVertically()
-    {
-        Collider2D col = currentBlock.GetComponent<Collider2D>();
-        Bounds bounds = col.bounds;
-
-        float snapThreshold = 0.1f; // ➜ 0.1 unité = environ 2 pixels
-
-        Vector2 checkStart = new Vector2(bounds.min.x, bounds.min.y - snapThreshold);
-        Vector2 checkEnd = new Vector2(bounds.max.x, bounds.min.y);
-
-        Collider2D[] hitsBelow = Physics2D.OverlapAreaAll(checkStart, checkEnd);
-
-        float highestY = -Mathf.Infinity;
-        GameObject bestTarget = null;
-
-        foreach (var hit in hitsBelow)
-        {
-            if (hit == null || hit.gameObject == currentBlock || hit.transform.IsChildOf(currentBlock.transform))
-                continue;
-
-            float top = hit.bounds.max.y;
-            if (top > highestY)
-            {
-                highestY = top;
-                bestTarget = hit.gameObject;
-            }
-        }
-
-        if (bestTarget != null)
-        {
-            float blockHeight = bounds.size.y;
-            float snapY = highestY + blockHeight / 2f;
-
-            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, snapY, -1f);
-            Debug.Log($"✅ Snap vertical à {snapY} sur {bestTarget.name}");
-        }
-        else
-        {
-            Debug.Log("❌ Aucun bloc trouvé assez proche en dessous pour snap.");
-        }
-    }
-
-
-    void InstantiateAndPrepare(GameObject prefab, Vector3? scaleOverride = null)
-    {
-        GameObject obj = Instantiate(prefab, persistentBlockContainer); // 👈 placé dans le conteneur persistant
-        obj.transform.position = new Vector3(0, 0, -1);
-        obj.transform.localScale = scaleOverride ?? currentScale;
-
-        currentBlock = obj;
-        currentBlock.tag = prefab.tag;
-        isPlacingBlock = true;
-    }
-
-
-    void HandleBlockRotation()
-    {
-        currentBlock.transform.Rotate(0f, 0f, -90f);
-        Debug.Log("🔄 Bloc pivoté de 90° !");
-    }
 
     #endregion
 
@@ -428,173 +385,147 @@ public class LevelEditor : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift) && !isPlacingBlock)
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(mousePos);
-
+            Vector2 m = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var hit = Physics2D.OverlapPoint(m);
             if (hit != null && !hit.CompareTag("Ground"))
-            {
-                BeginResizing(hit.gameObject, mousePos);
-            }
+                BeginResizing(hit.gameObject, m);
         }
-
         if (isResizing && resizingTarget != null)
-        {
             PerformResizing();
-        }
     }
 
-    void BeginResizing(GameObject target, Vector2 mousePos)
+    void BeginResizing(GameObject tgt, Vector2 mPos)
     {
-        resizingTarget = target;
-        originalMousePos = mousePos;
-        originalScale = target.transform.localScale;
-
-        Vector2 localClick = mousePos - (Vector2)target.transform.position;
-        float ratio = target.GetComponent<Collider2D>().bounds.size.x / target.GetComponent<Collider2D>().bounds.size.y;
-
-        currentResizeAxis = Mathf.Abs(localClick.x) > Mathf.Abs(localClick.y * ratio)
+        resizingTarget = tgt;
+        originalMousePos = mPos;
+        originalScale = tgt.transform.localScale;
+        Vector2 local = mPos - (Vector2)tgt.transform.position;
+        float ratio = tgt.GetComponent<Collider2D>().bounds.size.x / tgt.GetComponent<Collider2D>().bounds.size.y;
+        currentResizeAxis = Mathf.Abs(local.x) > Mathf.Abs(local.y * ratio)
             ? ResizeAxis.Horizontal
             : ResizeAxis.Vertical;
-
         isResizing = true;
-        Debug.Log($"🧰 Début du redimensionnement : {target.name} (axe : {currentResizeAxis})");
+        Debug.Log($"🧰 Début redim {tgt.name} (axe {currentResizeAxis})");
     }
 
     void PerformResizing()
     {
-        Vector3 currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 delta = currentMousePos - originalMousePos;
-
-        Vector3 newScale = originalScale;
+        Vector3 m = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 delta = m - originalMousePos;
+        Vector3 ns = originalScale;
         if (currentResizeAxis == ResizeAxis.Horizontal)
-            newScale.x = Mathf.Max(0.1f, originalScale.x + delta.x);
-        else if (currentResizeAxis == ResizeAxis.Vertical)
-            newScale.y = Mathf.Max(0.1f, originalScale.y + delta.y);
-
-        resizingTarget.transform.localScale = newScale;
-
+            ns.x = Mathf.Max(0.1f, originalScale.x + delta.x);
+        else
+            ns.y = Mathf.Max(0.1f, originalScale.y + delta.y);
+        resizingTarget.transform.localScale = ns;
         if (IsOverlapping(resizingTarget))
         {
             resizingTarget.transform.localScale = originalScale;
-            Debug.Log("❌ Redimensionnement annulé : collision.");
+            Debug.Log("❌ Redim annulé : collision");
         }
-
         if (Input.GetMouseButtonUp(0))
         {
             isResizing = false;
             resizingTarget = null;
             currentResizeAxis = ResizeAxis.None;
-            Debug.Log("✅ Fin du redimensionnement");
+            Debug.Log("✅ Fin redim");
         }
     }
 
     bool IsOverlapping(GameObject obj)
     {
-        Bounds bounds = obj.GetComponent<Collider2D>().bounds;
-        Collider2D[] overlaps = Physics2D.OverlapBoxAll(bounds.center, bounds.size, 0f);
-
-        foreach (var col in overlaps)
-        {
-            if (col.gameObject != obj)
-                return true;
-        }
+        var b = obj.GetComponent<Collider2D>().bounds;
+        foreach (var h in Physics2D.OverlapBoxAll(b.center, b.size, 0f))
+            if (h.gameObject != obj) return true;
         return false;
     }
 
     void HandleBlockDeletion()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (!Input.GetMouseButtonDown(1)) return;
+        Vector2 m = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var hit = Physics2D.OverlapPoint(m);
+        if (hit != null && !hit.CompareTag("Ground"))
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(mousePos);
-
-            if (hit != null && !hit.CompareTag("Ground"))
-            {
-                GameObject toDestroy = hit.gameObject;
-
-                // ✅ Cas spécial : ObstacleBlock ou ses enfants
-                if (toDestroy.name.Contains("ObstacleSafer") || toDestroy.name.Contains("ObstacleKiller"))
-                {
-                    Transform parent = toDestroy.transform.parent;
-                    if (parent != null && parent.name.Contains("ObstacleBlock"))
-                    {
-                        toDestroy = parent.gameObject;
-                    }
-                }
-
-                if (toDestroy == currentBlock)
-                {
-                    currentBlock = null;
-                    isPlacingBlock = false;
-                }
-
-                Destroy(toDestroy);
-                Debug.Log($"🗑️ Supprimé : {toDestroy.name}");
-            }
+            var toD = hit.gameObject;
+            if ((toD.name.Contains("ObstacleSafer") || toD.name.Contains("ObstacleKiller"))
+                && toD.transform.parent != null
+                && toD.transform.parent.name.Contains("ObstacleBlock"))
+                toD = toD.transform.parent.gameObject;
+            if (toD == currentBlock) { currentBlock = null; isPlacingBlock = false; }
+            Destroy(toD);
+            Debug.Log($"🗑️ Supprimé {toD.name}");
         }
     }
+
     #endregion
 
     #region Utility
 
     bool IsPointerOverUI()
-    {
-        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
-    }
+        => EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
 
     void TrySnapToNearbyBlock()
     {
         if (currentBlock == null) return;
 
-        Collider2D blockCollider = currentBlock.GetComponent<Collider2D>();
-        Bounds bounds = blockCollider.bounds;
+        var col = currentBlock.GetComponent<Collider2D>();
+        var b = col.bounds;
         float snapDistance = 1f;
+        float verticalEps = 0.05f; // petite marge pour exclure trop hauts ou trop bas
 
-        Vector2[] directions =
+        // Taille et positions des deux zones de recherche latérales
+        Vector2 boxSize = new Vector2(snapDistance, b.size.y - verticalEps * 2f);
+        // à droite
+        Vector2 rightCenter = new Vector2(b.max.x + snapDistance / 2f, b.center.y);
+        // à gauche
+        Vector2 leftCenter = new Vector2(b.min.x - snapDistance / 2f, b.center.y);
+
+        // Cherche à droite
+        var hits = Physics2D.OverlapBoxAll(rightCenter, boxSize, 0f);
+        foreach (var h in hits)
         {
-            Vector2.right, Vector2.left, Vector2.down, Vector2.up
-        };
-
-        foreach (var dir in directions)
-        {
-            Vector2 extent2D = new Vector2(bounds.extents.x, bounds.extents.y);
-            Vector2 start = (Vector2)bounds.center + dir * (extent2D + Vector2.one * (snapDistance / 2f));
-            Collider2D[] hits = Physics2D.OverlapCircleAll(start, snapDistance);
-
-            foreach (var hit in hits)
+            if (h != null && h.gameObject != currentBlock && !h.isTrigger)
             {
-                if (hit != null && hit.gameObject != currentBlock)
-                {
-                    SnapToTarget(hit, dir);
-                    return;
-                }
+                float newX = h.bounds.min.x - b.extents.x;
+                currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
+                Debug.Log($"↔️ Snap horizontal à droite contre {h.name}");
+                return;
+            }
+        }
+
+        // Cherche à gauche
+        hits = Physics2D.OverlapBoxAll(leftCenter, boxSize, 0f);
+        foreach (var h in hits)
+        {
+            if (h != null && h.gameObject != currentBlock && !h.isTrigger)
+            {
+                float newX = h.bounds.max.x + b.extents.x;
+                currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
+                Debug.Log($"↔️ Snap horizontal à gauche contre {h.name}");
+                return;
             }
         }
     }
-
-    void SnapToTarget(Collider2D hit, Vector2 dir)
+    void HandleBlockRotation()
     {
-        Bounds hitBounds = hit.bounds;
-        Bounds ourBounds = currentBlock.GetComponent<Collider2D>().bounds;
+        currentBlock.transform.Rotate(0, 0, -90f);
+        Debug.Log("🔄 Rotation 90°!");
+    }
 
-        Vector3 newPos = currentBlock.transform.position;
-
-        if (dir == Vector2.right)
-            newPos.x = hitBounds.min.x - ourBounds.size.x / 2f;
-        else if (dir == Vector2.left)
-            newPos.x = hitBounds.max.x + ourBounds.size.x / 2f;
-        else if (dir == Vector2.down)
-            newPos.y = hitBounds.max.y + ourBounds.size.y / 2f;
-        else if (dir == Vector2.up)
-            newPos.y = hitBounds.min.y - ourBounds.size.y / 2f;
-
-        currentBlock.transform.position = new Vector3(newPos.x, newPos.y, -1);
-        Debug.Log("✅ Snap à " + dir);
+    void InstantiateAndPrepare(GameObject prefab, Vector3? scaleOverride = null)
+    {
+        var obj = Instantiate(prefab, persistentBlockContainer);
+        obj.transform.position = new Vector3(0, 0, -1);
+        obj.transform.localScale = scaleOverride ?? currentScale;
+        currentBlock = obj;
+        currentBlock.tag = prefab.tag;
+        isPlacingBlock = true;
     }
 
     public void Save()
     {
-        // TODO : Sauvegarde du niveau
+        // TODO
     }
 
     #endregion
