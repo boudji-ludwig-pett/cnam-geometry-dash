@@ -204,9 +204,7 @@ public class LevelEditor : MonoBehaviour
     void PlaceBlock()
     {
         string name = currentBlock.name.ToLower();
-        bool isSpikeType = name.Contains("spike")
-                           || name.Contains("smallspike")
-                           || name.Contains("killzone");
+        bool isSpikeType = name.Contains("spike") || name.Contains("smallspike") || name.Contains("killzone");
 
         if (isSpikeType)
         {
