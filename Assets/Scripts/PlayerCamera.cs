@@ -18,25 +18,29 @@ public class PlayerCamera : MonoBehaviour
 
     private void Update()
     {
-        if (isPlaying)
-        {
-            Player player = playerObject.GetComponent<Player>();
+        if (!isPlaying) return;
 
-            float minYFollow = normalMinYFollow;
-            if (player.CurrentGameMode is ShipGameMode)
-            {
-                minYFollow = shipMinYFollow;
-            }
+        Player player = playerObject.GetComponent<Player>();
 
-            float targetY = initialY;
-            if (playerObject.transform.position.y > minYFollow)
-            {
-                targetY = playerObject.transform.position.y;
-            }
+        // Choix du minY selon le mode de jeu
+        float minYFollow = (player.CurrentGameMode is ShipGameMode)
+            ? shipMinYFollow
+            : normalMinYFollow;
 
-            float newY = Mathf.Lerp(transform.position.y, targetY, smoothSpeed * Time.deltaTime);
+        // Calcul de la cible Y
+        float targetY = initialY;
+        if (playerObject.transform.position.y > minYFollow)
+            targetY = playerObject.transform.position.y;
 
-            transform.position = new Vector3(playerObject.transform.position.x, newY, transform.position.z);
-        }
+        // Interpolation douce
+        float newY = Mathf.Lerp(transform.position.y, targetY, smoothSpeed * Time.deltaTime);
+
+        // Clamp pour éviter de descendre sous Y = 0
+        newY = Mathf.Max(newY, 0f);
+
+        // On suit aussi l'axe X du joueur
+        float newX = playerObject.transform.position.x;
+
+        transform.position = new Vector3(newX, newY, transform.position.z);
     }
 }

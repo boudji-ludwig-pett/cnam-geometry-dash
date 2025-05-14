@@ -28,9 +28,12 @@ public class LevelEditor : MonoBehaviour
 
     private enum ResizeAxis { None, Horizontal, Vertical }
     private ResizeAxis currentResizeAxis = ResizeAxis.None;
+    private Transform persistentBlockContainer;
 
     void Start()
     {
+        persistentBlockContainer = new GameObject("PlacedBlocks").transform;
+        DontDestroyOnLoad(persistentBlockContainer.gameObject);
         LoadPrefabs();
         GenerateButtons();
     }
@@ -52,7 +55,16 @@ public class LevelEditor : MonoBehaviour
 
     void LoadPrefabs()
     {
-        blockPrefabs.AddRange(Resources.LoadAll<GameObject>("Prefabs"));
+        var all = Resources.LoadAll<GameObject>("Prefabs");
+        blockPrefabs.Clear();
+        foreach (var prefab in all)
+        {
+            // Exclure par nom
+            var namePrefab = prefab.name.ToLower();
+            if (namePrefab.Equals("ground") || namePrefab.Equals("winnerwall"))
+                continue;
+            blockPrefabs.Add(prefab);
+        }
     }
 
     void GenerateButtons()
@@ -189,20 +201,33 @@ public class LevelEditor : MonoBehaviour
 
     bool IsPlacementValid()
     {
+        Collider2D currentCollider = currentBlock.GetComponent<Collider2D>();
+        Bounds bounds = currentCollider.bounds;
+
         Collider2D[] overlaps = Physics2D.OverlapBoxAll(
-            currentBlock.transform.position,
-            currentBlock.GetComponent<Collider2D>().bounds.size,
+            bounds.center,
+            bounds.size,
             0f
         );
 
         foreach (var col in overlaps)
         {
-            if (col.transform.root == currentBlock.transform || col.CompareTag("Ground"))
-                continue;
+            if (col == currentCollider)
+                continue; // ✅ Ignore son propre collider
+
+            if (col.CompareTag("Ground"))
+                continue; // ✅ Ignore le sol
+
+            if (col.transform.IsChildOf(currentBlock.transform))
+                continue; // ✅ Ignore ses propres enfants (si composite)
+
+            // Sinon, collision valide ➤ bloc non plaçable ici
             return false;
         }
+
         return true;
     }
+
 
     void HandleBlockSelection()
     {
@@ -237,8 +262,9 @@ public class LevelEditor : MonoBehaviour
     void PlaceBlock()
     {
         string name = currentBlock.name.ToLower();
-
-        bool grounded = name.Contains("spike") || name.Contains("bonus") || name.Contains("kill");
+        bool grounded = name.Contains("spike")
+                     || name.Contains("bonus")
+                     || name.Contains("killzone");
 
         if (grounded)
         {
@@ -247,41 +273,83 @@ public class LevelEditor : MonoBehaviour
         else if (!ShouldSkipVerticalSnap(name))
         {
             SnapBlockVertically();
-            TrySnapToNearbyBlock(); // ✅ seulement ici
+            TrySnapToNearbyBlock();
         }
         else
         {
-            TrySnapToNearbyBlock(); // ex: autres blocs
+            TrySnapToNearbyBlock();
         }
 
-
         TrySnapToNearbyBlock();
-
         isPlacingBlock = false;
         currentBlock = null;
     }
+
+
     void StickBlockToGround()
     {
         Collider2D col = currentBlock.GetComponent<Collider2D>();
-        Bounds bounds = col.bounds;
+        Bounds b = col.bounds;
 
-        Vector2 origin = new Vector2(bounds.center.x, bounds.min.y);
-        float rayLength = 100f; // on descend loin pour être sûr de toucher le sol
+        float halfWidth = b.extents.x;
+        float halfHeight = b.extents.y;
+        float maxDistance = 100f;
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, rayLength);
-
-        if (hit.collider != null && hit.collider.gameObject != currentBlock)
+        // Origines : gauche, centre, droite, juste sous le bloc
+        Vector2[] origins = new Vector2[]
         {
-            float topY = hit.collider.bounds.max.y;
-            float height = bounds.size.y;
-            float newY = topY + height / 2f;
+        new Vector2(b.center.x - halfWidth + 0.01f, b.min.y + 0.01f),
+        new Vector2(b.center.x,               b.min.y + 0.01f),
+        new Vector2(b.center.x + halfWidth - 0.01f, b.min.y + 0.01f)
+        };
 
-            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, newY, -1f);
-            Debug.Log($"📌 Bloc descendu sur {hit.collider.name} à Y={newY}");
+        float bestY = -Mathf.Infinity;
+        Collider2D bestHit = null;
+
+        // 1) On teste trois rayons
+        foreach (var origin in origins)
+        {
+            RaycastHit2D h = Physics2D.Raycast(origin, Vector2.down, maxDistance);
+            if (h.collider != null && h.collider.gameObject != currentBlock)
+            {
+                float hitY = h.point.y;
+                if (hitY > bestY)
+                {
+                    bestY = hitY;
+                    bestHit = h.collider;
+                }
+            }
+        }
+
+        // 2) Si aucun rayon n'a frappé, on fait un OverlapArea très bas
+        if (bestHit == null)
+        {
+            Vector2 areaStart = new Vector2(b.min.x, -maxDistance);
+            Vector2 areaEnd = new Vector2(b.max.x, b.min.y);
+
+            foreach (var hit in Physics2D.OverlapAreaAll(areaStart, areaEnd))
+            {
+                if (hit == null || hit.gameObject == currentBlock || hit.transform.IsChildOf(currentBlock.transform))
+                    continue;
+                float top = hit.bounds.max.y;
+                if (top > bestY)
+                {
+                    bestY = top;
+                    bestHit = hit;
+                }
+            }
+        }
+
+        // 3) On snap si on a trouvé
+        if (bestHit != null)
+        {
+            float newY = bestY + halfHeight;
+            currentBlock.transform.position = new Vector3(b.center.x, newY, b.center.z);
+            Debug.Log($"📌 {currentBlock.name} posé sur « {bestHit.name} » à Y={newY}");
         }
         else
         {
-            Debug.Log("❗ Aucun support trouvé en dessous pour aligner le bloc.");
+            Debug.LogWarning($"❗ {currentBlock.name} : pas de support détecté sous le bloc.");
         }
     }
 
@@ -336,16 +404,15 @@ public class LevelEditor : MonoBehaviour
 
     void InstantiateAndPrepare(GameObject prefab, Vector3? scaleOverride = null)
     {
-        GameObject obj = Instantiate(prefab);
+        GameObject obj = Instantiate(prefab, persistentBlockContainer); // 👈 placé dans le conteneur persistant
         obj.transform.position = new Vector3(0, 0, -1);
         obj.transform.localScale = scaleOverride ?? currentScale;
 
-        try { obj.tag = prefab.name; }
-        catch { Debug.LogWarning($"Le tag '{prefab.name}' est manquant."); }
-
         currentBlock = obj;
+        currentBlock.tag = prefab.tag;
         isPlacingBlock = true;
     }
+
 
     void HandleBlockRotation()
     {
