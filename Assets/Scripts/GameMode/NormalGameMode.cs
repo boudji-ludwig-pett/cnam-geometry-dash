@@ -38,7 +38,7 @@ public class NormalGameMode : IGameMode
         UpdateParticlePositionAndRotation(player);
     }
 
-    private void Jump(Player player)
+    public void Jump(Player player)
     {
         player.RigidBody.linearVelocity = new Vector2(player.RigidBody.linearVelocity.x, 0);
         player.RigidBody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
