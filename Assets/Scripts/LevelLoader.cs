@@ -5,6 +5,8 @@ using System.IO;
 public class LevelLoader : MonoBehaviour
 {
     public LevelsLoader levelsLoader;
+    public bool editMode;
+    public bool createMode;
     public AudioSource audioSource;
     public Text progressionText;
     private readonly float groundY = -6.034f;
@@ -49,27 +51,36 @@ public class LevelLoader : MonoBehaviour
 
             instance.transform.localScale = new Vector3(newScaleX, newScaleY, originalScale.z);
         }
-
-        GameObject groundPrefab = GetPrefab("Ground");
-        GameObject groundInstance = Instantiate(groundPrefab, new Vector3(current.LastX / 2, groundY, 0), Quaternion.identity);
-        float groundWidth = current.LastX;
-        groundInstance.transform.localScale = new Vector3(groundWidth / 5f * 2, 1, 1);
-
+        if (!editMode)
+        {
+            GameObject groundPrefab = GetPrefab("Ground");
+            GameObject groundInstance = Instantiate(groundPrefab, new Vector3(current.LastX / 2, groundY, 0), Quaternion.identity);
+            float groundWidth = current.LastX;
+            groundInstance.transform.localScale = new Vector3(groundWidth / 5f * 2, 1, 1);
+        }
         Instantiate(GetPrefab("WinnerWall"), new Vector3(current.LastX, 0, 0), Quaternion.Euler(0, 0, 90));
     }
 
     public void Start()
     {
-        levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
-        levelsLoader.IncreaseTotalAttempts();
+        createMode = PlayerPrefs.GetInt("CreateMode", 0) == 1;
+        if (!createMode)
+        {
+            levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
+            levelsLoader.IncreaseTotalAttempts();
 
-        LoadAudio();
-        LoadElements();
+            LoadElements();
+            if (!editMode)
+                LoadAudio();
+        }
     }
 
     public void Update()
     {
-        Level current = levelsLoader.levelCurrent;
-        progressionText.text = current.ProgressionPercent + "%";
+        if (!editMode)
+        {
+            Level current = levelsLoader.levelCurrent;
+            progressionText.text = current.ProgressionPercent + "%";
+        }
     }
 }
