@@ -27,6 +27,7 @@ public class TestManager : MonoBehaviour
         else
         {
             gameMode = new NormalGameMode();
+            ((NormalGameMode)gameMode).editMode = true;
             currentPlayer.ChangeGameMode(gameMode);
             currentPlayer.SpeedMultiplier = 0f;
 
@@ -68,12 +69,15 @@ public class TestManager : MonoBehaviour
         }
 
         if (editorUI != null)
+        {
+            Debug.LogError("editor UI null");
             editorUI.SetActive(false);
+        }
 
         currentPlayer.transform.position = spawnPoint.position;
         currentPlayer.RigidBody.linearVelocity = Vector2.zero;
         currentPlayer.SpeedMultiplier = 1f;
-        currentPlayer.SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
+        // currentPlayer.SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
 
         currentPlayer.ChangeGameMode(gameMode);
         isTesting = true;
