@@ -11,7 +11,7 @@ repeat
         :Perdre toutes les pièces et bonus;
     else (Non)
         partition "Actions du joueur" {
-            if (L'utilisateur clique sur l'écran ?) then (Oui)
+            if (L'utilisateur appuie sur espace ?) then (Oui)
                 :Le joueur effectue un saut;
                 note right
                 **Saut**
@@ -29,12 +29,12 @@ repeat
                 end note
             endif
 
-            if (Le joueur clique sur un bonus dans son inventaire ?) then (Oui)
+            if (Le joueur percute un bonus ?) then (Oui)
                 :Activer un bonus;
                 note right
                 **Activation de Bonus**
                 - Déclenche l'effet du bonus sélectionné.
-                - Exemple : Invincibilité, Double saut.
+                - Exemple : Ralentissement du temps.
                 end note
             endif
         }
@@ -44,7 +44,7 @@ repeat
                 :Arriver sur le menu de pause;
                 note right
                 **Menu de pause**
-                - Affiche les options : Reprendre, Quitter, Mode Checkpoint, Volume.
+                - Affiche les options : Reprendre, Quitter, Volume.
                 end note
             endif
         }
@@ -53,12 +53,6 @@ repeat
             if (Le joueur touche la zone de fin ?) then (Oui)
                 :Terminer le niveau;
                 :Afficher une animation de fin de niveau;
-                :Conserver les pièces obtenues;
-                note right
-                **Fin du Niveau**
-                - Succès enregistré.
-                - Les pièces collectées sont sauvegardées.
-                end note
             endif
         }
     endif

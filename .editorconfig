@@ -7,7 +7,7 @@ charset = utf-8
 indent_style = space
 end_of_line = lf
 
-[*.{json,jsonc,asmdef}]
+[*.asmdef]
 indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
@@ -27,6 +27,11 @@ indent_style = tab
 
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,nativeproj,locproj}]
 indent_size = 2
+
+[*.{json,jsonc}]
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
 
 [*.builds]
 indent_size = 2

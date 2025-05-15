@@ -7,7 +7,7 @@ Les modélisations UML du projet sont générés à partir des fichiers `.puml` 
 - [Diagramme de classes](./UML/class-diagram.puml)
 - [Diagramme d'activités](./UML/activity-diagram/activity-diagram.puml)
 - [Diagramme de cas d'utilisation](./UML/use-case-diagram.puml)
-- [Diagramme d'états](./UML/state-diagram/state-diagram.puml)
+- [Diagramme d'états](./UML/state-diagram.puml)
 
 ## Diagramme de Gantt
 
