@@ -87,6 +87,7 @@ public class NormalGameMode : IGameMode
     {
         player.IsColliding = true;
 
+        Debug.Log(collision.gameObject.tag.ToString());
         if (collision.gameObject.CompareTag("Kill"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
