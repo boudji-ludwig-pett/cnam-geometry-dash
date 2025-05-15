@@ -1,0 +1,21 @@
+{
+    "name": "NewLevel",
+    "musicName": "",
+    "order": 0,
+    "elements": [
+        {
+            "type": "KillZone",
+            "x": 0.0,
+            "y": -3.2300000190734865,
+            "scaleX": 1.0,
+            "scaleY": 1.0
+        },
+        {
+            "type": "SmallSpike",
+            "x": 20.0,
+            "y": -3.180000066757202,
+            "scaleX": 0.15000000596046449,
+            "scaleY": 0.07000000029802323
+        }
+    ]
+}
