@@ -8,11 +8,11 @@ repeat
     if (Le joueur percute un obstacle ?) then (Oui)
         :Le joueur meurt;
         :Augmenter le nombre d'essais de 1;
-        :Perdre toutes les pièces et bonus;
+        :Perdre toutes les bonus;
     else (Non)
         partition "Actions du joueur" {
           group Saut
-            if (L'utilisateur clique sur l'écran ?) then (Oui)
+            if (L'utilisateur appuie sur espace ?) then (Oui)
                 :Le joueur effectue un saut;
             endif
           end group
@@ -27,15 +27,15 @@ repeat
                 end group
             endif
 
-            if (Le joueur clique sur un bonus dans son inventaire ?) then (Oui)
+            if (Le joueur percute un bonus ?) then (Oui)
                 group Activation de Bonus
                     :Le joueur clique sur un bonus dans l'inventaire;
                     switch (Type de bonus)
                         case (Temps ralenti)
                             :Activer ralentissement du temps;
-                            :Temps ralenti : 3 secondes;
-                        case (Annulation d'obstacle)
-                            :Supprimer tous les obstacles;
+                            :Durée : 3 secondes;
+                        case (Temps accéléré)
+                            :Activer accélération du temps;
                             :Durée : 3 secondes;
                     endswitch
                 end group
@@ -54,9 +54,6 @@ repeat
                             :Quitter le niveau;
                             :Retour au menu principal;
                             stop
-                        case (Mode Checkpoint)
-                            :Activer/Désactiver le mode Checkpoint;
-                            :Reprendre la partie;
                         case (Volume)
                             :Modifier le volume sonore;
                             :Revenir au menu de pause;
@@ -72,7 +69,6 @@ repeat
             if (Le joueur touche la zone de fin ?) then (Oui)
                 :Terminer le niveau;
                 :Animation de fin de niveau;
-                :Conserver les pièces obtenues;
                 break
             endif
         }

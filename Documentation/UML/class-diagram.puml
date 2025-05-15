@@ -5,107 +5,581 @@ skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 hide enum methods
 
-class GameManager {
-  - score: int
-  - isPaused: Boolean
-  + StartGame()
-  + RestartLevel()
-  + PauseGame()
-  + ResumeGame()
-  + UpdateScore(points: int)
+package UnityEngine {
+    class GameObject {
+    }
+    class MonoBehaviour {
+    }
+    class Rigidbody2D {
+    }
+    class Transform {
+    }
+    class ParticleSystem {
+    }
+    class SpriteRenderer {
+    }
+    class Collider2D {
+    }
+    class Collision2D {
+    }
+    class Vector3 {
+    }
+    class Vector2 {
+    }
+    class Quaternion {
+    }
+    class Mathf {
+      {method} + Lerp(...) {static}
+      {method} + Round(...) {static}
+      {method} + Clamp(...) {static}
+      {method} + Sin(...) {static}
+      {method} + Abs(...) {static}
+      {method} + DeltaAngle(...) {static}
+      {method} + MoveTowardsAngle(...) {static}
+      {method} + RoundToInt(...) {static}
+    }
+    class Time {
+      {method} + deltaTime: float {static} {readOnly}
+      {method} + timeScale: float {static}
+    }
+    class Input {
+      {method} + GetKey(...) {static}
+      {method} + GetKeyDown(...) {static}
+      {method} + GetMouseButtonDown(...) {static}
+      {method} + GetMouseButtonUp(...) {static}
+      {method} + GetAxis(...) {static}
+    }
+    class Camera {
+      {method} + main: Camera {static} {readOnly}
+      {method} + ScreenToWorldPoint(...)
+    }
+    class Physics2D {
+      {method} + OverlapBoxAll(...) {static}
+      {method} + RaycastAll(...) {static}
+      {method} + OverlapPoint(...) {static}
+      {method} + OverlapAreaAll(...) {static}
+    }
+    class Resources {
+      {method} + Load<T>(...) {static}
+      {method} + LoadAll<T>(...) {static}
+    }
+    class PlayerPrefs {
+      {method} + GetFloat(...) {static}
+      {method} + SetFloat(...) {static}
+      {method} + HasKey(...) {static}
+    }
+    class AudioSource {
+        {method} + volume: float
+        {method} + clip: AudioClip
+        {method} + Play()
+        {method} + Pause()
+    }
+    class AudioClip {
+    }
+    class Slider {
+    }
+    class Button {
+    }
+    class Image {
+    }
+    class RectTransform {
+    }
+    class Bounds {
+    }
+    class Debug {
+      {method} + Log(...) {static}
+      {method} + LogWarning(...) {static}
+      {method} + LogError(...) {static}
+    }
+    class Application {
+      {method} + persistentDataPath: string {static} {readOnly}
+      {method} + dataPath: string {static} {readOnly}
+      {method} + Quit() {static}
+    }
+    class Canvas {
+        {method} + ForceUpdateCanvases() {static}
+    }
+    class UnityEngine.Object {
+        {method} + FindAnyObjectByType<T>(...) {static}
+    }
+    class Renderer {
+    }
+}
+
+package UnityEngine.SceneManagement {
+    class SceneManager {
+      {method} + LoadScene(...) {static}
+      {method} + LoadSceneAsync(...) {static}
+      {method} + GetActiveScene(...) {static}
+    }
+}
+
+package UnityEngine.UI {
+    class Text {
+    }
+}
+
+package TMPro {
+    class TMP_Text {
+    }
+}
+
+package System {
+    package IO {
+        class Path {
+          {method} + Combine(...) {static}
+          {method} + GetFileNameWithoutExtension(...) {static}
+        }
+        class File {
+          {method} + Exists(...) {static}
+          {method} + ReadAllText(...) {static}
+          {method} + WriteAllText(...) {static}
+          {method} + Copy(...) {static}
+          {method} + GetExtension(...) {static}
+          {method} + GetFileName(...) {static}
+          {method} + GetFileNameWithoutExtension(...) {static}
+        }
+        class Directory {
+          {method} + Exists(...) {static}
+          {method} + CreateDirectory(...) {static}
+        }
+    }
+    package Collections {
+        class IEnumerator {
+        }
+        package Generic {
+            class List<T> {
+            }
+        }
+    }
+}
+
+package SimpleFileBrowser {
+    class FileBrowser {
+      {method} + WaitForLoadDialog(...) {static}
+      {method} + WaitForSaveDialog(...) {static}
+      {method} + Success: bool {static} {readOnly}
+      {method} + Result: string[*] {static} {readOnly}
+      {method} + PickMode: enumeration {static} {readOnly}
+    }
+}
+
+class PlayerCamera {
+    {field} + playerObject: UnityEngine.GameObject
+    {field} + normalMinYFollow: float
+    {field} + shipMinYFollow: float
+    {field} + smoothSpeed: float
+    {field} - initialY: float
+    {field} + isPlaying: bool
+
+    {method} - Start()
+    {method} - Update()
+}
+PlayerCamera --|> UnityEngine.MonoBehaviour
+PlayerCamera --> UnityEngine.GameObject : <<References>>
+PlayerCamera ..> UnityEngine.Mathf : <<Uses>>
+PlayerCamera ..> UnityEngine.Time : <<Uses>>
+PlayerCamera ..> Player : <<Uses>>
+PlayerCamera ..> ShipGameMode : <<Uses>>
+PlayerCamera ..> UnityEngine.Transform : <<Uses>>
+PlayerCamera ..> UnityEngine.Vector3 : <<Uses>>
+
+class Player {
+    {field} + RigidBody: UnityEngine.Rigidbody2D {get} {private set}
+    {field} + Transform: UnityEngine.Transform {get} {private set}
+    {field} + Particle: UnityEngine.ParticleSystem {get} {private set}
+    {field} + LevelsLoader: LevelsLoader {get} {set}
+    {field} + SpriteRenderer: UnityEngine.SpriteRenderer {get} {private set}
+    {field} + IsColliding: bool {get} {set}
+    {field} + HasStarted: bool {get} {set}
+    {field} + CanJump: bool {get} {set}
+    {field} + CurrentGameMode: IGameMode {get} {set}
+    {field} + SpeedMultiplier: float
+
+    {method} + Awake()
+    {method} + Start()
+    {method} + Update()
+    {method} + OnCollisionEnter2D(collision: UnityEngine.Collision2D)
+    {method} + OnCollisionExit2D(collision: UnityEngine.Collision2D)
+    {method} + OnTriggerEnter2D(collision: UnityEngine.Collider2D)
+    {method} + ChangeGameMode(newMode: IGameMode)
+}
+Player --|> UnityEngine.MonoBehaviour
+Player *--> UnityEngine.Rigidbody2D : <<Owns>>
+Player *--> UnityEngine.Transform : <<Owns>>
+Player *--> UnityEngine.ParticleSystem : <<Owns>>
+Player o--> LevelsLoader : <<References>>
+Player *--> UnityEngine.SpriteRenderer : <<Owns>>
+Player o--> IGameMode : <<Has>>
+Player ..> UnityEngine.Resources : <<Uses>>
+Player ..> UnityEngine.Debug : <<Uses>>
+Player ..> ShipPortal : <<Uses>>
+Player ..> CubePortal : <<Uses>>
+Player ..> BonusBoostSpeed : <<Uses>>
+Player ..> BonusSlowSpeed : <<Uses>>
+Player ..> NormalGameMode : <<Uses>>
+Player ..> UnityEngine.Collision2D : <<Uses>>
+Player ..> UnityEngine.Collider2D : <<Uses>>
+
+class PauseMenu {
+    {field} + pauseMenu: UnityEngine.GameObject
+    {field} + pauseButton: UnityEngine.GameObject
+    {field} + levelLoader: LevelLoader
+    {field} + volumeSlider: UnityEngine.UI.Slider
+
+    {method} + Start()
+    {method} + ChangeVolume()
+    {method} + Pause()
+    {method} + Home()
+    {method} + Resume()
+}
+PauseMenu --|> UnityEngine.MonoBehaviour
+PauseMenu --> UnityEngine.GameObject : <<References>>
+PauseMenu --> LevelLoader : <<References>>
+PauseMenu --> UnityEngine.UI.Slider : <<References>>
+PauseMenu ..> UnityEngine.PlayerPrefs : <<Uses>>
+PauseMenu ..> UnityEngine.Time : <<Uses>>
+PauseMenu ..> UnityEngine.SceneManagement.SceneManager : <<Uses>>
+
+class MainMenu {
+    {method} + LaunchGame()
+    {method} + OpenImport()
+    {method} + QuitGame()
+    {method} + LevelEditor()
+    {method} + EditorChoice()
+    {method} + CreateLevel()
+}
+MainMenu --|> UnityEngine.MonoBehaviour
+MainMenu ..> UnityEngine.SceneManagement.SceneManager : <<Uses>>
+MainMenu ..> UnityEngine.Application : <<Uses>>
+
+class LevelStat {
+    {field} + JsonName: string {get} {set}
+    {field} + totalJumps: Integer
+    {field} + totalAttempts: Integer
+    {field} + progressionPercent: Integer
+
+    {method} + {static} CreateFromJSON(jsonString: string): LevelStat
+}
+LevelStat ..> UnityEngine.JsonUtility : <<Uses>>
+
+class LevelsLoader {
+    {field} + levels: System.Collections.Generic.List<Level>
+    {field} + levelCurrent: Level
+
+    {method} - Start()
+    {method} - LoadAllLevels()
+    {method} - SaveLevelCurrent()
+    {method} + NextLevel()
+    {method} + PreviousLevel()
+    {method} + IncreaseTotalJumps()
+    {method} + IncreaseTotalAttempts()
+    {method} + CalculateCurrentProgressionPercent(playerPosition: UnityEngine.Vector3): Integer
+    {method} + RefreshLevels()
+}
+LevelsLoader --|> UnityEngine.MonoBehaviour
+LevelsLoader *--> Level : <<Owns>>
+LevelsLoader ..> UnityEngine.TextAsset : <<Uses>>
+LevelsLoader ..> UnityEngine.Resources : <<Uses>>
+LevelsLoader ..> System.IO.Path : <<Uses>>
+LevelsLoader ..> UnityEngine.Application : <<Uses>>
+LevelsLoader ..> System.IO.File : <<Uses>>
+LevelsLoader ..> UnityEngine.JsonUtility : <<Uses>>
+LevelsLoader ..> LevelStat : <<Uses>>
+LevelsLoader ..> UnityEngine.Vector3 : <<Uses>>
+LevelsLoader ..> UnityEngine.Mathf : <<Uses>>
+LevelsLoader ..> WinnerWall : <<Uses>>
+LevelsLoader ..> UnityEngine.GameObject : <<Uses>>
+LevelsLoader ..> UnityEngine.Renderer : <<Uses>>
+LevelsLoader ..> System.Collections.Generic.List : <<Uses>>
+
+class LevelLoader {
+    {field} + levelsLoader: LevelsLoader
+    {field} + audioSource: UnityEngine.AudioSource
+    {field} + progressionText: UnityEngine.UI.Text
+    {field} - groundY: float
+
+    {method} - GetPrefab(type: string): UnityEngine.GameObject
+    {method} - LoadAudio()
+    {method} - LoadElements()
+    {method} + Start()
+    {method} + Update()
+}
+LevelLoader --|> UnityEngine.MonoBehaviour
+LevelLoader o--> LevelsLoader : <<References>>
+LevelLoader *--> UnityEngine.AudioSource : <<Owns>>
+LevelLoader --> UnityEngine.UI.Text : <<References>>
+LevelLoader ..> System.IO.Path : <<Uses>>
+LevelLoader ..> UnityEngine.Resources : <<Uses>>
+LevelLoader ..> UnityEngine.PlayerPrefs : <<Uses>>
+LevelLoader ..> UnityEngine.GameObject : <<Uses>>
+LevelLoader ..> UnityEngine.Vector3 : <<Uses>>
+LevelLoader ..> UnityEngine.Quaternion : <<Uses>>
+LevelLoader ..> UnityEngine.Transform : <<Uses>>
+LevelLoader ..> WinnerWall : <<Uses>>
+LevelLoader ..> Level : <<Uses>>
+LevelLoader ..> Ground : <<Uses>>
+LevelLoader ..> UnityEngine.AudioClip : <<Uses>>
+LevelLoader ..> UnityEngine.Renderer : <<Uses>>
+
+class LevelEditor {
+    {field} - currentBlock: UnityEngine.GameObject
+    {field} - isPlacingBlock: bool
+    {field} - currentScale: UnityEngine.Vector3
+    {field} - scaleStep: float
+    {field} + blockGroupContainer: UnityEngine.Transform
+    {field} + buttonPrefabTemplate: UnityEngine.GameObject
+    {field} - currentPage: Integer
+    {field} - buttonsPerPage: Integer {constant}
+    {field} - blockPrefabs: System.Collections.Generic.List<UnityEngine.GameObject>
+    {field} - currentButtons: System.Collections.Generic.List<UnityEngine.GameObject>
+    {field} - resizingTarget: UnityEngine.GameObject
+    {field} - isResizing: bool
+    {field} - originalMousePos: UnityEngine.Vector3
+    {field} - originalScale: UnityEngine.Vector3
+    {field} - currentResizeAxis: ResizeAxis
+
+    {method} - Start()
+    {method} - LoadPrefabs()
+    {method} - GenerateButtons()
+    {method} - ClearCurrentButtons()
+    {method} + NextPage()
+    {method} + PreviousPage()
+    {method} - SelectPrefab(prefab: UnityEngine.GameObject)
+    {method} - Update()
+    {method} - PlaceBlock()
+    {method} - TrySnapToNearbyBlock()
+    {method} - InstantiateAndPrepare(prefab: UnityEngine.GameObject, scaleOverride: UnityEngine.Vector3?)
+    {method} - HandleBlockRotation()
+}
+LevelEditor --|> UnityEngine.MonoBehaviour
+LevelEditor o--> blockGroupContainer : <<References>>
+LevelEditor --> buttonPrefabTemplate : <<References>>
+LevelEditor *--> blockPrefabs : <<Owns>>
+LevelEditor *--> currentButtons : <<Owns>>
+LevelEditor o--> currentBlock : <<References>>
+LevelEditor o--> resizingTarget : <<References>>
+LevelEditor ..> UnityEngine.GameObject : <<Uses>>
+LevelEditor ..> UnityEngine.Vector3 : <<Uses>>
+LevelEditor ..> UnityEngine.Mathf : <<Uses>>
+LevelEditor ..> UnityEngine.Input : <<Uses>>
+LevelEditor ..> UnityEngine.Camera : <<Uses>>
+LevelEditor ..> UnityEngine.Physics2D : <<Uses>>
+LevelEditor ..> UnityEngine.Collider2D : <<Uses>>
+LevelEditor ..> UnityEngine.Bounds : <<Uses>>
+LevelEditor ..> UnityEngine.SpriteRenderer : <<Uses>>
+LevelEditor ..> UnityEngine.UI.Button : <<Uses>>
+LevelEditor ..> UnityEngine.UI.Image : <<Uses>>
+LevelEditor ..> UnityEngine.RectTransform : <<Uses>>
+LevelEditor ..> UnityEngine.Debug : <<Uses>>
+LevelEditor ..> System.Collections.Generic.List : <<Uses>>
+LevelEditor ..> UnityEngine.Resources : <<Uses>>
+LevelEditor ..> Player : <<Uses>> ' (via tags)
+LevelEditor ..> Ground : <<Uses>> ' (via tags)
+LevelEditor ..> Portal : <<Uses>> ' (via tags)
+LevelEditor ..> SmallObstacle : <<Uses>> ' (via tags)
+LevelEditor ..> Spike : <<Uses>> ' (via tags)
+LevelEditor ..> Block : <<Uses>> ' (via tags)
+LevelEditor ..> Bonus : <<Uses>> ' (via tags)
+
+enum ResizeAxis <<enumeration>> {
+  None
+  Horizontal
+  Vertical
+}
+LevelEditor *--> ResizeAxis : <<Has>>
+
+class LevelElement {
+    {field} + type: string
+    {field} + x: float
+    {field} + y: float
+    {field} + scaleX: float
+    {field} + scaleY: float
 }
 
 class Level {
-  - name: String
-  - musicName: String
-  + StartLevel()
-  + EndLevel()
-  + CheckCompletion(): Boolean
+    {field} + {static} {readOnly} LAST_X: Integer = 15
+    {field} + JsonName: string {get} {set}
+    {field} + TotalJumps: Integer {get} {set}
+    {field} + TotalAttempts: Integer {get} {set}
+    {field} + ProgressionPercent: Integer {get} {set}
+    {field} + ProgressionPercentMax: Integer {get} {set}
+    {field} + name: string
+    {field} + musicName: string
+    {field} + order: Integer
+    {field} + elements: System.Collections.Generic.List<LevelElement>
+    {field} + LastX: float {get}
+
+    {method} + {static} CreateFromJSON(jsonString: string): Level
+}
+Level *--> LevelElement : <<Composed of>>
+Level ..> UnityEngine.JsonUtility : <<Uses>>
+Level ..> System.Collections.Generic.List : <<Uses>>
+
+class JSONImporter {
+    {field} + statusText: TMPro.TMP_Text
+
+    {method} - Awake()
+    {method} - Start()
+    {method} + ImportJSON()
+    {method} - ShowFileBrowser(): System.Collections.IEnumerator
+    {method} - UpdateStatus(message: string, color: UnityEngine.Color)
+}
+JSONImporter --|> UnityEngine.MonoBehaviour
+JSONImporter --> TMPro.TMP_Text : <<References>>
+JSONImporter ..> System.Collections.IEnumerator : <<Uses>>
+JSONImporter ..> SimpleFileBrowser.FileBrowser : <<Uses>>
+JSONImporter ..> System.IO.Path : <<Uses>>
+JSONImporter ..> System.IO.File : <<Uses>>
+JSONImporter ..> UnityEngine.Color : <<Uses>>
+JSONImporter ..> LevelsLoader : <<Uses>>
+JSONImporter ..> UnityEngine.Object : <<Uses>>
+JSONImporter ..> UnityEngine.Canvas : <<Uses>>
+JSONImporter ..> UnityEngine.SceneManagement.SceneManager : <<Uses>>
+
+class JSONExporter {
+    {field} + statusText: TMPro.TMP_Text
+    {field} - editor: LevelEditor
+    {field} - levelsFolder: string
+
+    {method} - Awake()
+    {method} - Start()
+    {method} + ExportJSON()
+    {method} - ShowSaveDialog(): System.Collections.IEnumerator
+    {method} - SetStatus(message: string, color: UnityEngine.Color)
+}
+JSONExporter --|> UnityEngine.MonoBehaviour
+JSONExporter o--> LevelEditor : <<References>>
+JSONExporter --> TMPro.TMP_Text : <<References>>
+JSONExporter ..> System.Collections.IEnumerator : <<Uses>>
+JSONExporter ..> System.Collections.Generic.List : <<Uses>>
+JSONExporter ..> SimpleFileBrowser.FileBrowser : <<Uses>>
+JSONExporter ..> System.IO.Path : <<Uses>>
+JSONExporter ..> System.IO.File : <<Uses>>
+JSONExporter ..> System.IO.Directory : <<Uses>>
+JSONExporter ..> UnityEngine.Collider2D : <<Uses>>
+JSONExporter ..> UnityEngine.Object : <<Uses>>
+JSONExporter ..> UnityEngine.Vector3 : <<Uses>>
+JSONExporter ..> UnityEngine.Mathf : <<Uses>>
+JSONExporter ..> UnityEngine.JsonUtility : <<Uses>>
+JSONExporter ..> UnityEngine.Color : <<Uses>>
+JSONExporter ..> LevelsLoader : <<Uses>>
+JSONExporter ..> UnityEngine.Canvas : <<Uses>>
+
+class SerializableElement <<private>> {
+    {field} + type: string
+    {field} + x: float
+    {field} + y: float
+    {field} + scaleX: float
+    {field} + scaleY: float
+}
+JSONExporter ..> SerializableElement : <<Uses>>
+
+class LevelData <<private>> {
+    {field} + name: string
+    {field} + musicName: string
+    {field} + order: Integer
+    {field} + elements: SerializableElement[*]
+}
+LevelData *--> SerializableElement : <<Composed of>>
+JSONExporter ..> LevelData : <<Uses>>
+
+
+interface IGameMode <<interface>> {
+    {method} + Update(player: Player) {abstract}
+    {method} + OnCollisionEnter(player: Player, collision: UnityEngine.Collision2D) {abstract}
+    {method} + OnCollisionExit(player: Player, collision: UnityEngine.Collision2D) {abstract}
 }
 
-abstract class LevelElement {
-  - x: Float
-  - y: Float
-}
+class ShipGameMode implements IGameMode {
+    {field} - HorizontalSpeed: float {constant}
+    {field} - JumpForce: float {constant}
+    {field} - JumpKey: UnityEngine.KeyCode {constant}
+    {field} - UpperAngle: float {constant}
+    {field} - LowerAngle: float {constant}
+    {field} - RotationTransitionDuration: float {constant}
 
-abstract class Obstacle extends LevelElement {
-  + TriggerEffect(player: Player)
+    {method} + Update(player: Player)
+    {method} - GetCurrentZAngle(player: Player): float
+    {method} - Jump(player: Player)
+    {method} + OnCollisionEnter(player: Player, collision: UnityEngine.Collision2D)
+    {method} + OnCollisionExit(player: Player, collision: UnityEngine.Collision2D)
 }
+ShipGameMode ..|> IGameMode
+ShipGameMode ..> Player : <<Uses>>
+ShipGameMode ..> UnityEngine.Vector2 : <<Uses>>
+ShipGameMode ..> UnityEngine.Input : <<Uses>>
+ShipGameMode ..> UnityEngine.KeyCode : <<Uses>>
+ShipGameMode ..> UnityEngine.Mathf : <<Uses>>
+ShipGameMode ..> UnityEngine.Time : <<Uses>>
+ShipGameMode ..> UnityEngine.Quaternion : <<Uses>>
+ShipGameMode ..> UnityEngine.SceneManagement.SceneManager : <<Uses>>
+ShipGameMode ..> UnityEngine.Collision2D : <<Uses>>
+ShipGameMode ..> LevelsLoader : <<Uses>>
 
-class Platform extends LevelElement {
+class NormalGameMode implements IGameMode {
+    {field} - HorizontalSpeed: float {constant}
+    {field} - JumpForce: float {constant}
+    {field} - JumpKey: UnityEngine.KeyCode {constant}
+    {field} - isRotating: bool
+    {field} - targetRotationAngle: float
+    {field} - rotationSpeed: float {readOnly}
+
+    {method} + Update(player: Player)
+    {method} - Jump(player: Player)
+    {method} - PerformRotation(player: Player)
+    {method} - IsJumping(player: Player): bool
+    {method} - AlignRotation(player: Player)
+    {method} - UpdateParticlePositionAndRotation(player: Player)
+    {method} + OnCollisionEnter(player: Player, collision: UnityEngine.Collision2D)
+    {method} + OnCollisionExit(player: Player, collision: UnityEngine.Collision2D)
 }
+NormalGameMode ..|> IGameMode
+NormalGameMode ..> Player : <<Uses>>
+NormalGameMode ..> UnityEngine.Vector2 : <<Uses>>
+NormalGameMode ..> UnityEngine.Input : <<Uses>>
+NormalGameMode ..> UnityEngine.KeyCode : <<Uses>>
+NormalGameMode ..> UnityEngine.Mathf : <<Uses>>
+NormalGameMode ..> UnityEngine.Time : <<Uses>>
+NormalGameMode ..> UnityEngine.Quaternion : <<Uses>>
+NormalGameMode ..> UnityEngine.SceneManagement.SceneManager : <<Uses>>
+NormalGameMode ..> UnityEngine.Collision2D : <<Uses>>
+NormalGameMode ..> LevelsLoader : <<Uses>>
+NormalGameMode ..> UnityEngine.Vector3 : <<Uses>>
 
-class Spike extends Obstacle {
-  + TriggerEffect(player: Player)
-}
 
-class Portal extends LevelElement {
-  - destination: Vector2
-  - type: PortalType
-  + Teleport(player: Player)
-}
+' Tags
+class ShipPortal { }
+class CubePortal { }
+class BonusBoostSpeed { }
+class BonusSlowSpeed { }
+class Kill { }
+class Win { }
+class Ground { }
+class WinnerWall { }
+class Block { }
+class SmallObstacle { }
+class Spike { }
+class Portal { }
+class Bonus { }
 
-enum PortalType {
-  Normal, Gravity, Speed
-}
-
-class Bumper extends LevelElement {
-  - bounceForce: Float
-  + Bounce(player: Player)
-}
-
-class LevelEnd extends LevelElement {
-  + TriggerEndGame()
-}
-
-class Collectible extends LevelElement {
-  - points: int
-  + Collect(player: Player)
-}
-
-class Player {
-  - JUMP_FORCE: static const Float = 26.6581
-  - SPEED: static const Float = 8.6
-  - rigidBody: Rigidbody2D
-  - isColliding: Boolean
-  - isGrounded: Boolean
-  - gravityScale: Float
-  + Jump()
-  + IsJumping(): Boolean
-  + OnCollisionEnter2D(collision: Collision2D)
-  + OnCollisionExit2D(collision: Collision2D)
-  + ChangeGravity()
-  + Die()
-  + Respawn()
-  + CollectItem(item: Collectible)
-}
-
-class LevelLoader {
-  + LoadLevel(jsonPath: String): Level
-  + UnloadLevel(level: Level)
-}
-
-class LevelParser {
-  + ParseJSON(jsonData: String): Level
-}
-
-class MusicManager {
-  - currentTrack: String
-  - volume: Float
-  + PlayMusic(musicPath: String)
-  + StopMusic()
-  + SetVolume(level: Float)
-}
-
-GameManager *--> Level : <<Manages>>
-GameManager --> LevelLoader : <<Uses>>
-LevelLoader --> LevelParser : <<Uses>>
-Level *--> LevelElement : <<Contains>>
-GameManager *--> Player : <<Owns>>
-GameManager --> MusicManager : <<Controls>>
-Player --> LevelEnd : <<Triggers>>
-Player --> Portal : <<Interacts>>
-Player --> Collectible : <<Collects>>
-Obstacle --> Player : <<Affects>>
+Player ..> ShipPortal : <<Uses Tag>>
+Player ..> CubePortal : <<Uses Tag>>
+Player ..> BonusBoostSpeed : <<Uses Tag>>
+Player ..> BonusSlowSpeed : <<Uses Tag>>
+ShipGameMode ..> Kill : <<Uses Tag>>
+ShipGameMode ..> Win : <<Uses Tag>>
+ShipGameMode ..> Ground : <<Uses Tag>>
+NormalGameMode ..> Kill : <<Uses Tag>>
+NormalGameMode ..> Win : <<Uses Tag>>
+LevelLoader ..> WinnerWall : <<Uses Prefab>>
+LevelLoader ..> Ground : <<Uses Prefab>>
+LevelEditor ..> Ground : <<Uses Tag>>
+LevelEditor ..> Block : <<Uses Tag>>
+LevelEditor ..> SmallObstacle : <<Uses Tag>>
+LevelEditor ..> Spike : <<Uses Tag>>
+LevelEditor ..> Portal : <<Uses Tag>>
+LevelEditor ..> Bonus : <<Uses Tag>>
+LevelsLoader ..> WinnerWall : <<Uses Prefab>>
 
 @enduml
