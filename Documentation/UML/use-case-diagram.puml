@@ -32,7 +32,7 @@ rectangle "Menu Pause" {
 
 rectangle "Création de niveaux" {
   usecase "Créer un nouveau niveau" as CreerNouveauNiveau
-  usecase "Modifier un niveau existante" as ModifierNiveau
+  usecase "Modifier un niveau existant" as ModifierNiveau
   usecase "Tester un niveau" as TesterNiveau
   usecase "Exporter un niveau" as ExporterNiveau
 }

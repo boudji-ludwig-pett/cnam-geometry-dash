@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public bool IsColliding { get; set; } = true;
     public bool HasStarted { get; set; } = false;
     public bool CanJump { get; set; } = true;
+    public PauseMenu pauseMenu;
 
     public IGameMode CurrentGameMode { get; set; }
     public float SpeedMultiplier = 1f;
@@ -68,6 +69,18 @@ public class Player : MonoBehaviour
         if (LevelsLoader != null)
         {
             LevelsLoader.CalculateCurrentProgressionPercent(transform.position);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseMenu.pauseMenu.activeSelf)
+            {
+                pauseMenu.Resume();
+            }
+            else
+            {
+                pauseMenu.Pause();
+            }
         }
     }
 
