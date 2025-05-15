@@ -24,9 +24,13 @@ public class Player : MonoBehaviour
 
         GameObject loaderObj = GameObject.FindGameObjectWithTag("LevelsLoader");
         if (loaderObj != null)
+        {
             LevelsLoader = loaderObj.GetComponent<LevelsLoader>();
+        }
         else
+        {
             Debug.LogWarning("LevelsLoader introuvable : Progression désactivée pour ce niveau.");
+        }
     }
 
     public void Start()
@@ -38,13 +42,33 @@ public class Player : MonoBehaviour
         CurrentGameMode = new NormalGameMode();
     }
 
+    public bool IsAI
+    {
+        get
+        {
+            if (PlayerPrefs.HasKey("AI"))
+            {
+                return PlayerPrefs.GetInt("AI") == 1;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        set
+        {
+            PlayerPrefs.SetInt("AI", value ? 1 : 0);
+        }
+    }
+
     public void Update()
     {
-        if (CurrentGameMode != null)
-            CurrentGameMode.Update(this);
+        CurrentGameMode?.Update(this);
 
         if (LevelsLoader != null)
+        {
             LevelsLoader.CalculateCurrentProgressionPercent(transform.position);
+        }
     }
 
     public virtual void OnCollisionEnter2D(Collision2D collision)
@@ -78,6 +102,10 @@ public class Player : MonoBehaviour
         {
             SpeedMultiplier /= 1.5f;
             Destroy(collision.gameObject);
+        }
+        else if (collision.CompareTag("AICollider") && IsAI)
+        {
+            CurrentGameMode.Jump(this);
         }
     }
 
