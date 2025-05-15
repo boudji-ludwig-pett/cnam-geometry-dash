@@ -38,7 +38,7 @@ public class NormalGameMode : IGameMode
         UpdateParticlePositionAndRotation(player);
     }
 
-    private void Jump(Player player)
+    public void Jump(Player player)
     {
         player.RigidBody.linearVelocity = new Vector2(player.RigidBody.linearVelocity.x, 0);
         player.RigidBody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
@@ -87,6 +87,7 @@ public class NormalGameMode : IGameMode
     {
         player.IsColliding = true;
 
+        Debug.Log(collision.gameObject.tag.ToString());
         if (collision.gameObject.CompareTag("Kill"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
