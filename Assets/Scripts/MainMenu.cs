@@ -23,14 +23,15 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadSceneAsync("LevelEditorScene");
     }
 
+    public void CreateVoidLevel()
+    {
+        PlayerPrefs.SetInt("CreateMode", 1);
+        SceneManager.LoadScene("LevelEditorScene");
+    }
+
     public void EditorChoice()
     {
         SceneManager.LoadSceneAsync("EditorChoiceScene");
-    }
-
-    public void CreateLevel()
-    {
-        SceneManager.LoadSceneAsync("CreateLevelScene");
     }
 
     public void EditLevel()
