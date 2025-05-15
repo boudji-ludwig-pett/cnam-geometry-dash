@@ -35,3 +35,11 @@ cd cnam-geometry-dash
 
 # Ouvrir le projet avec Unity Hub
 ```
+
+## Screenshots
+
+![Homepage](./Documentation/Screenshots/home-page.png)
+
+![Gameplay](./Documentation/Screenshots/gameplay.png)
+
+![Levels selection](./Documentation/Screenshots/levels-selection.png)
