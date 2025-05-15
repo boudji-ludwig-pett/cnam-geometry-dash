@@ -9,6 +9,14 @@ public class LevelPreviousButton : MonoBehaviour
         levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            PreviousLevel();
+        }
+    }
+
     public void PreviousLevel()
     {
         levelsLoader.PreviousLevel();
