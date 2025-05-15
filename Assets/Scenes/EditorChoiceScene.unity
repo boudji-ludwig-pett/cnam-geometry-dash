@@ -859,7 +859,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1858033414}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: LevelEditor
+        m_MethodName: CreateVoidLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

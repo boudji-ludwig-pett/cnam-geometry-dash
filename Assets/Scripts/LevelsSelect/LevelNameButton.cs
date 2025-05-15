@@ -7,4 +7,9 @@ public class LevelNameButton : MonoBehaviour
     {
         SceneManager.LoadScene("LevelScene");
     }
+    public void EditLevel()
+    {
+        PlayerPrefs.SetInt("CreateMode", 0);
+        SceneManager.LoadScene("LevelEditorScene");
+    }
 }
