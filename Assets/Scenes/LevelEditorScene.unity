@@ -5128,6 +5128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe0bd74200510d4aa75c327a76499c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 0}
   SpeedMultiplier: 1
 --- !u!1 &333456214
 GameObject:
@@ -5467,7 +5468,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2079131731516339571, guid: b83b54968fd22ff438fe127c168bebac, type: 3}
+  m_Sprite: {fileID: -522367714226421056, guid: 58314e7be35f3201e8f3d376508d5800, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6219,8 +6220,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelsLoader: {fileID: 0}
-  createMode: 0
   editMode: 1
+  createMode: 0
   audioSource: {fileID: 1479180208}
   progressionText: {fileID: 0}
 --- !u!4 &1479180210
