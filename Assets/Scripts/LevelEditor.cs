@@ -51,6 +51,10 @@ public class LevelEditor : MonoBehaviour
         HandleBlockDeletion();
     }
 
+    void OnDestroy()
+    {
+        ClearEditor();
+    }
     #region UI
 
     void LoadPrefabs()
@@ -176,7 +180,6 @@ public class LevelEditor : MonoBehaviour
         foreach (var h in hits)
         {
             if (h == col) continue;
-            if (h.CompareTag("Ground")) continue;
             if (h.transform.IsChildOf(currentBlock.transform)) continue;
             return false;
         }
@@ -470,41 +473,84 @@ public class LevelEditor : MonoBehaviour
         var col = currentBlock.GetComponent<Collider2D>();
         var b = col.bounds;
         float snapDistance = 1f;
-        float verticalEps = 0.05f; // petite marge pour exclure trop hauts ou trop bas
+        float verticalEps = 0.1f;
 
-        // Taille et positions des deux zones de recherche latérales
-        Vector2 boxSize = new Vector2(snapDistance, b.size.y - verticalEps * 2f);
-        // à droite
+        // === SNAP HORIZONTAL (droite)
+        Vector2 hBoxSize = new Vector2(snapDistance, b.size.y - verticalEps * 2f);
         Vector2 rightCenter = new Vector2(b.max.x + snapDistance / 2f, b.center.y);
-        // à gauche
-        Vector2 leftCenter = new Vector2(b.min.x - snapDistance / 2f, b.center.y);
-
-        // Cherche à droite
-        var hits = Physics2D.OverlapBoxAll(rightCenter, boxSize, 0f);
+        var hits = Physics2D.OverlapBoxAll(rightCenter, hBoxSize, 0f);
         foreach (var h in hits)
         {
-            if (h != null && h.gameObject != currentBlock && !h.isTrigger)
-            {
-                float newX = h.bounds.min.x - b.extents.x;
-                currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
-                Debug.Log($"↔️ Snap horizontal à droite contre {h.name}");
-                return;
-            }
+            if (IsInvalidSnapTarget(h)) continue;
+            float newX = h.bounds.min.x - b.extents.x;
+            currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
+            Debug.Log($"↔️ Snap horizontal à droite contre {h.name}");
+            return;
         }
 
-        // Cherche à gauche
-        hits = Physics2D.OverlapBoxAll(leftCenter, boxSize, 0f);
+        // === SNAP HORIZONTAL (gauche)
+        Vector2 leftCenter = new Vector2(b.min.x - snapDistance / 2f, b.center.y);
+        hits = Physics2D.OverlapBoxAll(leftCenter, hBoxSize, 0f);
         foreach (var h in hits)
         {
-            if (h != null && h.gameObject != currentBlock && !h.isTrigger)
-            {
-                float newX = h.bounds.max.x + b.extents.x;
-                currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
-                Debug.Log($"↔️ Snap horizontal à gauche contre {h.name}");
-                return;
-            }
+            if (IsInvalidSnapTarget(h)) continue;
+            float newX = h.bounds.max.x + b.extents.x;
+            currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
+            Debug.Log($"↔️ Snap horizontal à gauche contre {h.name}");
+            return;
+        }
+
+        // === SNAP VERTICAL (dessous)
+        Vector2 downBoxSize = new Vector2(b.size.x - 0.1f, snapDistance);
+        Vector2 downCenter = new Vector2(b.center.x, b.min.y - snapDistance / 2f);
+        hits = Physics2D.OverlapBoxAll(downCenter, downBoxSize, 0f);
+        foreach (var h in hits)
+        {
+            if (IsInvalidSnapTarget(h)) continue;
+            float newY = h.bounds.max.y + b.extents.y;
+            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, newY, -1f);
+            Debug.Log($"⬇️ Snap vertical (bas) contre {h.name}");
+            return;
+        }
+
+        // === SNAP VERTICAL (au-dessus)
+        Vector2 upCenter = new Vector2(b.center.x, b.max.y + snapDistance / 2f);
+        hits = Physics2D.OverlapBoxAll(upCenter, downBoxSize, 0f);
+        foreach (var h in hits)
+        {
+            if (IsInvalidSnapTarget(h)) continue;
+            float newY = h.bounds.min.y - b.extents.y;
+            currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, newY, -1f);
+            Debug.Log($"⬆️ Snap vertical (haut) contre {h.name}");
+            return;
         }
     }
+
+    bool IsInvalidSnapTarget(Collider2D h)
+    {
+        if (h == null || h.gameObject == currentBlock || h.isTrigger) return true;
+
+        var t = h.transform;
+        if (t.parent != null && t.parent.name.Contains("ObstacleBlock"))
+        {
+            if (t.name.Contains("ObstacleKiller") || t.name.Contains("ObstacleSafer"))
+                return true;
+        }
+
+        return false;
+    }
+
+    // 🔍 Filtrage des enfants parasites
+    bool IsChildOfObstacleBlock(Collider2D col)
+    {
+        var t = col.transform;
+        if (t.parent == null) return false;
+
+        bool isNamedObstacleChild = t.name.Contains("ObstacleSafer") || t.name.Contains("ObstacleKiller");
+        bool parentIsBlock = t.parent.name.Contains("ObstacleBlock");
+        return isNamedObstacleChild && parentIsBlock;
+    }
+
     void HandleBlockRotation()
     {
         currentBlock.transform.Rotate(0, 0, -90f);
@@ -527,4 +573,23 @@ public class LevelEditor : MonoBehaviour
     }
 
     #endregion
+
+    public void ClearEditor()
+    {
+        if (persistentBlockContainer == null) return;
+
+        foreach (Transform child in persistentBlockContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        Debug.Log("🧹 Éditeur vidé.");
+
+        currentBlock = null;
+        isPlacingBlock = false;
+        currentPage = 0;
+        ClearCurrentButtons();
+        GenerateButtons(); // Optionnel si tu veux régénérer la page 1
+    }
 }
+

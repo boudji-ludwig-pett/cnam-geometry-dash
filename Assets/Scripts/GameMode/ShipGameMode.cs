@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class ShipGameMode : IGameMode
 {
+    public bool editMode { get; set; } = false;
     private const float HorizontalSpeed = 8.6f;
     private const float JumpForce = 26.6581f;
     private const KeyCode JumpKey = KeyCode.Space;
@@ -69,12 +70,40 @@ public class ShipGameMode : IGameMode
     {
         if (collision.gameObject.CompareTag("Kill"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if (editMode)
+            {
+                player.transform.position = new Vector3(-16, -3, 0f);
+                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                player.RigidBody.freezeRotation = true;
+                player.RigidBody.linearVelocity = Vector2.zero;
+                player.SpeedMultiplier = 1f;
+                IGameMode gameMode = new NormalGameMode();
+                ((NormalGameMode)gameMode).editMode = true;
+                player.ChangeGameMode(gameMode);
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
             return;
         }
         if (collision.gameObject.CompareTag("Win"))
         {
-            SceneManager.LoadScene("HomeScene");
+            if (editMode)
+            {
+                player.transform.position = new Vector3(-16, -3, 0f);
+                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                player.RigidBody.freezeRotation = true;
+                player.RigidBody.linearVelocity = Vector2.zero;
+                player.SpeedMultiplier = 1f;
+                IGameMode gameMode = new NormalGameMode();
+                ((NormalGameMode)gameMode).editMode = true;
+                player.ChangeGameMode(gameMode);
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
             return;
         }
 

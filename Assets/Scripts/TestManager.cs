@@ -50,6 +50,13 @@ public class TestManager : MonoBehaviour
         {
             StopTest();
         }
+        if (currentPlayer.CurrentGameMode is ShipGameMode shipGameMode)
+        {
+            if (shipGameMode.editMode == false)
+            {
+                shipGameMode.editMode = true;
+            }
+        }
     }
 
     public void StartOrStop()
@@ -75,6 +82,8 @@ public class TestManager : MonoBehaviour
         }
 
         currentPlayer.transform.position = spawnPoint.position;
+        currentPlayer.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        currentPlayer.RigidBody.freezeRotation = true;
         currentPlayer.RigidBody.linearVelocity = Vector2.zero;
         currentPlayer.SpeedMultiplier = 1f;
         // currentPlayer.SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");

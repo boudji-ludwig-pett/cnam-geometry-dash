@@ -89,14 +89,15 @@ public class NormalGameMode : IGameMode
     {
         player.IsColliding = true;
 
-        Debug.Log(collision.gameObject.tag.ToString());
+        Debug.Log("Nom de l'objet : " + collision.gameObject.name.ToString());
+        Debug.Log("Nom du tag : " + collision.gameObject.tag.ToString());
         if (collision.gameObject.CompareTag("Kill"))
         {
             if (editMode)
             {
-                GameObject spawn = new GameObject("AutoSpawnPoint");
-                spawn.transform.position = new Vector3(-16, -3, 0f);
-                player.transform.position = spawn.transform.position;
+                player.transform.position = new Vector3(-16, -3, 0f);
+                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                player.RigidBody.freezeRotation = true;
                 player.RigidBody.linearVelocity = Vector2.zero;
                 player.SpeedMultiplier = 1f;
             }
@@ -108,7 +109,18 @@ public class NormalGameMode : IGameMode
 
         if (collision.gameObject.CompareTag("Win"))
         {
-            SceneManager.LoadScene("SelectLevelScene");
+            if (editMode)
+            {
+                player.transform.position = new Vector3(-16, -3, 0f);
+                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                player.RigidBody.freezeRotation = true;
+                player.RigidBody.linearVelocity = Vector2.zero;
+                player.SpeedMultiplier = 1f;
+            }
+            else
+            {
+                SceneManager.LoadScene("SelectLevelScene");
+            }
         }
     }
 
