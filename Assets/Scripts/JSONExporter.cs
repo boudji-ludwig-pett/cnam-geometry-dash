@@ -5,12 +5,17 @@ using System.Collections.Generic;
 using SimpleFileBrowser;
 using TMPro;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(LevelEditor))]
 public class JSONExporter : MonoBehaviour
 {
     public TMP_Text statusText;
     private LevelEditor editor;
     private string levelsFolder;
+    private string assetFolderPath;
 
     private void Awake()
     {
@@ -18,6 +23,8 @@ public class JSONExporter : MonoBehaviour
         levelsFolder = Path.Combine(Application.dataPath, "Resources/Levels");
         if (!Directory.Exists(levelsFolder))
             Directory.CreateDirectory(levelsFolder);
+
+        assetFolderPath = "Assets/Resources/Levels";
 
         if (statusText == null)
         {
@@ -104,36 +111,33 @@ public class JSONExporter : MonoBehaviour
         {
             Debug.LogError("Export error: " + e);
             SetStatus("Export error. See console.", Color.red);
+            yield break;
         }
 
 #if UNITY_EDITOR
-        UnityEditor.AssetDatabase.Refresh();
+        string assetPath = Path.Combine(assetFolderPath, fileName + ".json");
+        AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
 #endif
-        var loader = Object.FindAnyObjectByType<LevelsLoader>();
-        if (loader != null)
-            loader.RefreshLevels();
+
+        var loader = FindObjectOfType<LevelsLoader>();
+        loader?.RefreshLevels();
     }
 
     private void SetStatus(string message, Color color)
     {
-        if (statusText != null)
-        {
-            statusText.text = message;
-            statusText.color = color;
-            statusText.gameObject.SetActive(false);
-            statusText.gameObject.SetActive(true);
-            Canvas.ForceUpdateCanvases();
-        }
+        if (statusText == null) return;
+        statusText.text = message;
+        statusText.color = color;
+        statusText.gameObject.SetActive(false);
+        statusText.gameObject.SetActive(true);
+        Canvas.ForceUpdateCanvases();
     }
 
     [System.Serializable]
     private class SerializableElement
     {
         public string type;
-        public float x;
-        public float y;
-        public float scaleX;
-        public float scaleY;
+        public float x, y, scaleX, scaleY;
     }
 
     [System.Serializable]
