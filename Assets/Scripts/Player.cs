@@ -103,7 +103,6 @@ public class Player : MonoBehaviour
             }
             else
             {
-
                 sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "death"));
                 sfxSource.Play();
                 StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, SceneManager.GetActiveScene().name));
@@ -112,7 +111,9 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Win"))
         {
-            SceneManager.LoadScene("SelectLevelScene");
+            sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "win"));
+            sfxSource.Play();
+            StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "SelectLevelScene"));
         }
     }
 
