@@ -7,7 +7,7 @@ public class LevelLoader : MonoBehaviour
     public LevelsLoader levelsLoader;
     public bool editMode;
     public bool createMode;
-    public AudioSource audioSource;
+    public AudioSource musicSource;
     public Text progressionText;
     private readonly float groundY = -6.034f;
 
@@ -18,18 +18,18 @@ public class LevelLoader : MonoBehaviour
 
     private void LoadAudio()
     {
-        audioSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
+        musicSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
 
         if (PlayerPrefs.HasKey("Volume"))
         {
-            audioSource.volume = PlayerPrefs.GetFloat("Volume");
+            musicSource.volume = PlayerPrefs.GetFloat("Volume");
         }
         else
         {
-            audioSource.volume = 1f;
+            musicSource.volume = 1f;
         }
 
-        audioSource.Play();
+        musicSource.Play();
     }
 
     private void LoadElements()
@@ -40,10 +40,10 @@ public class LevelLoader : MonoBehaviour
             GameObject prefab = GetPrefab(element.type);
             GameObject instance = Instantiate(prefab, new Vector3(element.x, element.y, 0), Quaternion.identity);
 
-            // if (prefab.CompareTag("Kill"))
-            // {
-            Instantiate(Resources.Load<GameObject>("AICollider"), new Vector3(element.x - 1, element.y, 0), Quaternion.identity);
-            // }
+            if (prefab.CompareTag("Kill"))
+            {
+                Instantiate(Resources.Load<GameObject>("AICollider"), new Vector3(element.x - 1, element.y, 0), Quaternion.identity);
+            }
 
             Vector3 originalScale = instance.transform.localScale;
             float newScaleX = element.scaleX > 0 ? element.scaleX : originalScale.x;

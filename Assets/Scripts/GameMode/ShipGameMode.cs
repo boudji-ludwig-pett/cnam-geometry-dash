@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -67,17 +68,6 @@ public class ShipGameMode : IGameMode
 
     public void OnCollisionEnter(Player player, Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Kill"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            return;
-        }
-        if (collision.gameObject.CompareTag("Win"))
-        {
-            SceneManager.LoadScene("HomeScene");
-            return;
-        }
-
         float currentAngle = GetCurrentZAngle(player);
         float shortestAngle = Mathf.DeltaAngle(currentAngle, 0);
         player.Transform.rotation = Quaternion.RotateTowards(player.Transform.rotation, Quaternion.Euler(0, 0, 0), Mathf.Abs(shortestAngle));
