@@ -1,7 +1,9 @@
+using System.IO;
 using UnityEngine;
 
 public class LevelNextButton : MonoBehaviour
 {
+    public AudioSource sfxSource;
     public LevelsLoader levelsLoader;
 
     public void Start()
@@ -20,5 +22,7 @@ public class LevelNextButton : MonoBehaviour
     public void NextLevel()
     {
         levelsLoader.NextLevel();
+        sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
+        sfxSource.Play();
     }
 }

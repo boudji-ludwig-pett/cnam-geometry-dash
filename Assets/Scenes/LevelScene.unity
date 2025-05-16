@@ -6008,7 +6008,6 @@ MonoBehaviour:
   pauseButton: {fileID: 1038445495}
   levelLoader: {fileID: 1999482186}
   volumeSlider: {fileID: 6776934}
-  isPause: 0
 --- !u!1 &988798827
 GameObject:
   m_ObjectHideFlags: 0
@@ -7475,7 +7474,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelsLoader: {fileID: 0}
-  audioSource: {fileID: 1999482188}
+  editMode: 0
+  createMode: 0
+  musicSource: {fileID: 1999482188}
   progressionText: {fileID: 245275149}
 --- !u!4 &1999482187
 Transform:

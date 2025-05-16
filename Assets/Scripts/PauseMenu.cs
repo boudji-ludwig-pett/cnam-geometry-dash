@@ -13,26 +13,26 @@ public class PauseMenu : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("Volume"))
         {
-            levelLoader.audioSource.volume = PlayerPrefs.GetFloat("Volume");
-            volumeSlider.value = levelLoader.audioSource.volume;
+            levelLoader.musicSource.volume = PlayerPrefs.GetFloat("Volume");
+            volumeSlider.value = levelLoader.musicSource.volume;
         }
         else
         {
-            levelLoader.audioSource.volume = 1f;
+            levelLoader.musicSource.volume = 1f;
             volumeSlider.value = 1f;
         }
     }
 
     public void ChangeVolume()
     {
-        levelLoader.audioSource.volume = volumeSlider.value;
-        PlayerPrefs.SetFloat("Volume", levelLoader.audioSource.volume);
+        levelLoader.musicSource.volume = volumeSlider.value;
+        PlayerPrefs.SetFloat("Volume", levelLoader.musicSource.volume);
     }
 
     public void Pause()
     {
         Time.timeScale = 0;
-        levelLoader.audioSource.Pause();
+        levelLoader.musicSource.Pause();
 
         pauseMenu.SetActive(true);
         pauseButton.SetActive(false);
@@ -47,7 +47,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         Time.timeScale = 1;
-        levelLoader.audioSource.Play();
+        levelLoader.musicSource.Play();
 
         pauseMenu.SetActive(false);
         pauseButton.SetActive(true);
