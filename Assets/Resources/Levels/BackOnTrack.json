@@ -2,6 +2,7 @@
     "name": "Back on Track",
     "musicName": "BackOnTrack",
     "order": 2,
+    "difficulty": 1,
     "elements": [
         {
             "type": "Spike",

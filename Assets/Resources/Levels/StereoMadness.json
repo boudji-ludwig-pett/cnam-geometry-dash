@@ -2,6 +2,7 @@
     "name": "Stereo Madness",
     "musicName": "StereoMadness",
     "order": 1,
+    "difficulty": 2,
     "elements": [
         {
             "type": "Spike",
