@@ -88,9 +88,6 @@ public class NormalGameMode : IGameMode
     public void OnCollisionEnter(Player player, Collision2D collision)
     {
         player.IsColliding = true;
-
-        Debug.Log("Nom de l'objet : " + collision.gameObject.name.ToString());
-        Debug.Log("Nom du tag : " + collision.gameObject.tag.ToString());
         if (collision.gameObject.CompareTag("Kill"))
         {
             if (editMode)

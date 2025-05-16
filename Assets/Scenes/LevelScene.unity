@@ -6008,6 +6008,7 @@ MonoBehaviour:
   pauseButton: {fileID: 1038445495}
   levelLoader: {fileID: 1999482186}
   volumeSlider: {fileID: 6776934}
+  isPause: 0
 --- !u!1 &988798827
 GameObject:
   m_ObjectHideFlags: 0
@@ -6562,8 +6563,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe0bd74200510d4aa75c327a76499c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 892725783}
   SpeedMultiplier: 1
-  IsAI: 0
 --- !u!61 &1267397460
 BoxCollider2D:
   m_ObjectHideFlags: 0

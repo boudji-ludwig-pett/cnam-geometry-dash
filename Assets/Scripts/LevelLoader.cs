@@ -111,6 +111,15 @@ public class LevelLoader : MonoBehaviour
     private void Awake()
     {
         createMode = PlayerPrefs.GetInt("CreateMode", 0) == 1;
+        if (!editMode)
+        {
+            GameObject groundPrefab = GetPrefab("Ground");
+            GameObject groundInstance = Instantiate(groundPrefab, new Vector3(current.LastX / 2, groundY, 0), Quaternion.identity);
+            float groundWidth = current.LastX;
+            groundInstance.transform.localScale = new Vector3(groundWidth / 5f * 2, 1, 1);
+        }
+        Instantiate(GetPrefab("WinnerWall"), new Vector3(current.LastX, 0, 0), Quaternion.Euler(0, 0, 90));
+
     }
 
     public void Start()
@@ -124,7 +133,6 @@ public class LevelLoader : MonoBehaviour
             levelsLoader.IncreaseTotalAttempts();
 
             LoadElements();
-
             if (!editMode)
                 LoadAudio();
         }
@@ -135,6 +143,7 @@ public class LevelLoader : MonoBehaviour
         if (!editMode)
         {
             progressionText.text = levelsLoader.levelCurrent.ProgressionPercent + "%";
+
         }
     }
 }
