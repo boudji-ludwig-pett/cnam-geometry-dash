@@ -8,6 +8,7 @@ public class TestManager : MonoBehaviour
     public Transform spawnPoint;
     public GameObject editorUI;
     public PlayerCamera playerCamera;
+    public AudioSource sfxSource;
 
     private bool isTesting = false;
 
@@ -27,7 +28,7 @@ public class TestManager : MonoBehaviour
         else
         {
             gameMode = new NormalGameMode();
-            ((NormalGameMode)gameMode).editMode = true;
+            currentPlayer.editMode = true;
             currentPlayer.ChangeGameMode(gameMode);
             currentPlayer.SpeedMultiplier = 0f;
 
@@ -49,13 +50,6 @@ public class TestManager : MonoBehaviour
         if (isTesting && currentPlayer == null)
         {
             StopTest();
-        }
-        if (currentPlayer.CurrentGameMode is ShipGameMode shipGameMode)
-        {
-            if (shipGameMode.editMode == false)
-            {
-                shipGameMode.editMode = true;
-            }
         }
     }
 
@@ -101,7 +95,7 @@ public class TestManager : MonoBehaviour
             currentPlayer.SpriteRenderer.enabled = true;
 
         if (currentPlayer.Particle != null)
-            currentPlayer.Particle.Play(); // ✅ Démarrer la particule
+            currentPlayer.Particle.Play(); // Démarrer la particule
 
         Debug.Log("[TestManager] Test du niveau démarré !");
     }
@@ -118,7 +112,7 @@ public class TestManager : MonoBehaviour
             currentPlayer.SpeedMultiplier = 0f;
 
             if (currentPlayer.Particle != null)
-                currentPlayer.Particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // ✅ Arrêter proprement
+                currentPlayer.Particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Arrêter proprement
 
             if (currentPlayer.SpriteRenderer != null)
                 currentPlayer.SpriteRenderer.enabled = false;

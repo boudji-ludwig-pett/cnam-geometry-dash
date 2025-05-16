@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,8 @@ public class Player : MonoBehaviour
     public bool HasStarted { get; set; } = false;
     public bool CanJump { get; set; } = true;
     public PauseMenu pauseMenu;
+    public AudioSource sfxSource;
+    public bool editMode { get; set; } = false;
 
     public IGameMode CurrentGameMode { get; set; }
     public float SpeedMultiplier = 1f;
@@ -87,6 +90,34 @@ public class Player : MonoBehaviour
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
         CurrentGameMode?.OnCollisionEnter(this, collision);
+
+        if (editMode && (collision.gameObject.CompareTag("Kill") || collision.gameObject.CompareTag("Win")))
+        {
+            GameObject spawn = new GameObject("AutoSpawnPoint");
+            spawn.transform.position = new Vector3(-16, -3, 0f);
+            transform.position = spawn.transform.position;
+            RigidBody.linearVelocity = Vector2.zero;
+            SpeedMultiplier = 1f;
+            CurrentGameMode = new NormalGameMode();
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
+            return;
+        }
+
+        if (collision.gameObject.CompareTag("Kill"))
+        {
+
+            sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "death"));
+            sfxSource.Play();
+            StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, SceneManager.GetActiveScene().name));
+
+        }
+
+        if (collision.gameObject.CompareTag("Win"))
+        {
+            sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "win"));
+            sfxSource.Play();
+            StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "SelectLevelScene"));
+        }
     }
 
     public void OnCollisionExit2D(Collision2D collision)

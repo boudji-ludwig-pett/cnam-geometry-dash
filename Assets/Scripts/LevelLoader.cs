@@ -7,7 +7,7 @@ public class LevelLoader : MonoBehaviour
     public LevelsLoader levelsLoader;
     public bool editMode;
     public bool createMode;
-    public AudioSource audioSource;
+    public AudioSource musicSource;
     public Text progressionText;
     private readonly float groundY = -6.034f;
 
@@ -16,18 +16,24 @@ public class LevelLoader : MonoBehaviour
         var prefab = Resources.Load<GameObject>("Prefabs/" + type);
         if (prefab == null)
         {
-            Debug.LogError($"❌ Prefab introuvable pour : {type}");
+            Debug.LogError($"Prefab introuvable pour : {type}");
         }
         return prefab;
     }
 
     private void LoadAudio()
     {
-        audioSource.clip = Resources.Load<AudioClip>(
-            Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
+        musicSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
 
-        audioSource.volume = PlayerPrefs.GetFloat("Volume", 1f);
-        audioSource.Play();
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            musicSource.volume = PlayerPrefs.GetFloat("Volume");
+        }
+        else
+        {
+            musicSource.volume = 1f;
+        }
+        musicSource.Play();
     }
 
     private void LoadElements()
@@ -52,7 +58,7 @@ public class LevelLoader : MonoBehaviour
                     if (child.name.Contains("ObstacleKiller"))
                     {
                         var col = child.GetComponent<BoxCollider2D>();
-                        if (col != null && col.size.y > 2f) // 🔥 Trop grand
+                        if (col != null && col.size.y > 2f) // Trop grand
                         {
                             Debug.LogWarning($"⚠️ Collider {child.name} trop grand, réduction appliquée.");
                             col.size = new Vector2(col.size.x, 1f);
@@ -64,24 +70,27 @@ public class LevelLoader : MonoBehaviour
 
 
 
-            // 🎯 En mode jeu/test uniquement → ajout du AICollider
+            // En mode jeu/test uniquement → ajout du AICollider
             if (!editMode)
             {
-                Instantiate(
-                    Resources.Load<GameObject>("AICollider"),
-                    new Vector3(element.x - 1, element.y, 0),
-                    Quaternion.identity
-                );
+                if (prefab.CompareTag("Kill"))
+                {
+                    Instantiate(
+                        Resources.Load<GameObject>("AICollider"),
+                        new Vector3(element.x - 1, element.y, 0),
+                        Quaternion.identity
+                    );
+                }
             }
 
-            // 🧱 Appliquer l'échelle personnalisée
+            // Appliquer l'échelle personnalisée
             Vector3 originalScale = instance.transform.localScale;
             float newScaleX = element.scaleX > 0 ? element.scaleX : originalScale.x;
             float newScaleY = element.scaleY > 0 ? element.scaleY : originalScale.y;
             instance.transform.localScale = new Vector3(newScaleX, newScaleY, originalScale.z);
         }
 
-        // 🌍 Sol uniquement en mode jeu
+        // Sol uniquement en mode jeu
         if (!editMode)
         {
             GameObject groundPrefab = GetPrefab("Ground");
@@ -96,7 +105,7 @@ public class LevelLoader : MonoBehaviour
             }
         }
 
-        // 🎯 Mur de fin toujours placé
+        // Mur de fin toujours placé
         GameObject winWall = GetPrefab("WinnerWall");
         if (winWall != null)
         {
@@ -110,6 +119,10 @@ public class LevelLoader : MonoBehaviour
 
     private void Awake()
     {
+        levelsLoader = GameObject
+               .FindGameObjectWithTag("LevelsLoader")
+               .GetComponent<LevelsLoader>();
+        Level current = levelsLoader.levelCurrent;
         createMode = PlayerPrefs.GetInt("CreateMode", 0) == 1;
         if (!editMode)
         {
@@ -119,7 +132,6 @@ public class LevelLoader : MonoBehaviour
             groundInstance.transform.localScale = new Vector3(groundWidth / 5f * 2, 1, 1);
         }
         Instantiate(GetPrefab("WinnerWall"), new Vector3(current.LastX, 0, 0), Quaternion.Euler(0, 0, 90));
-
     }
 
     public void Start()
@@ -143,7 +155,6 @@ public class LevelLoader : MonoBehaviour
         if (!editMode)
         {
             progressionText.text = levelsLoader.levelCurrent.ProgressionPercent + "%";
-
         }
     }
 }
