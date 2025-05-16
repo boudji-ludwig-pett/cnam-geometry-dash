@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class NormalGameMode : IGameMode
 {
+    public bool editMode { get; set; } = false;
     private const float HorizontalSpeed = 8.6f;
     private const float JumpForce = 26.6581f;
     private const KeyCode JumpKey = KeyCode.Space;
@@ -18,6 +19,7 @@ public class NormalGameMode : IGameMode
 
         if (player.IsColliding && Input.GetKey(JumpKey) && !isRotating)
         {
+            Debug.Log("Player is Jumping");
             Jump(player);
         }
 
@@ -89,7 +91,18 @@ public class NormalGameMode : IGameMode
 
         if (collision.gameObject.CompareTag("Kill"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if (editMode)
+            {
+                GameObject spawn = new GameObject("AutoSpawnPoint");
+                spawn.transform.position = new Vector3(-16, -3, 0f);
+                player.transform.position = spawn.transform.position;
+                player.RigidBody.linearVelocity = Vector2.zero;
+                player.SpeedMultiplier = 1f;
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
 
         if (collision.gameObject.CompareTag("Win"))
