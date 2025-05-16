@@ -7,7 +7,7 @@ public class LevelHomeButton : MonoBehaviour
 {
     public AudioSource sfxSource;
 
-    public static IEnumerator PlaySound(AudioSource sfxSource, string scene)
+    public static IEnumerator PlaySoundAndLoadScene(AudioSource sfxSource, string scene)
     {
         yield return new WaitWhile(() => sfxSource.isPlaying);
         SceneManager.LoadScene(scene);
@@ -20,6 +20,6 @@ public class LevelHomeButton : MonoBehaviour
 
         sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
         sfxSource.Play();
-        StartCoroutine(PlaySound(sfxSource, "HomeScene"));
+        StartCoroutine(PlaySoundAndLoadScene(sfxSource, "HomeScene"));
     }
 }

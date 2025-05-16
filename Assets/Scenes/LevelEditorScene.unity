@@ -5129,6 +5129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 0}
+  sfxSource: {fileID: 762457564}
   SpeedMultiplier: 1
 --- !u!1 &333456214
 GameObject:
@@ -6424,6 +6425,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   editorUI: {fileID: 0}
   playerCamera: {fileID: 746393166}
+  sfxSource: {fileID: 0}
 --- !u!114 &1561821050
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,8 @@ public class Player : MonoBehaviour
     public bool HasStarted { get; set; } = false;
     public bool CanJump { get; set; } = true;
     public PauseMenu pauseMenu;
+    public AudioSource sfxSource;
+    public bool editMode { get; set; } = false;
 
     public IGameMode CurrentGameMode { get; set; }
     public float SpeedMultiplier = 1f;
@@ -87,6 +90,30 @@ public class Player : MonoBehaviour
     public virtual void OnCollisionEnter2D(Collision2D collision)
     {
         CurrentGameMode?.OnCollisionEnter(this, collision);
+
+        if (collision.gameObject.CompareTag("Kill"))
+        {
+            if (editMode)
+            {
+                GameObject spawn = new GameObject("AutoSpawnPoint");
+                spawn.transform.position = new Vector3(-16, -3, 0f);
+                transform.position = spawn.transform.position;
+                RigidBody.linearVelocity = Vector2.zero;
+                SpeedMultiplier = 1f;
+            }
+            else
+            {
+
+                sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "death"));
+                sfxSource.Play();
+                StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, SceneManager.GetActiveScene().name));
+            }
+        }
+
+        if (collision.gameObject.CompareTag("Win"))
+        {
+            SceneManager.LoadScene("SelectLevelScene");
+        }
     }
 
     public void OnCollisionExit2D(Collision2D collision)

@@ -787,7 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c53cba3260b30d02b79e69a3198546c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxSource: {fileID: 0}
+  sfxSource: {fileID: 676309805}
   levelsLoader: {fileID: 0}
 --- !u!1 &1099679056
 GameObject:
@@ -1186,7 +1186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c34ef065650ba0802be580828cc0d474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxSource: {fileID: 0}
+  sfxSource: {fileID: 676309805}
   levelsLoader: {fileID: 0}
 --- !u!1 &1975177171
 GameObject:

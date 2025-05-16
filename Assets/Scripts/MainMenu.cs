@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
         sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
         sfxSource.Play();
 
-        StartCoroutine(LevelHomeButton.PlaySound(sfxSource, "SelectLevelScene"));
+        StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "SelectLevelScene"));
     }
 
     public void OpenImport()
@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour
         sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
         sfxSource.Play();
 
-        StartCoroutine(LevelHomeButton.PlaySound(sfxSource, "ImportScene"));
+        StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "ImportScene"));
     }
 
     public void QuitGame()
@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour
         sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
         sfxSource.Play();
 
-        StartCoroutine(LevelHomeButton.PlaySound(sfxSource, "LevelEditorScene"));
+        StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "LevelEditorScene"));
     }
 
     public void CreateVoidLevel()
@@ -41,7 +41,7 @@ public class MainMenu : MonoBehaviour
         sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
         sfxSource.Play();
 
-        StartCoroutine(LevelHomeButton.PlaySound(sfxSource, "LevelEditorScene"));
+        StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "LevelEditorScene"));
     }
 
     public void EditorChoice()
@@ -49,7 +49,7 @@ public class MainMenu : MonoBehaviour
         sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
         sfxSource.Play();
 
-        StartCoroutine(LevelHomeButton.PlaySound(sfxSource, "EditorChoiceScene"));
+        StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "EditorChoiceScene"));
     }
 
     public void EditLevel()
@@ -57,6 +57,6 @@ public class MainMenu : MonoBehaviour
         sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
         sfxSource.Play();
 
-        StartCoroutine(LevelHomeButton.PlaySound(sfxSource, "SelectLevelToEditScene"));
+        StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "SelectLevelToEditScene"));
     }
 }

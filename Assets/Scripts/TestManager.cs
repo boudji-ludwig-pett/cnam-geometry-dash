@@ -8,6 +8,7 @@ public class TestManager : MonoBehaviour
     public Transform spawnPoint;
     public GameObject editorUI;
     public PlayerCamera playerCamera;
+    public AudioSource sfxSource;
 
     private bool isTesting = false;
 
@@ -27,7 +28,7 @@ public class TestManager : MonoBehaviour
         else
         {
             gameMode = new NormalGameMode();
-            ((NormalGameMode)gameMode).editMode = true;
+            currentPlayer.editMode = true;
             currentPlayer.ChangeGameMode(gameMode);
             currentPlayer.SpeedMultiplier = 0f;
 

@@ -40,10 +40,10 @@ public class LevelLoader : MonoBehaviour
             GameObject prefab = GetPrefab(element.type);
             GameObject instance = Instantiate(prefab, new Vector3(element.x, element.y, 0), Quaternion.identity);
 
-            // if (prefab.CompareTag("Kill"))
-            // {
-            Instantiate(Resources.Load<GameObject>("AICollider"), new Vector3(element.x - 1, element.y, 0), Quaternion.identity);
-            // }
+            if (prefab.CompareTag("Kill"))
+            {
+                Instantiate(Resources.Load<GameObject>("AICollider"), new Vector3(element.x - 1, element.y, 0), Quaternion.identity);
+            }
 
             Vector3 originalScale = instance.transform.localScale;
             float newScaleX = element.scaleX > 0 ? element.scaleX : originalScale.x;
