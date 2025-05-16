@@ -119,9 +119,7 @@ public class LevelLoader : MonoBehaviour
 
     private void Awake()
     {
-        levelsLoader = GameObject
-               .FindGameObjectWithTag("LevelsLoader")
-               .GetComponent<LevelsLoader>();
+        levelsLoader = GameObject.FindGameObjectWithTag("LevelsLoader").GetComponent<LevelsLoader>();
         Level current = levelsLoader.levelCurrent;
         createMode = PlayerPrefs.GetInt("CreateMode", 0) == 1;
         if (!editMode)
