@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class NormalGameMode : IGameMode
 {
-    public bool editMode { get; set; } = false;
     private const float HorizontalSpeed = 8.6f;
     private const float JumpForce = 26.6581f;
     private const KeyCode JumpKey = KeyCode.Space;
@@ -16,10 +15,8 @@ public class NormalGameMode : IGameMode
     {
         player.RigidBody.linearVelocity = new Vector2(HorizontalSpeed * player.SpeedMultiplier, player.RigidBody.linearVelocity.y);
 
-
         if (player.IsColliding && Input.GetKey(JumpKey) && !isRotating)
         {
-            Debug.Log("Player is Jumping");
             Jump(player);
         }
 
@@ -88,37 +85,6 @@ public class NormalGameMode : IGameMode
     public void OnCollisionEnter(Player player, Collision2D collision)
     {
         player.IsColliding = true;
-        if (collision.gameObject.CompareTag("Kill"))
-        {
-            if (editMode)
-            {
-                player.transform.position = new Vector3(-16, -3, 0f);
-                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                player.RigidBody.freezeRotation = true;
-                player.RigidBody.linearVelocity = Vector2.zero;
-                player.SpeedMultiplier = 1f;
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
-
-        if (collision.gameObject.CompareTag("Win"))
-        {
-            if (editMode)
-            {
-                player.transform.position = new Vector3(-16, -3, 0f);
-                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                player.RigidBody.freezeRotation = true;
-                player.RigidBody.linearVelocity = Vector2.zero;
-                player.SpeedMultiplier = 1f;
-            }
-            else
-            {
-                SceneManager.LoadScene("SelectLevelScene");
-            }
-        }
     }
 
     public void OnCollisionExit(Player player, Collision2D collision)

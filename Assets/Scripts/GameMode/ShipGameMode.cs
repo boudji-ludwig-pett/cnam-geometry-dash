@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class ShipGameMode : IGameMode
 {
-    public bool editMode { get; set; } = false;
     private const float HorizontalSpeed = 8.6f;
     private const float JumpForce = 26.6581f;
     private const KeyCode JumpKey = KeyCode.Space;
@@ -68,45 +67,6 @@ public class ShipGameMode : IGameMode
 
     public void OnCollisionEnter(Player player, Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Kill"))
-        {
-            if (editMode)
-            {
-                player.transform.position = new Vector3(-16, -3, 0f);
-                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                player.RigidBody.freezeRotation = true;
-                player.RigidBody.linearVelocity = Vector2.zero;
-                player.SpeedMultiplier = 1f;
-                IGameMode gameMode = new NormalGameMode();
-                ((NormalGameMode)gameMode).editMode = true;
-                player.ChangeGameMode(gameMode);
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-            return;
-        }
-        if (collision.gameObject.CompareTag("Win"))
-        {
-            if (editMode)
-            {
-                player.transform.position = new Vector3(-16, -3, 0f);
-                player.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                player.RigidBody.freezeRotation = true;
-                player.RigidBody.linearVelocity = Vector2.zero;
-                player.SpeedMultiplier = 1f;
-                IGameMode gameMode = new NormalGameMode();
-                ((NormalGameMode)gameMode).editMode = true;
-                player.ChangeGameMode(gameMode);
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-            return;
-        }
-
         float currentAngle = GetCurrentZAngle(player);
         float shortestAngle = Mathf.DeltaAngle(currentAngle, 0);
         player.Transform.rotation = Quaternion.RotateTowards(player.Transform.rotation, Quaternion.Euler(0, 0, 0), Mathf.Abs(shortestAngle));
