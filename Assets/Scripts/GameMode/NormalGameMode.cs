@@ -1,7 +1,4 @@
-using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
 
 public class NormalGameMode : IGameMode
 {
@@ -18,7 +15,6 @@ public class NormalGameMode : IGameMode
 
         if (player.IsColliding && Input.GetKey(JumpKey) && !isRotating)
         {
-            Debug.Log("Player is Jumping");
             Jump(player);
         }
 

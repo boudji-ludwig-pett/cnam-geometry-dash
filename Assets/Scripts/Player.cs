@@ -91,22 +91,25 @@ public class Player : MonoBehaviour
     {
         CurrentGameMode?.OnCollisionEnter(this, collision);
 
+        if (editMode && (collision.gameObject.CompareTag("Kill") || collision.gameObject.CompareTag("Win")))
+        {
+            GameObject spawn = new GameObject("AutoSpawnPoint");
+            spawn.transform.position = new Vector3(-16, -3, 0f);
+            transform.position = spawn.transform.position;
+            RigidBody.linearVelocity = Vector2.zero;
+            SpeedMultiplier = 1f;
+            CurrentGameMode = new NormalGameMode();
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Kill"))
         {
-            if (editMode)
-            {
-                GameObject spawn = new GameObject("AutoSpawnPoint");
-                spawn.transform.position = new Vector3(-16, -3, 0f);
-                transform.position = spawn.transform.position;
-                RigidBody.linearVelocity = Vector2.zero;
-                SpeedMultiplier = 1f;
-            }
-            else
-            {
-                sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "death"));
-                sfxSource.Play();
-                StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, SceneManager.GetActiveScene().name));
-            }
+
+            sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "death"));
+            sfxSource.Play();
+            StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, SceneManager.GetActiveScene().name));
+
         }
 
         if (collision.gameObject.CompareTag("Win"))
