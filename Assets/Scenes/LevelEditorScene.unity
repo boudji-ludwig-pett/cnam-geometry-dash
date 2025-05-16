@@ -5278,6 +5278,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectDifficultyPanel: {fileID: 1947857792}
   mainSaveButton: {fileID: 678214372}
+  starsRenderer: {fileID: 691276789}
+  jsonExporter: {fileID: 1324301960}
 --- !u!1 &333456214
 GameObject:
   m_ObjectHideFlags: 0
@@ -5814,6 +5816,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectDifficultyPanel: {fileID: 1947857792}
   mainSaveButton: {fileID: 678214372}
+  starsRenderer: {fileID: 691276789}
+  jsonExporter: {fileID: 1324301960}
 --- !u!1 &678214372
 GameObject:
   m_ObjectHideFlags: 0
@@ -5961,6 +5965,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectDifficultyPanel: {fileID: 1947857792}
   mainSaveButton: {fileID: 678214372}
+  starsRenderer: {fileID: 691276789}
+  jsonExporter: {fileID: 1324301960}
 --- !u!1 &691276787
 GameObject:
   m_ObjectHideFlags: 0
@@ -6725,6 +6731,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectDifficultyPanel: {fileID: 1947857792}
   mainSaveButton: {fileID: 678214372}
+  starsRenderer: {fileID: 691276789}
+  jsonExporter: {fileID: 1324301960}
 --- !u!1 &1102879480
 GameObject:
   m_ObjectHideFlags: 0
@@ -7879,7 +7887,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1947857793
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7922,6 +7930,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectDifficultyPanel: {fileID: 1947857792}
   mainSaveButton: {fileID: 678214372}
+  starsRenderer: {fileID: 0}
+  jsonExporter: {fileID: 0}
 --- !u!1 &1984477239
 GameObject:
   m_ObjectHideFlags: 0

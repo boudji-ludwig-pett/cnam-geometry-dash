@@ -5,8 +5,8 @@ public class SelectDifficulty : MonoBehaviour
 {
     public GameObject selectDifficultyPanel;
     public GameObject mainSaveButton;
-    private StarsRenderer starsRenderer;
-    private JSONExporter jsonExporter;
+    public StarsRenderer starsRenderer;
+    public JSONExporter jsonExporter;
 
     private int currentDifficulty;
     private const int MinDiff = 1;
@@ -14,9 +14,6 @@ public class SelectDifficulty : MonoBehaviour
 
     void Awake()
     {
-        starsRenderer = FindObjectOfType<StarsRenderer>();
-        jsonExporter = FindObjectOfType<JSONExporter>();
-
         if (selectDifficultyPanel == null)
         {
             selectDifficultyPanel = GameObject.Find("SelectDifficultyPanel");
@@ -39,6 +36,7 @@ public class SelectDifficulty : MonoBehaviour
 
     private void UpdateUI()
     {
+        starsRenderer.UseAutomaticMode();
         starsRenderer?.SetManualDifficulty(currentDifficulty);
     }
 
