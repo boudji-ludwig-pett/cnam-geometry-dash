@@ -5,6 +5,7 @@ public class StarsRenderer : MonoBehaviour
 {
     public Image starTemplate;
     public RectTransform starsContainer;
+
     public LevelsLoader levelsLoader;
 
     public float extraPadding = 10f;
@@ -19,10 +20,11 @@ public class StarsRenderer : MonoBehaviour
     {
         if (starTemplate == null || starsContainer == null)
         {
-            Debug.LogError("Star template ou container manquant");
+            Debug.LogError("Star template ou starsContainer non assigné !", this);
             enabled = false;
             return;
         }
+
         starTemplate.gameObject.SetActive(false);
 
         if (levelsLoader == null)
@@ -33,41 +35,45 @@ public class StarsRenderer : MonoBehaviour
         }
 
         starSpacing = starTemplate.rectTransform.sizeDelta.x + extraPadding;
-        RenderStarsInternal(GetCurrentDifficulty());
+
+        lastRenderedDifficulty = -1;
     }
 
     void Update()
     {
-        int diff = GetCurrentDifficulty();
-        if (diff != lastRenderedDifficulty)
-            RenderStarsInternal(diff);
+        int target = GetCurrentDifficulty();
+        if (target != lastRenderedDifficulty)
+            RenderStarsInternal(target);
     }
 
     public void SetManualDifficulty(int difficulty)
     {
         useManualMode = true;
         manualDifficulty = Mathf.Clamp(difficulty, 1, 5);
+        lastRenderedDifficulty = -1;
         RenderStarsInternal(manualDifficulty);
     }
 
     public void UseAutomaticMode()
     {
         useManualMode = false;
-        RenderStarsInternal(GetCurrentDifficulty());
+        lastRenderedDifficulty = -1;
     }
 
     public int GetCurrentDifficulty()
     {
         if (useManualMode)
             return manualDifficulty;
+
         if (levelsLoader != null && levelsLoader.levelCurrent != null)
             return Mathf.Clamp(levelsLoader.levelCurrent.difficulty, 1, 5);
+
         return 1;
     }
 
-
     private void RenderStarsInternal(int difficulty)
     {
+        Debug.Log($"[StarsRenderer] RenderStarsInternal → difficulté = {difficulty}", this);
         for (int i = starsContainer.childCount - 1; i >= 0; i--)
         {
             var child = starsContainer.GetChild(i);

@@ -52,6 +52,7 @@ public class SelectDifficulty : MonoBehaviour
 
     public void PreviousDifficulty()
     {
+        Debug.Log("PreviousDifficulty called");
         if (currentDifficulty > MinDiff)
         {
             currentDifficulty--;
@@ -61,6 +62,7 @@ public class SelectDifficulty : MonoBehaviour
 
     public void NextDifficulty()
     {
+        Debug.Log("NextDifficulty called");
         if (currentDifficulty < MaxDiff)
         {
             currentDifficulty++;

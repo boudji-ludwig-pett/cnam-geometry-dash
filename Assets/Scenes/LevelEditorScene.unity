@@ -5167,8 +5167,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -368.1812, y: -49.592384}
-  m_SizeDelta: {x: 46.4614, y: 43.4569}
+  m_AnchoredPosition: {x: -370, y: -50.6}
+  m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &122312564
 MonoBehaviour:
@@ -6578,7 +6578,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 782585331}
   m_CullTransparentMesh: 1
---- !u!1 &1040203237
+--- !u!1 &860997665
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6586,11 +6586,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1040203238}
-  - component: {fileID: 1040203242}
-  - component: {fileID: 1040203241}
-  - component: {fileID: 1040203240}
-  - component: {fileID: 1040203239}
+  - component: {fileID: 860997666}
+  - component: {fileID: 860997669}
+  - component: {fileID: 860997668}
+  - component: {fileID: 860997667}
+  - component: {fileID: 860997670}
   m_Layer: 5
   m_Name: NextDifficulty
   m_TagString: Untagged
@@ -6598,46 +6598,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1040203238
+--- !u!224 &860997666
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040203237}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_GameObject: {fileID: 860997665}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8569861, y: 0.8569861, z: 0.8569861}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1947857793}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: -49.592384}
-  m_SizeDelta: {x: 46.4614, y: 43.4569}
+  m_AnchoredPosition: {x: 130, y: -50.6}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1040203239
+--- !u!114 &860997667
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040203237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9aabd0c1803d3d46b76d6bbfcc0f471, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectDifficultyPanel: {fileID: 1947857792}
-  mainSaveButton: {fileID: 678214372}
---- !u!114 &1040203240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040203237}
+  m_GameObject: {fileID: 860997665}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -6671,11 +6657,11 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1040203241}
+  m_TargetGraphic: {fileID: 860997668}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1040203239}
+      - m_Target: {fileID: 860997670}
         m_TargetAssemblyTypeName: SelectDifficulty, Assembly-CSharp
         m_MethodName: NextDifficulty
         m_Mode: 1
@@ -6687,13 +6673,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1040203241
+--- !u!114 &860997668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040203237}
+  m_GameObject: {fileID: 860997665}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -6717,14 +6703,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1040203242
+--- !u!222 &860997669
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040203237}
+  m_GameObject: {fileID: 860997665}
   m_CullTransparentMesh: 1
+--- !u!114 &860997670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860997665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9aabd0c1803d3d46b76d6bbfcc0f471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectDifficultyPanel: {fileID: 1947857792}
+  mainSaveButton: {fileID: 678214372}
 --- !u!1 &1102879480
 GameObject:
   m_ObjectHideFlags: 0
@@ -7900,7 +7900,7 @@ RectTransform:
   - {fileID: 1615041170}
   - {fileID: 1324301959}
   - {fileID: 691276788}
-  - {fileID: 1040203238}
+  - {fileID: 860997666}
   m_Father: {fileID: 1572318264}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
