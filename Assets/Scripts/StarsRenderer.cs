@@ -9,6 +9,9 @@ public class StarsRenderer : MonoBehaviour
 
     public float extraPadding = 10f;
 
+    private bool useManualMode = false;
+    private int manualDifficulty = 1;
+
     private float starSpacing;
     private int lastRenderedDifficulty = -1;
 
@@ -16,6 +19,7 @@ public class StarsRenderer : MonoBehaviour
     {
         if (starTemplate == null || starsContainer == null)
         {
+            Debug.LogError("Star template ou container manquant");
             enabled = false;
             return;
         }
@@ -27,39 +31,48 @@ public class StarsRenderer : MonoBehaviour
             if (loaderObj != null)
                 levelsLoader = loaderObj.GetComponent<LevelsLoader>();
         }
-        if (levelsLoader == null || levelsLoader.levelCurrent == null)
-        {
-            enabled = false;
-            return;
-        }
 
-        float templateWidth = starTemplate.rectTransform.sizeDelta.x;
-        starSpacing = templateWidth + extraPadding;
-
-        RenderStars();
+        starSpacing = starTemplate.rectTransform.sizeDelta.x + extraPadding;
+        RenderStarsInternal(GetCurrentDifficulty());
     }
 
     void Update()
     {
-        int currentDifficulty = Mathf.Clamp(levelsLoader.levelCurrent.difficulty, 1, 5);
-        if (currentDifficulty != lastRenderedDifficulty)
-        {
-            RenderStars();
-        }
+        int diff = GetCurrentDifficulty();
+        if (diff != lastRenderedDifficulty)
+            RenderStarsInternal(diff);
     }
 
-    private void RenderStars()
+    public void SetManualDifficulty(int difficulty)
     {
-        string lvlName = levelsLoader.levelCurrent.name;
-        int difficulty = Mathf.Clamp(levelsLoader.levelCurrent.difficulty, 1, 5);
+        useManualMode = true;
+        manualDifficulty = Mathf.Clamp(difficulty, 1, 5);
+        RenderStarsInternal(manualDifficulty);
+    }
 
+    public void UseAutomaticMode()
+    {
+        useManualMode = false;
+        RenderStarsInternal(GetCurrentDifficulty());
+    }
+
+    public int GetCurrentDifficulty()
+    {
+        if (useManualMode)
+            return manualDifficulty;
+        if (levelsLoader != null && levelsLoader.levelCurrent != null)
+            return Mathf.Clamp(levelsLoader.levelCurrent.difficulty, 1, 5);
+        return 1;
+    }
+
+
+    private void RenderStarsInternal(int difficulty)
+    {
         for (int i = starsContainer.childCount - 1; i >= 0; i--)
         {
             var child = starsContainer.GetChild(i);
             if (child.gameObject != starTemplate.gameObject)
-            {
                 Destroy(child.gameObject);
-            }
         }
 
         lastRenderedDifficulty = difficulty;
@@ -71,10 +84,7 @@ public class StarsRenderer : MonoBehaviour
         {
             var star = Instantiate(starTemplate, starsContainer);
             star.gameObject.SetActive(true);
-
-            float posX = startX + i * starSpacing;
-            Vector2 anchoredPos = new Vector2(posX, 0f);
-            star.rectTransform.anchoredPosition = anchoredPos;
+            star.rectTransform.anchoredPosition = new Vector2(startX + i * starSpacing, 0f);
             star.rectTransform.SetAsLastSibling();
         }
     }
