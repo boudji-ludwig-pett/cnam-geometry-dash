@@ -4,6 +4,12 @@
 
 Développement d'une reproduction du jeu [Geometry Dash](https://fr.wikipedia.org/wiki/Geometry_Dash) réalisé dans le cadre de la formation [Ingénieur en Informatique et Systèmes d'Information (SI), CNAM](https://www.itii-alsace.fr/formations/informatique-et-systemes-dinformation-le-cnam/), pour les modules de Programmation Orientée Objet (POO) et de Méthodologie Systèmes d'Informations.
 
+Afin de tester le jeu, plusieurs `.zip` avec l'exécutable sont disponibles, généré automatiquement grâce au déploiement continu de [GameCI](https://game.ci/), en fonction du système d'exploitation:
+
+- [Windows](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.0-staging.3/windows.zip)
+- [GNU/Linux](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.0-staging.3/linux.zip)
+- [macOS](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.0-staging.3/macOS.zip)
+
 ### Membres du groupe
 
 - [Djelal BOUDJI](https://github.com/djelalb)
