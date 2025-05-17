@@ -105,6 +105,7 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Kill"))
         {
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/Explosion");
             Time.timeScale = 0;
             sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "death"));
             sfxSource.Play();
@@ -113,6 +114,8 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Win"))
         {
+            SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/Explosion");
+            Time.timeScale = 0;
             sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "win"));
             sfxSource.Play();
             StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "SelectLevelScene"));
