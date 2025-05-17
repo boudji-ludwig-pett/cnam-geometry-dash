@@ -49,6 +49,7 @@ jobs:
         with:
           name: build-windows
           path: build/
+          owerwrite: true
 
   build-macos:
     runs-on: "ubuntu-latest"
@@ -81,6 +82,7 @@ jobs:
         with:
           name: build-macos
           path: build/
+          owerwrite: true
 
   build-linux:
     runs-on: "ubuntu-latest"
@@ -113,6 +115,7 @@ jobs:
         with:
           name: build-linux
           path: build/
+          owerwrite: true
 
   create-release:
     needs: [build-windows, build-macos, build-linux]

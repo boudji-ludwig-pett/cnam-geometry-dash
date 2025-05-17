@@ -166,7 +166,6 @@ public class LevelEditor : MonoBehaviour
         {
             if (!IsPlacementValid())
             {
-                Debug.Log("Placement invalide : collision.");
                 return;
             }
             PlaceBlock();
@@ -201,7 +200,6 @@ public class LevelEditor : MonoBehaviour
             currentBlock = sel;
             isPlacingBlock = true;
             currentScale = currentBlock.transform.localScale;
-            Debug.Log($"Sélection : {sel.name}");
         }
     }
     void PlaceBlock()
@@ -211,7 +209,6 @@ public class LevelEditor : MonoBehaviour
 
         if (isSpikeType)
         {
-            // 1) Bloquer si on perçoit un spike de même type dans la direction de snap
             if (IsBlockedBySameTypeInSnapDirection())
             {
                 Debug.LogError("❌ Impossible de poser un spike sur un autre spike !");
@@ -219,7 +216,6 @@ public class LevelEditor : MonoBehaviour
             }
             else
             {
-                // 2) On snap dans la direction (down/left/up/right), et on détruit si aucun support
                 if (!SnapSpikeByRotation())
                 {
                     Debug.LogError("❌ Impossible de poser un spike dans le vide !");
@@ -227,14 +223,12 @@ public class LevelEditor : MonoBehaviour
                 }
                 else
                 {
-                    // 3) On fait l’ajustement fin (si besoin)
                     TrySnapToNearbyBlock();
                 }
             }
         }
         else
         {
-            // tous les autres blocs
             TrySnapToNearbyBlock();
 
             // 🔧 Réduction du collider du ObstacleKiller si c’est un ObstacleBlock
@@ -266,7 +260,6 @@ public class LevelEditor : MonoBehaviour
         var col = currentBlock.GetComponent<Collider2D>();
         var b = col.bounds;
 
-        // 1) Détermine direction de snap (0→down,1→left,2→up,3→right)
         int rot = (Mathf.RoundToInt(currentBlock.transform.eulerAngles.z / 90) % 4 + 4) % 4;
         Vector2 dir = rot switch
         {
@@ -276,17 +269,15 @@ public class LevelEditor : MonoBehaviour
             _ => Vector2.down
         };
 
-        // 2) Origine : on place la « boîte » juste en bordure du sprite
         float offset = 0.01f;
         Vector2 origin = rot switch
         {
-            1 => new Vector2(b.min.x - offset, b.center.y),    // gauche
-            3 => new Vector2(b.max.x + offset, b.center.y),    // droite
-            2 => new Vector2(b.center.x, b.max.y + offset), // haut
-            _ => new Vector2(b.center.x, b.min.y - offset)  // bas
+            1 => new Vector2(b.min.x - offset, b.center.y),    // left
+            3 => new Vector2(b.max.x + offset, b.center.y),    // right
+            2 => new Vector2(b.center.x, b.max.y + offset), // top
+            _ => new Vector2(b.center.x, b.min.y - offset)  // bottom
         };
 
-        // 3) On box‐cast exactement la taille du sprite pour 100 unités
         RaycastHit2D[] hits = Physics2D.BoxCastAll(
             origin,
             b.size,
@@ -308,11 +299,9 @@ public class LevelEditor : MonoBehaviour
 
             if (meIsSpikeFamily && otherIsSpikeFamily)
             {
-                // on bloque absolument tout chevauchement entre ces trois types
                 return true;
             }
 
-            // si on tape autre chose (sol, block, bonus…), on arrête le scan
             break;
         }
 
@@ -321,13 +310,11 @@ public class LevelEditor : MonoBehaviour
 
     bool SnapSpikeByRotation()
     {
-        // Récupère bounds et demi-tailles
         var col = currentBlock.GetComponent<Collider2D>();
         var b = col.bounds;
         float hw = b.extents.x;
         float hh = b.extents.y;
 
-        // 1) Détermine la rotation en quarts de tour : 0→down, 1→left, 2→up, 3→right
         int rot = ((Mathf.RoundToInt(currentBlock.transform.eulerAngles.z / 90f) % 4) + 4) % 4;
         Vector2 dir;
         switch (rot)
@@ -338,12 +325,10 @@ public class LevelEditor : MonoBehaviour
             default: dir = Vector2.down; break;
         }
 
-        // 2) Calcule 3 origines le long de la face « avant » du spike
         const float eps = 0.01f;
         List<Vector2> origins = new List<Vector2>();
         if (dir == Vector2.down || dir == Vector2.up)
         {
-            // face inférieure ou supérieure → balaye l’axe X
             float y0 = (dir == Vector2.down) ? b.min.y - eps : b.max.y + eps;
             origins.Add(new Vector2(b.min.x + 0.1f * b.size.x, y0));
             origins.Add(new Vector2(b.center.x, y0));
@@ -351,14 +336,12 @@ public class LevelEditor : MonoBehaviour
         }
         else
         {
-            // face gauche ou droite → balaye l’axe Y
             float x0 = (dir == Vector2.left) ? b.min.x - eps : b.max.x + eps;
             origins.Add(new Vector2(x0, b.min.y + 0.1f * b.size.y));
             origins.Add(new Vector2(x0, b.center.y));
             origins.Add(new Vector2(x0, b.max.y - 0.1f * b.size.y));
         }
 
-        // 3) Pour chaque origine, on lance un RaycastAll et on garde le hit le plus proche
         float bestDist = float.PositiveInfinity;
         RaycastHit2D bestHit = default;
         foreach (var o in origins)
@@ -376,11 +359,9 @@ public class LevelEditor : MonoBehaviour
             }
         }
 
-        // 4) Aucun support trouvé → échec
         if (bestHit.collider == null)
             return false;
 
-        // 5) Sinon, colle bord à bord
         Vector3 p = currentBlock.transform.position;
         if (dir == Vector2.down) p.y = bestHit.point.y + hh;
         else if (dir == Vector2.up) p.y = bestHit.point.y - hh;
@@ -388,7 +369,6 @@ public class LevelEditor : MonoBehaviour
         else if (dir == Vector2.right) p.x = bestHit.point.x - hw;
 
         currentBlock.transform.position = new Vector3(p.x, p.y, -1f);
-        Debug.Log($"Spike snapé {dir} sur « {bestHit.collider.name} » à {currentBlock.transform.position}");
         return true;
     }
 
@@ -421,7 +401,6 @@ public class LevelEditor : MonoBehaviour
             ? ResizeAxis.Horizontal
             : ResizeAxis.Vertical;
         isResizing = true;
-        Debug.Log($"Début redim {tgt.name} (axe {currentResizeAxis})");
     }
 
     void PerformResizing()
@@ -437,14 +416,12 @@ public class LevelEditor : MonoBehaviour
         if (IsOverlapping(resizingTarget))
         {
             resizingTarget.transform.localScale = originalScale;
-            Debug.Log("Redim annulé : collision");
         }
         if (Input.GetMouseButtonUp(0))
         {
             isResizing = false;
             resizingTarget = null;
             currentResizeAxis = ResizeAxis.None;
-            Debug.Log("Fin redim");
         }
     }
 
@@ -470,7 +447,6 @@ public class LevelEditor : MonoBehaviour
                 toD = toD.transform.parent.gameObject;
             if (toD == currentBlock) { currentBlock = null; isPlacingBlock = false; }
             Destroy(toD);
-            Debug.Log($"Supprimé {toD.name}");
         }
     }
 
@@ -499,7 +475,6 @@ public class LevelEditor : MonoBehaviour
             if (IsInvalidSnapTarget(h)) continue;
             float newX = h.bounds.min.x - b.extents.x;
             currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
-            Debug.Log($"Snap horizontal à droite contre {h.name}");
             return;
         }
 
@@ -511,7 +486,6 @@ public class LevelEditor : MonoBehaviour
             if (IsInvalidSnapTarget(h)) continue;
             float newX = h.bounds.max.x + b.extents.x;
             currentBlock.transform.position = new Vector3(newX, currentBlock.transform.position.y, -1f);
-            Debug.Log($"Snap horizontal à gauche contre {h.name}");
             return;
         }
 
@@ -524,7 +498,6 @@ public class LevelEditor : MonoBehaviour
             if (IsInvalidSnapTarget(h)) continue;
             float newY = h.bounds.max.y + b.extents.y;
             currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, newY, -1f);
-            Debug.Log($"Snap vertical (bas) contre {h.name}");
             return;
         }
 
@@ -536,7 +509,6 @@ public class LevelEditor : MonoBehaviour
             if (IsInvalidSnapTarget(h)) continue;
             float newY = h.bounds.min.y - b.extents.y;
             currentBlock.transform.position = new Vector3(currentBlock.transform.position.x, newY, -1f);
-            Debug.Log($"Snap vertical (haut) contre {h.name}");
             return;
         }
     }
@@ -569,7 +541,6 @@ public class LevelEditor : MonoBehaviour
     void HandleBlockRotation()
     {
         currentBlock.transform.Rotate(0, 0, -90f);
-        Debug.Log("Rotation 90°!");
     }
 
     void InstantiateAndPrepare(GameObject prefab, Vector3? scaleOverride = null)
@@ -596,8 +567,6 @@ public class LevelEditor : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
-        Debug.Log("Éditeur vidé.");
 
         currentBlock = null;
         isPlacingBlock = false;
