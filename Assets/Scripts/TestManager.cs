@@ -80,7 +80,6 @@ public class TestManager : MonoBehaviour
         currentPlayer.RigidBody.freezeRotation = true;
         currentPlayer.RigidBody.linearVelocity = Vector2.zero;
         currentPlayer.SpeedMultiplier = 1f;
-        // currentPlayer.SpriteRenderer.sprite = Resources.Load<Sprite>("Shapes/BaseSquare");
 
         currentPlayer.ChangeGameMode(gameMode);
         isTesting = true;
@@ -95,9 +94,7 @@ public class TestManager : MonoBehaviour
             currentPlayer.SpriteRenderer.enabled = true;
 
         if (currentPlayer.Particle != null)
-            currentPlayer.Particle.Play(); // Démarrer la particule
-
-        Debug.Log("[TestManager] Test du niveau démarré !");
+            currentPlayer.Particle.Play();
     }
 
     public void StopTest()
@@ -112,7 +109,7 @@ public class TestManager : MonoBehaviour
             currentPlayer.SpeedMultiplier = 0f;
 
             if (currentPlayer.Particle != null)
-                currentPlayer.Particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Arrêter proprement
+                currentPlayer.Particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
             if (currentPlayer.SpriteRenderer != null)
                 currentPlayer.SpriteRenderer.enabled = false;
@@ -128,7 +125,5 @@ public class TestManager : MonoBehaviour
         }
 
         isTesting = false;
-
-        Debug.Log("[TestManager] Test du niveau arrêté, joueur reset et caméra recentrée !");
     }
 }
