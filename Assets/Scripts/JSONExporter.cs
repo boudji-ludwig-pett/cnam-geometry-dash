@@ -13,6 +13,7 @@ using UnityEditor;
 public class JSONExporter : MonoBehaviour
 {
     public TMP_Text statusText;
+    public int difficultyToExport = 1;
     private LevelEditor editor;
     private string levelsFolder;
     private string assetFolderPath;
@@ -98,6 +99,7 @@ public class JSONExporter : MonoBehaviour
             name = fileName,
             musicName = "",
             order = 0,
+            difficulty = difficultyToExport,
             elements = elements.ToArray()
         };
         string json = JsonUtility.ToJson(data, prettyPrint: true);
@@ -105,7 +107,7 @@ public class JSONExporter : MonoBehaviour
         try
         {
             File.WriteAllText(destPath, json);
-            SetStatus("Export successful: " + fileName + ".json", Color.green);
+            SetStatus($"Export successful: {fileName}.json (diff {difficultyToExport})", Color.green);
         }
         catch (System.Exception e)
         {
@@ -146,6 +148,7 @@ public class JSONExporter : MonoBehaviour
         public string name;
         public string musicName;
         public int order;
+        public int difficulty;
         public SerializableElement[] elements;
     }
 }

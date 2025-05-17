@@ -26,6 +26,7 @@ public class Level
     public string name;
     public string musicName;
     public int order;
+    public int difficulty;
 
     public List<LevelElement> elements;
 
