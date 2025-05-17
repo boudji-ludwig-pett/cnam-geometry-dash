@@ -99,8 +99,8 @@ public class LevelEditor : MonoBehaviour
         float xOff = -325f + idx * 125f;
         var bgRt = bg.GetComponent<RectTransform>();
         var icRt = icon.GetComponent<RectTransform>();
-        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y - 110);
-        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y - 110);
+        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y - 70);
+        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y - 70);
         bg.GetComponent<Image>().sprite = Resources.Load<Sprite>("InGame/ButtonSkin/BlankSquare");
         icon.GetComponent<Image>().sprite = prefab.GetComponent<SpriteRenderer>()?.sprite;
         icRt.sizeDelta = prefab.name.ToLower().Contains("small")
@@ -214,7 +214,7 @@ public class LevelEditor : MonoBehaviour
             // 1) Bloquer si on perçoit un spike de même type dans la direction de snap
             if (IsBlockedBySameTypeInSnapDirection())
             {
-                Debug.LogError("Impossible de poser un spike sur un autre spike !");
+                Debug.LogError("❌ Impossible de poser un spike sur un autre spike !");
                 Destroy(currentBlock);
             }
             else
@@ -222,7 +222,7 @@ public class LevelEditor : MonoBehaviour
                 // 2) On snap dans la direction (down/left/up/right), et on détruit si aucun support
                 if (!SnapSpikeByRotation())
                 {
-                    Debug.LogError("Impossible de poser un spike dans le vide !");
+                    Debug.LogError("❌ Impossible de poser un spike dans le vide !");
                     Destroy(currentBlock);
                 }
                 else
@@ -236,16 +236,31 @@ public class LevelEditor : MonoBehaviour
         {
             // tous les autres blocs
             TrySnapToNearbyBlock();
+
+            // 🔧 Réduction du collider du ObstacleKiller si c’est un ObstacleBlock
+            if (name.Contains("obstacleblock"))
+            {
+                foreach (Transform child in currentBlock.transform)
+                {
+                    if (child.name.ToLower().Contains("obstaclekiller"))
+                    {
+                        var col = child.GetComponent<BoxCollider2D>();
+                        if (col != null)
+                        {
+                            Vector2 originalSize = col.size;
+                            col.size = new Vector2(originalSize.x, 1f);
+                            col.offset = new Vector2(col.offset.x, -0.5f);
+                            Debug.Log($"✂️ Collider réduit pour {child.name} → {col.size}");
+                        }
+                    }
+                }
+            }
         }
 
         isPlacingBlock = false;
         currentBlock = null;
     }
 
-    /// <summary>
-    /// Vérifie qu’il n’y ait pas déjà un spike/smallspike/killzone
-    /// juste devant le spike selon sa rotation.
-    /// </summary>
     bool IsBlockedBySameTypeInSnapDirection()
     {
         var col = currentBlock.GetComponent<Collider2D>();
@@ -472,7 +487,7 @@ public class LevelEditor : MonoBehaviour
 
         var col = currentBlock.GetComponent<Collider2D>();
         var b = col.bounds;
-        float snapDistance = 1f;
+        float snapDistance = 2f;
         float verticalEps = 0.1f;
 
         // === SNAP HORIZONTAL (droite)
