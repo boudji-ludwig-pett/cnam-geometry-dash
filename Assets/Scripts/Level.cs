@@ -11,6 +11,7 @@ public class LevelElement
     public float y;
     public float scaleX = -1;
     public float scaleY = -1;
+    public float rotationZ = 0;
 }
 
 [System.Serializable]
