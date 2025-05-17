@@ -39,7 +39,6 @@ public class LevelLoader : MonoBehaviour
     private void LoadElements()
     {
         Level current = levelsLoader.levelCurrent;
-
         foreach (var element in current.elements)
         {
             GameObject prefab = GetPrefab(element.type);
@@ -134,7 +133,7 @@ public class LevelLoader : MonoBehaviour
 
     public void Start()
     {
-        if (!createMode)
+        if (!editMode)
         {
             levelsLoader = GameObject
                 .FindGameObjectWithTag("LevelsLoader")
@@ -143,8 +142,7 @@ public class LevelLoader : MonoBehaviour
             levelsLoader.IncreaseTotalAttempts();
 
             LoadElements();
-            if (!editMode)
-                LoadAudio();
+            LoadAudio();
         }
     }
 
