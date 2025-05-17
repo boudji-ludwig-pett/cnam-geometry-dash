@@ -105,11 +105,10 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Kill"))
         {
-
+            Time.timeScale = 0;
             sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "death"));
             sfxSource.Play();
             StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, SceneManager.GetActiveScene().name));
-
         }
 
         if (collision.gameObject.CompareTag("Win"))

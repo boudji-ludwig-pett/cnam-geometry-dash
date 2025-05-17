@@ -10,6 +10,7 @@ public class LevelHomeButton : MonoBehaviour
     public static IEnumerator PlaySoundAndLoadScene(AudioSource sfxSource, string scene)
     {
         yield return new WaitWhile(() => sfxSource.isPlaying);
+        Time.timeScale = 1;
         SceneManager.LoadScene(scene);
     }
 

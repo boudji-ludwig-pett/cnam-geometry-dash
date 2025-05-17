@@ -11,12 +11,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  lint-commit:
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: "actions/checkout@v4.2.2"
-      - uses: "wagoid/commitlint-github-action@v6.2.1"
-
   lint-editorconfig-checker:
     runs-on: "ubuntu-latest"
     steps:

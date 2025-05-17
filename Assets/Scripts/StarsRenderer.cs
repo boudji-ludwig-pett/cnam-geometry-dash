@@ -50,7 +50,6 @@ public class StarsRenderer : MonoBehaviour
     {
         useManualMode = true;
         manualDifficulty = Mathf.Clamp(difficulty, 1, 5);
-        Debug.Log($"[StarsRenderer] SetManualDifficulty → manualDifficulty = {manualDifficulty}");
         lastRenderedDifficulty = -1;
         RenderStarsInternal(manualDifficulty);
     }
@@ -74,7 +73,6 @@ public class StarsRenderer : MonoBehaviour
 
     private void RenderStarsInternal(int difficulty)
     {
-        Debug.Log($"[StarsRenderer] RenderStarsInternal → difficulté = {difficulty}", this);
         for (int i = starsContainer.childCount - 1; i >= 0; i--)
         {
             var child = starsContainer.GetChild(i);

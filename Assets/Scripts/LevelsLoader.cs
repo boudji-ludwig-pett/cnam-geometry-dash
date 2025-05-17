@@ -50,7 +50,10 @@ public class LevelsLoader : MonoBehaviour
 
     private void SaveLevelCurrent()
     {
-        if (levelCurrent == null) return;
+        if (levelCurrent == null)
+        {
+            return;
+        }
 
         LevelStat levelStat = new()
         {
@@ -68,7 +71,10 @@ public class LevelsLoader : MonoBehaviour
 
     public void NextLevel()
     {
-        if (levels.Count == 0) return;
+        if (levels.Count == 0)
+        {
+            return;
+        }
 
         int currentIndex = levels.IndexOf(levelCurrent);
         levelCurrent = levels[(currentIndex + 1) % levels.Count];
@@ -76,7 +82,10 @@ public class LevelsLoader : MonoBehaviour
 
     public void PreviousLevel()
     {
-        if (levels.Count == 0) return;
+        if (levels.Count == 0)
+        {
+            return;
+        }
 
         int currentIndex = levels.IndexOf(levelCurrent);
         levelCurrent = levels[(currentIndex - 1 + levels.Count) % levels.Count];
@@ -84,7 +93,10 @@ public class LevelsLoader : MonoBehaviour
 
     public void IncreaseTotalJumps()
     {
-        if (levelCurrent == null) return;
+        if (levelCurrent == null)
+        {
+            return;
+        }
 
         levelCurrent.TotalJumps += 1;
         SaveLevelCurrent();
@@ -92,7 +104,10 @@ public class LevelsLoader : MonoBehaviour
 
     public void IncreaseTotalAttempts()
     {
-        if (levelCurrent == null) return;
+        if (levelCurrent == null)
+        {
+            return;
+        }
 
         levelCurrent.TotalAttempts += 1;
         SaveLevelCurrent();
@@ -100,7 +115,10 @@ public class LevelsLoader : MonoBehaviour
 
     public int CalculateCurrentProgressionPercent(Vector3 playerPosition)
     {
-        if (levelCurrent == null) return 0;
+        if (levelCurrent == null)
+        {
+            return 0;
+        }
 
         float lastX = levelCurrent.LastX;
         GameObject winnerWallPrefab = Resources.Load<GameObject>("Prefabs/WinnerWall");
@@ -125,6 +143,8 @@ public class LevelsLoader : MonoBehaviour
         levels.Clear();
         LoadAllLevels();
         if (levels.Count > 0)
+        {
             levelCurrent = levels[0];
+        }
     }
 }
