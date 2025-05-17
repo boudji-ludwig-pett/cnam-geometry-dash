@@ -6007,6 +6007,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 892725781}
   pauseButton: {fileID: 1038445495}
   levelLoader: {fileID: 1999482186}
+  sfxSource: {fileID: 1247869546}
   volumeSlider: {fileID: 6776934}
 --- !u!1 &988798827
 GameObject:

@@ -5559,8 +5559,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -359.836}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -408.8241, y: 196.49884}
-  m_SizeDelta: {x: 68.0074, y: 66.5696}
+  m_AnchoredPosition: {x: -498, y: 257.98}
+  m_SizeDelta: {x: 78.3177, y: 71.7616}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &590020933
 MonoBehaviour:
@@ -5854,8 +5854,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 399.99994, y: 150}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 480.93127, y: 252.93127}
+  m_SizeDelta: {x: 81.8625, y: 81.8625}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &678214374
 MonoBehaviour:
@@ -6157,7 +6157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: -200}
+  m_AnchoredPosition: {x: 357, y: -266}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &740715252
@@ -7127,7 +7127,7 @@ MonoBehaviour:
   levelsLoader: {fileID: 0}
   editMode: 1
   createMode: 0
-  musicSource: {fileID: 0}
+  musicSource: {fileID: 1479180208}
   progressionText: {fileID: 0}
 --- !u!4 &1479180210
 Transform:
@@ -7342,7 +7342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: -100}
+  m_AnchoredPosition: {x: -437, y: -263}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1561821049
@@ -7650,7 +7650,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 375, y: -200}
+  m_AnchoredPosition: {x: 419, y: -266}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628925094
@@ -8201,7 +8201,7 @@ Transform:
   m_GameObject: {fileID: 2030873960}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.9290543, y: 0.2814547, z: 0.0022875525}
+  m_LocalPosition: {x: -81, y: -22, z: 0.0022875525}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject pauseButton;
     public LevelLoader levelLoader;
+    public AudioSource sfxSource;
     public Slider volumeSlider;
 
     public void Start()
@@ -31,6 +33,9 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
+        sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
+        sfxSource.Play();
+
         Time.timeScale = 0;
         levelLoader.musicSource.Pause();
 
@@ -41,11 +46,17 @@ public class PauseMenu : MonoBehaviour
     public void Home()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("HomeScene");
+        sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
+        sfxSource.Play();
+
+        StartCoroutine(LevelHomeButton.PlaySoundAndLoadScene(sfxSource, "HomeScene"));
     }
 
     public void Resume()
     {
+        sfxSource.clip = Resources.Load<AudioClip>(Path.Combine("Sounds", "click"));
+        sfxSource.Play();
+
         Time.timeScale = 1;
         levelLoader.musicSource.Play();
 

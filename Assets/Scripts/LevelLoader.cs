@@ -24,7 +24,10 @@ public class LevelLoader : MonoBehaviour
     private void LoadAudio()
     {
         musicSource.clip = Resources.Load<AudioClip>(Path.Combine("Musics", levelsLoader.levelCurrent.musicName));
-
+        if (editMode)
+        {
+            return;
+        }
         if (PlayerPrefs.HasKey("Volume"))
         {
             musicSource.volume = PlayerPrefs.GetFloat("Volume");
@@ -67,19 +70,14 @@ public class LevelLoader : MonoBehaviour
                 }
             }
 
-
-
             // En mode jeu/test uniquement → ajout du AICollider
             if (!editMode)
             {
-                if (prefab.CompareTag("Kill"))
-                {
-                    Instantiate(
-                        Resources.Load<GameObject>("AICollider"),
-                        new Vector3(element.x - 1, element.y, 0),
-                        Quaternion.identity
-                    );
-                }
+                Instantiate(
+                    Resources.Load<GameObject>("AICollider"),
+                    new Vector3(element.x - 1, element.y, 0),
+                    Quaternion.identity
+                );
             }
 
             // Appliquer l'échelle personnalisée
@@ -102,12 +100,8 @@ public class LevelLoader : MonoBehaviour
                 );
                 groundInstance.transform.localScale = new Vector3(current.LastX / 5f * 2, 1, 1);
             }
-        }
 
-        // Mur de fin toujours placé
-        GameObject winWall = GetPrefab("WinnerWall");
-        if (winWall != null)
-        {
+            GameObject winWall = GetPrefab("WinnerWall");
             Instantiate(
                 winWall,
                 new Vector3(current.LastX, 0, 0),
@@ -127,8 +121,8 @@ public class LevelLoader : MonoBehaviour
             GameObject groundInstance = Instantiate(groundPrefab, new Vector3(current.LastX / 2, groundY, 0), Quaternion.identity);
             float groundWidth = current.LastX;
             groundInstance.transform.localScale = new Vector3(groundWidth / 5f * 2, 1, 1);
+            Instantiate(GetPrefab("WinnerWall"), new Vector3(current.LastX, 0, 0), Quaternion.Euler(0, 0, 90));
         }
-        Instantiate(GetPrefab("WinnerWall"), new Vector3(current.LastX, 0, 0), Quaternion.Euler(0, 0, 90));
     }
 
     public void Start()

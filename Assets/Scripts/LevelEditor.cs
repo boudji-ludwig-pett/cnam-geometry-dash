@@ -96,11 +96,11 @@ public class LevelEditor : MonoBehaviour
         var bg = canvas?.Find("BlankSquare");
         var icon = canvas?.Find("PrefabIcon");
         if (bg == null || icon == null) { Destroy(t.gameObject); return; }
-        float xOff = -375f + idx * 125f;
+        float xOff = -325f + idx * 125f;
         var bgRt = bg.GetComponent<RectTransform>();
         var icRt = icon.GetComponent<RectTransform>();
-        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y);
-        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y);
+        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y - 70);
+        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y - 70);
         bg.GetComponent<Image>().sprite = Resources.Load<Sprite>("InGame/ButtonSkin/BlankSquare");
         icon.GetComponent<Image>().sprite = prefab.GetComponent<SpriteRenderer>()?.sprite;
         icRt.sizeDelta = prefab.name.ToLower().Contains("small")
