@@ -49,3 +49,5 @@ cd cnam-geometry-dash
 ![Gameplay](./Documentation/Screenshots/gameplay.png)
 
 ![Levels selection](./Documentation/Screenshots/levels-selection.png)
+
+![Edit Level](./Documentation/Screenshots/edit-level.png)
