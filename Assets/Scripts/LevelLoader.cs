@@ -133,7 +133,7 @@ public class LevelLoader : MonoBehaviour
 
     public void Start()
     {
-        if (!editMode)
+        if (!createMode)
         {
             levelsLoader = GameObject
                 .FindGameObjectWithTag("LevelsLoader")
