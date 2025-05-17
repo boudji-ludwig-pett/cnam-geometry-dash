@@ -6,9 +6,9 @@ Développement d'une reproduction du jeu [Geometry Dash](https://fr.wikipedia.or
 
 Afin de tester le jeu, plusieurs `.zip` avec l'exécutable sont disponibles, généré automatiquement grâce au déploiement continu de [GameCI](https://game.ci/), en fonction du système d'exploitation:
 
-- [Windows (x64)](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.0/windows.zip)
-- [GNU/Linux (x64)](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.0/linux.zip)
-- [macOS (x64)](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.0/macOS.zip)
+- [Windows (x64)](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.1/windows.zip)
+- [GNU/Linux (x64)](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.1/linux.zip)
+- [macOS (x64)](https://github.com/boudji-ludwig-pett/cnam-geometry-dash/releases/download/v1.0.1/macOS.zip)
 
 ### Membres du groupe
 
@@ -28,7 +28,7 @@ Afin de tester le jeu, plusieurs `.zip` avec l'exécutable sont disponibles, gé
 
 ## Prérequis
 
-[Unity](https://unity.com/) v6000.0.25f1 (LTS)
+[Unity](https://unity.com/) v6000.0.49f1 (LTS)
 
 ## Installation
 
