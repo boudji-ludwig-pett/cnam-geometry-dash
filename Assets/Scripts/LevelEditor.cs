@@ -99,8 +99,8 @@ public class LevelEditor : MonoBehaviour
         float xOff = -325f + idx * 125f;
         var bgRt = bg.GetComponent<RectTransform>();
         var icRt = icon.GetComponent<RectTransform>();
-        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y - 70);
-        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y - 70);
+        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y - 110);
+        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y - 110);
         bg.GetComponent<Image>().sprite = Resources.Load<Sprite>("InGame/ButtonSkin/BlankSquare");
         icon.GetComponent<Image>().sprite = prefab.GetComponent<SpriteRenderer>()?.sprite;
         icRt.sizeDelta = prefab.name.ToLower().Contains("small")
