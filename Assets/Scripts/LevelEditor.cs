@@ -99,8 +99,8 @@ public class LevelEditor : MonoBehaviour
         float xOff = -325f + idx * 125f;
         var bgRt = bg.GetComponent<RectTransform>();
         var icRt = icon.GetComponent<RectTransform>();
-        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y - 70);
-        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y - 70);
+        bgRt.anchoredPosition = new Vector2(xOff, bgRt.anchoredPosition.y - 110);
+        icRt.anchoredPosition = new Vector2(xOff, icRt.anchoredPosition.y - 110);
         bg.GetComponent<Image>().sprite = Resources.Load<Sprite>("InGame/ButtonSkin/BlankSquare");
         icon.GetComponent<Image>().sprite = prefab.GetComponent<SpriteRenderer>()?.sprite;
         icRt.sizeDelta = prefab.name.ToLower().Contains("small")
@@ -211,14 +211,14 @@ public class LevelEditor : MonoBehaviour
         {
             if (IsBlockedBySameTypeInSnapDirection())
             {
-                Debug.LogError("❌ Impossible de poser un spike sur un autre spike !");
+                Debug.LogError("Impossible de poser un spike sur un autre spike !");
                 Destroy(currentBlock);
             }
             else
             {
                 if (!SnapSpikeByRotation())
                 {
-                    Debug.LogError("❌ Impossible de poser un spike dans le vide !");
+                    Debug.LogError("Impossible de poser un spike dans le vide !");
                     Destroy(currentBlock);
                 }
                 else
@@ -231,7 +231,6 @@ public class LevelEditor : MonoBehaviour
         {
             TrySnapToNearbyBlock();
 
-            // 🔧 Réduction du collider du ObstacleKiller si c’est un ObstacleBlock
             if (name.Contains("obstacleblock"))
             {
                 foreach (Transform child in currentBlock.transform)
@@ -244,7 +243,6 @@ public class LevelEditor : MonoBehaviour
                             Vector2 originalSize = col.size;
                             col.size = new Vector2(originalSize.x, 1f);
                             col.offset = new Vector2(col.offset.x, -0.5f);
-                            Debug.Log($"✂️ Collider réduit pour {child.name} → {col.size}");
                         }
                     }
                 }
