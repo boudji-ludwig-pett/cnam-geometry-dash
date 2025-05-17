@@ -84,7 +84,8 @@ public class JSONExporter : MonoBehaviour
                 x = Mathf.Round(pos.x * 100f) / 100f,
                 y = Mathf.Round(pos.y * 100f) / 100f,
                 scaleX = Mathf.Round(scale.x * 100f) / 100f,
-                scaleY = Mathf.Round(scale.y * 100f) / 100f
+                scaleY = Mathf.Round(scale.y * 100f) / 100f,
+                rotationZ = Mathf.Round(go.transform.rotation.eulerAngles.z * 100f) / 100f
             });
         }
 
@@ -139,7 +140,7 @@ public class JSONExporter : MonoBehaviour
     private class SerializableElement
     {
         public string type;
-        public float x, y, scaleX, scaleY;
+        public float x, y, scaleX, scaleY, rotationZ;
     }
 
     [System.Serializable]

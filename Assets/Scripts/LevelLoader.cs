@@ -85,6 +85,12 @@ public class LevelLoader : MonoBehaviour
             float newScaleX = element.scaleX > 0 ? element.scaleX : originalScale.x;
             float newScaleY = element.scaleY > 0 ? element.scaleY : originalScale.y;
             instance.transform.localScale = new Vector3(newScaleX, newScaleY, originalScale.z);
+
+            // Appliquer la rotation
+            if (element.rotationZ != 0)
+            {
+                instance.transform.rotation = Quaternion.Euler(0, 0, element.rotationZ);
+            }
         }
 
         // Sol uniquement en mode jeu
