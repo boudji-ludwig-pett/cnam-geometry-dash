@@ -17,7 +17,7 @@ public class LevelElement
 [System.Serializable]
 public class Level
 {
-    public static readonly int LAST_X = 15;
+    public static readonly int LAST_X = 25;
     public string JsonName { get; set; }
     public int TotalJumps { get; set; }
     public int TotalAttempts { get; set; }
@@ -35,13 +35,15 @@ public class Level
     {
         get
         {
-            LevelElement lastElement = elements[^1];
-            float lastX = LAST_X;
-            if (lastElement != null)
+            float maxX = LAST_X;
+            foreach (var element in elements)
             {
-                lastX += lastElement.x;
+                if (element.x > maxX)
+                {
+                    maxX = element.x;
+                }
             }
-            return lastX;
+            return maxX + LAST_X;
         }
     }
 
